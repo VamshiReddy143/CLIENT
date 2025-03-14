@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import '@fontsource/josefin-sans';
+body {
+    font-family: 'Josefin Sans', sans-serif;
+  }
