@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+// Navbar.js
+import React, { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../lib/translations";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
+  const location = useLocation();
+
+  // Debug path changes
+  useEffect(() => {
+    console.log("Current path:", location.pathname);
+  }, [location.pathname]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangDropdown = () => setIsLangDropdownOpen(!isLangDropdownOpen);
@@ -18,18 +25,19 @@ const Navbar = () => {
 
   const t = translations[language];
 
+  const navLinks = [
+    { to: "/find-space", label: t.findSpace },
+    { to: "/list-space", label: t.listSpace },
+    { to: "/about", label: t.aboutUs },
+    { to: "/contact", label: t.contactUs },
+  ];
 
   const navVariants = {
     hidden: { opacity: 0, y: -50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 15,
-        mass: 0.8,
-      },
+      transition: { type: "spring", stiffness: 120, damping: 15, mass: 0.8 },
     },
   };
 
@@ -83,6 +91,11 @@ const Navbar = () => {
       x: 0,
       transition: { type: "spring", stiffness: 150, damping: 20, staggerChildren: 0.15 },
     },
+    hover: {
+      x: 10,
+      color: "#f97316",
+      transition: { type: "spring", stiffness: 300, damping: 20 },
+    },
   };
 
   return (
@@ -91,6 +104,7 @@ const Navbar = () => {
       initial="hidden"
       animate="visible"
       variants={navVariants}
+      key={location.pathname} // Force re-render on path change
     >
       {/* Mobile Navbar */}
       <div className="md:hidden flex justify-between items-center py-4">
@@ -99,7 +113,10 @@ const Navbar = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { delay: 0.2, duration: 0.5 } }}
         >
-          {t.brand.split(" ")[0]} <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
+          <Link to="/">
+            {t.brand.split(" ")[0]}{" "}
+            <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
+          </Link>
         </motion.h1>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -166,7 +183,10 @@ const Navbar = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { delay: 0.2, duration: 0.5 } }}
         >
-          <Link to="/">{t.brand.split(" ")[0]} <span className="text-orange-500">{t.brand.split(" ")[1]}</span></Link>
+          <Link to="/">
+            {t.brand.split(" ")[0]}{" "}
+            <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
+          </Link>
         </motion.h1>
         <div className="flex items-center gap-6 xl:gap-8">
           <motion.ul
@@ -175,18 +195,18 @@ const Navbar = () => {
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
-            <motion.li variants={linkVariants} initial="initial" animate="animate" whileHover="hover">
-              <Link to="/find-space">{t.findSpace}</Link>
-            </motion.li>
-            <motion.li variants={linkVariants} initial="initial" animate="animate" whileHover="hover">
-              <Link to="/list-space">{t.listSpace}</Link>
-            </motion.li>
-            <motion.li variants={linkVariants} initial="initial" animate="animate" whileHover="hover">
-              <Link to="/about">{t.aboutUs}</Link>
-            </motion.li>
-            <motion.li variants={linkVariants} initial="initial" animate="animate" whileHover="hover">
-              <Link to="/contact">{t.contactUs}</Link>
-            </motion.li>
+            {navLinks.map((link) => (
+              <motion.li
+                key={link.to}
+                variants={linkVariants}
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
+                className={location.pathname === link.to ? "text-orange-500" : "text-gray-800"}
+              >
+                <Link to={link.to}>{link.label}</Link>
+              </motion.li>
+            ))}
           </motion.ul>
         </div>
         <div className="flex items-center gap-3 xl:gap-5">
@@ -228,7 +248,7 @@ const Navbar = () => {
             <AnimatePresence>
               {isLangDropdownOpen && (
                 <motion.div
-                  className="absolute top-10 z-[99] right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl "
+                  className="absolute top-10 z-[99] right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl"
                   variants={dropdownVariants}
                   initial="hidden"
                   animate="visible"
@@ -236,7 +256,7 @@ const Navbar = () => {
                 >
                   <button
                     onClick={() => handleLanguageChange("en")}
-                    className={`w-full text-left  px-4 py-2 text-sm font-medium ${language === "en" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
+                    className={`w-full text-left px-4 py-2 text-sm font-medium ${language === "en" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
                   >
                     English
                   </button>
@@ -265,7 +285,10 @@ const Navbar = () => {
           >
             <motion.div className="relative w-full" variants={sidebarItemVariants}>
               <h1 className="text-2xl font-bold p-10 mt-[3em]">
-                {t.brand.split(" ")[0]} <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
+                <Link to="/" onClick={toggleMenu}>
+                  {t.brand.split(" ")[0]}{" "}
+                  <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
+                </Link>
               </h1>
               <motion.button
                 onClick={toggleMenu}
@@ -283,18 +306,18 @@ const Navbar = () => {
                 initial="hidden"
                 animate="visible"
               >
-                <motion.li variants={sidebarItemVariants} whileHover={{ x: 10, color: "#f97316" }}>
-                  <Link to="/find-space" onClick={toggleMenu}>{t.findSpace}</Link>
-                </motion.li>
-                <motion.li variants={sidebarItemVariants} whileHover={{ x: 10, color: "#f97316" }}>
-                  <Link to="/list-space" onClick={toggleMenu}>{t.listSpace}</Link>
-                </motion.li>
-                <motion.li variants={sidebarItemVariants} whileHover={{ x: 10, color: "#f97316" }}>
-                  <Link to="/about" onClick={toggleMenu}>{t.aboutUs}</Link>
-                </motion.li>
-                <motion.li variants={sidebarItemVariants} whileHover={{ x: 10, color: "#f97316" }}>
-                  <Link to="/contact" onClick={toggleMenu}>{t.contactUs}</Link>
-                </motion.li>
+                {navLinks.map((link) => (
+                  <motion.li
+                    key={link.to}
+                    variants={sidebarItemVariants}
+                    whileHover="hover"
+                    className={location.pathname === link.to ? "text-orange-500" : "text-gray-800"}
+                  >
+                    <Link to={link.to} onClick={toggleMenu}>
+                      {link.label}
+                    </Link>
+                  </motion.li>
+                ))}
               </motion.ul>
               <motion.div
                 className="flex mt-10 gap-10 w-full"
