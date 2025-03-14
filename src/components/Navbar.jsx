@@ -143,7 +143,7 @@ const Navbar = () => {
             <AnimatePresence>
               {isLangDropdownOpen && (
                 <motion.div
-                  className="absolute top-10 right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl z-10"
+                  className="absolute top-10 z-[99] right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl "
                   variants={dropdownVariants}
                   initial="hidden"
                   animate="visible"
@@ -248,7 +248,7 @@ const Navbar = () => {
             <AnimatePresence>
               {isLangDropdownOpen && (
                 <motion.div
-                  className="absolute top-10 z-[99] right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl"
+                  className="absolute top-10 md:z-[99]   right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl"
                   variants={dropdownVariants}
                   initial="hidden"
                   animate="visible"

@@ -180,7 +180,7 @@ export const translations = {
     blogdate:"22 août 2025",
     subtitle:"Prêt à développer votre entreprise ?",
      subdes:"Inscrivez-vous dès aujourd'hui et commencez à vous connecter avec les bons partenaires du marché !",
-      subph:"Inscrivez-vous pour trouver un marché",
+      subph:"Rejoignez le marché !",
       footerdes:"Cette plateforme facilite la location d'espaces commerciaux pour les propriétaires de marché, permet aux vendeurs de trouver l'emplacement de vente idéal et aide les investisseurs à découvrir des opportunités de franchise.",
       footerlinktitle:"Nos Liens",
       footerlinkhome:"Accueil",
