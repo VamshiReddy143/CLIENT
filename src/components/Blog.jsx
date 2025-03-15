@@ -32,7 +32,7 @@ const Blog = () => {
   };
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto min-h-screen flex flex-col py-10 sm:py-12 md:py-16 lg:py-[4em] px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16">
+    <div className="w-full max-w-[1440px] mx-auto min-h-screen flex flex-col  sm:py-12 md:py-16 lg:py-[4em] px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16">
       {/* Header Section */}
       <motion.div 
         className="flex flex-col items-center"
@@ -82,15 +82,15 @@ const Blog = () => {
           {[1, 2, 3].map((index) => (
             <motion.div
               key={index}
-              className="flex gap-4 sm:gap-6"
+              className="flex flex-row-reverse gap-4 sm:gap-6"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeInUp}
               transition={{ delay: index * 0.2 }}
             >
-              <div className="flex flex-col gap-2">
-                <h1 className="font-normal text-[14px] sm:text-[16px] md:text-[20px] max-w-[220px] sm:max-w-[260px] md:max-w-[294px]">
+              <div className="flex flex-col  gap-1">
+                <h1 className="font-normal leading-[132%] text-[14px] sm:text-[16px] md:text-[20px] max-w-[220px] sm:max-w-[260px] md:max-w-[294px]">
                   {index === 1 
                     ? `${t.blog2title}`
                     : index === 2 

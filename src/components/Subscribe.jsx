@@ -52,7 +52,7 @@ function App() {
           <input
             type="text"
             placeholder={t.subph}
-            className="w-full h-full bg-white rounded-[10px] px-3 shadow-2xl md:scale-100"
+            className="w-full h-full bg-white  focus:outline-gray-200 rounded-[10px] px-3 shadow-2xl md:scale-100"
           />
           <motion.button
             className="absolute top-1 sm:top-2 right-1 bg-[#FF8126] text-white rounded-[8px] w-[100px] sm:w-[109px] md:w-[129px] h-[40px] md:h-[42px] flex items-center justify-center md:scale-100"

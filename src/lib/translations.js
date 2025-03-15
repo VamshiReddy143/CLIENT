@@ -1,4 +1,4 @@
-import { li } from "framer-motion/client";
+
 
 export const translations = {
   en: {
@@ -19,9 +19,9 @@ export const translations = {
     location: "Location",
     locationPlaceholder: "City or Area",
     priceRange: "Price Range",
-    priceRangePlaceholder: "Select Range",
+    priceRangePlaceholder: "$100",
     spaceSize: "Space Size",
-    spaceSizePlaceholder: "Sq Ft",
+    spaceSizePlaceholder: "100-500 Sq Ft",
     search: "Search",
     title: 'About Us',
     paragraph1: 'The Placy Market is designed to seamlessly connect marketplace owners, vendors, and franchise investors. Whether you\'re looking to rent out a commercial space, find the perfect location for your business, or invest in a franchise, our platform makes the process smooth and efficient.',

@@ -86,11 +86,11 @@ const Listing = () => {
               transition={{ delay: index * 0.2 }}
             >
               {/* Left Section: Image + Text */}
-              <div className="flex items-center gap-2 sm:gap-3 md:gap-6 lg:gap-7 w-full sm:w-[600px] p-4 sm:p-5 md:p-5 lg:p-5 xl:p-5">
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-6 lg:gap-7 w-full sm:w-[600px]  sm:p-5 md:p-5 lg:p-5 xl:p-5">
                 <motion.img
                   src={listing.img}
                   alt="listing"
-                  className="w-[100px] h-[140px] sm:w-[120px] sm:h-[165px] md:w-[150px] md:h-[180px] lg:w-[160px] lg:h-[220px] xl:w-[160px] xl:h-[220px] rounded-lg object-cover shadow-md"
+                  className="w-[100px] mr-1 md:mr-0 h-[140px] sm:w-[120px] sm:h-[165px] md:w-[150px] md:h-[180px] lg:w-[160px] lg:h-[220px] xl:w-[160px] xl:h-[220px] rounded-lg object-cover shadow-md"
                   whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
                 />
                 <div className="flex flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-7 xl:gap-7 w-full">
@@ -116,12 +116,13 @@ const Listing = () => {
                   </div>
                 </div>
 
-                <div className="flex md:hidden items-center sm:items-end justify-center sm:justify-end">
+                <div className="flex pr-4 md:hidden items-center sm:items-end justify-center sm:justify-end">
                   <motion.button
-                    className="absolute border-orange-500 rotate-[270deg] w-[120px] h-[24px] sm:w-[150px] sm:h-[28px] md:w-[150px] md:h-[32px] rounded-lg border-2 font-medium"
+                    className="absolute border-orange-500 rotate-[270deg] w-[120px] h-[29px] sm:w-[150px] sm:h-[28px] md:w-[150px] md:h-[32px] rounded-lg border-2 font-medium"
                     variants={buttonVariantsHover}
                     initial="initial"
                     whileHover="hover"
+                    whileTap="hover"
                   >
                     {t.listingbutton}
                   </motion.button>

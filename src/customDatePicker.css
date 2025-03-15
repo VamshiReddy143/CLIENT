@@ -1,0 +1,92 @@
+/* customDatePicker.css */
+.react-datepicker {
+    border: none !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    width: 300px !important; /* Match the approximate width of the calendar in the image */
+  }
+  
+  .react-datepicker__header {
+    background-color: #ffffff !important;
+    border-bottom: none !important;
+    padding: 0 !important;
+  }
+  
+  .react-datepicker__current-month {
+    color: #1f2937 !important; /* gray-800 */
+    font-size: 18px !important;
+    font-weight: 600 !important;
+  }
+  
+  .react-datepicker__day-name {
+    color: #6b7280 !important; /* gray-500 */
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    width: 40px !important;
+    line-height: 40px !important;
+    background-color: #f1f1f1 !important; /* Light gray background for day names */
+    margin: 0 !important;
+  }
+  
+  .react-datepicker__day {
+    color: #374151 !important; /* gray-700 */
+    font-size: 14px !important;
+    width: 40px !important;
+    line-height: 40px !important;
+    transition: all 0.2s ease;
+    position: relative;
+    margin: 0 !important;
+  }
+  
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected,
+  .react-datepicker__day:hover,
+  .range-end {
+    background-color: #FF8126 !important; /* Orange for start/end dates */
+    color: white !important;
+    border-radius: 50% !important;
+  }
+  
+  .range-middle {
+    background-color: rgba(255, 129, 38, 0.3) !important; /* Light orange for middle days */
+    color: #374151 !important;
+    border-radius: 50px !important; /* No border radius for middle days to connect them */
+    margin: 0 !important;
+    position: relative;
+  }
+  
+  /* Connect the days with a continuous background */
+  .react-datepicker__week {
+    position: relative;
+  }
+  
+  .react-datepicker__day.range-middle::before,
+  .react-datepicker__day.range-end + .react-datepicker__day.range-middle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -2px; /* Overlap slightly to avoid gaps */
+    width: 4px; /* Extend to cover gaps */
+    height: 100%;
+    background-color: rgba(255, 129, 38, 0.3); /* Light orange */
+    z-index: -1;
+  }
+  
+  /* Ensure start and end dates are fully orange */
+  .react-datepicker__day.range-end {
+    z-index: 1; /* Ensure start/end dates are above the connecting background */
+  }
+  
+  /* Days outside the current month */
+  .react-datepicker__day--outside-month {
+    color: #d1d5db !important; /* gray-300 */
+  }
+  
+  /* Navigation icons */
+  .react-datepicker__navigation {
+    top: 14px !important;
+  }
+  
+  .react-datepicker__navigation-icon::before {
+    border-color: #4b5563 !important; /* gray-600 */
+    border-width: 2px 2px 0 0 !important;
+  }
