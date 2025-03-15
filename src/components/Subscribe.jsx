@@ -77,7 +77,7 @@ function App() {
           <img
             src="/hut.svg"
             alt="Marketplace stand"
-            className="w-full h-full object-contain md:object-contain"
+            className="w-full h-full md:object-contain"
           />
         </div>
 
