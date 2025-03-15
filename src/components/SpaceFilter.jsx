@@ -42,7 +42,7 @@ FilterSection.propTypes = {
 const ListingCard = ({ t }) => (
 
   // className="flex-row sm:flex-row items-start sm:items-center gap-3 sm:gap-4 md:shadow-lg rounded-xl w-[374px] md:w-full"
-  <div >
+  <div className="p-3 md:p-0">
     <div className="flex sm:flex-row items-start sm:items-center gap-3 sm:gap-4 md:pr-4 rounded-xl w-[374px] md:w-full">
       <div className="relative sm:w-auto">
         <img
