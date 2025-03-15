@@ -1,4 +1,3 @@
-// Navbar.js
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../lib/translations";
@@ -11,7 +10,6 @@ const Navbar = () => {
   const { language, setLanguage } = useLanguage();
   const location = useLocation();
 
-  // Debug path changes
   useEffect(() => {
     console.log("Current path:", location.pathname);
   }, [location.pathname]);
@@ -98,18 +96,38 @@ const Navbar = () => {
     },
   };
 
+  const buttonVariants = {
+    initial: {
+      scale: 1,
+      y: 0,
+      boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.25), 0px -2px 8px rgba(255, 255, 255, 0.2)",
+    },
+    hover: {
+      scale: 1.03,
+      y: -3,
+      boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.3), 0px -3px 10px rgba(255, 255, 255, 0.25)",
+      transition: { duration: 0.15, ease: "easeOut" },
+    },
+    tap: {
+      scale: 0.97,
+      y: 4,
+      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.15), 0px -1px 4px rgba(255, 255, 255, 0.1)",
+      transition: { duration: 0.1, ease: "easeIn" },
+    },
+  }
+
   return (
     <motion.div
-      className="relative px-4 sm:px-6 md:px-10 xl:px-10"
+      className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 max-w-[1440px] mx-auto"
       initial="hidden"
       animate="visible"
       variants={navVariants}
-      key={location.pathname} // Force re-render on path change
+      key={location.pathname}
     >
       {/* Mobile Navbar */}
-      <div className="md:hidden flex justify-between items-center py-4">
+      <div className="md:hidden flex justify-between items-center py-3 sm:py-4">
         <motion.h1
-          className="text-2xl font-bold"
+          className="text-xl sm:text-2xl font-bold"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { delay: 0.2, duration: 0.5 } }}
         >
@@ -118,7 +136,7 @@ const Navbar = () => {
             <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
           </Link>
         </motion.h1>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="relative">
             <motion.button
               onClick={toggleLangDropdown}
@@ -128,7 +146,9 @@ const Navbar = () => {
               animate="animate"
               whileHover="hover"
             >
-              <span className="text-sm font-medium">{language === "en" ? "EN" : "FR"}</span>
+              <span className="text-xs sm:text-sm font-medium">
+                {language === "en" ? "EN" : "FR"}
+              </span>
               <motion.svg
                 className="w-3 h-3"
                 fill="none"
@@ -143,7 +163,7 @@ const Navbar = () => {
             <AnimatePresence>
               {isLangDropdownOpen && (
                 <motion.div
-                  className="absolute top-10 z-[99] right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl "
+                  className="absolute top-9 sm:top-10 right-0 w-28 sm:w-32 bg-white border border-gray-200 rounded-lg shadow-xl z-[99]"
                   variants={dropdownVariants}
                   initial="hidden"
                   animate="visible"
@@ -151,13 +171,13 @@ const Navbar = () => {
                 >
                   <button
                     onClick={() => handleLanguageChange("en")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium ${language === "en" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
+                    className={`w-full text-left px-3 py-2 text-xs sm:text-sm font-medium ${language === "en" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
                   >
                     English
                   </button>
                   <button
                     onClick={() => handleLanguageChange("fr")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium ${language === "fr" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
+                    className={`w-full text-left px-3 py-2 text-xs sm:text-sm font-medium ${language === "fr" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
                   >
                     Français
                   </button>
@@ -167,7 +187,7 @@ const Navbar = () => {
           </div>
           <motion.button
             onClick={toggleMenu}
-            className="text-2xl"
+            className="text-xl sm:text-2xl"
             whileHover={{ rotate: 90, scale: 1.2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
@@ -177,9 +197,9 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Navbar */}
-      <div className="hidden md:flex justify-between items-center py-4 max-w-10xl mx-auto">
+      <div className="hidden md:flex justify-between items-center py-4">
         <motion.h1
-          className="text-2xl font-bold"
+          className="text-xl md:text-2xl lg:text-3xl font-bold"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { delay: 0.2, duration: 0.5 } }}
         >
@@ -188,9 +208,9 @@ const Navbar = () => {
             <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
           </Link>
         </motion.h1>
-        <div className="flex items-center gap-6 xl:gap-8">
+        <div className="flex items-center gap-4 md:gap-6 lg:gap-8 xl:gap-10">
           <motion.ul
-            className="flex gap-4 xl:gap-6 text-base font-normal cursor-pointer"
+            className="flex gap-3 md:gap-4 lg:gap-6 xl:gap-8 text-sm md:text-base lg:text-lg font-normal cursor-pointer"
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
@@ -209,18 +229,21 @@ const Navbar = () => {
             ))}
           </motion.ul>
         </div>
-        <div className="flex items-center gap-3 xl:gap-5">
-          <motion.button
-            className="text-orange-500 text-lg"
-            variants={linkVariants}
-            initial="initial"
-            animate="animate"
-            whileHover="hover"
-          >
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-4 xl:gap-5">
+          <button className="text-orange-500 text-sm md:text-base lg:text-lg mr-6">
             {t.logIn}
-          </motion.button>
+          </button>
           <motion.button
-            className="bg-orange-500 text-white px-4 py-2 rounded-xl shadow-md min-w-[113px] cursor-pointer"
+            className="bg-[#FF8126] text-white px-3 py-2 md:px-4 md:py-2 lg:px-5 lg:py-3 rounded-lg shadow-xl min-w-[100px] md:min-w-[113px] lg:min-w-[130px] flex items-center justify-center"
+            variants={buttonVariants}
+            initial="initial"
+            whileHover="hover"
+            whileTap="tap"
+            style={{
+              borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+              borderBottom: "3px solid rgba(0, 0, 0, 0.2)",
+              position: "relative",
+            }}
           >
             {t.signUp}
           </motion.button>
@@ -233,9 +256,11 @@ const Navbar = () => {
               animate="animate"
               whileHover="hover"
             >
-              <span className="text-sm font-medium">{language === "en" ? "EN" : "FR"}</span>
+              <span className="text-xs md:text-sm lg:text-base font-medium">
+                {language === "en" ? "EN" : "FR"}
+              </span>
               <motion.svg
-                className="w-3 h-3"
+                className="w-3 h-3 md:w-4 md:h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -248,7 +273,7 @@ const Navbar = () => {
             <AnimatePresence>
               {isLangDropdownOpen && (
                 <motion.div
-                  className="absolute top-10 md:z-[99]   right-0 w-32 bg-white border border-gray-200 rounded-lg shadow-xl"
+                  className="absolute top-9 md:top-10 right-0 w-28 md:w-32 bg-white border border-gray-200 rounded-lg shadow-xl z-[99]"
                   variants={dropdownVariants}
                   initial="hidden"
                   animate="visible"
@@ -256,13 +281,13 @@ const Navbar = () => {
                 >
                   <button
                     onClick={() => handleLanguageChange("en")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium ${language === "en" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
+                    className={`w-full text-left px-3 py-2 text-xs md:text-sm font-medium ${language === "en" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
                   >
                     English
                   </button>
                   <button
                     onClick={() => handleLanguageChange("fr")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium ${language === "fr" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
+                    className={`w-full text-left px-3 py-2 text-xs md:text-sm font-medium ${language === "fr" ? "bg-orange-100 text-orange-600" : "text-gray-800 hover:bg-gray-100"}`}
                   >
                     Français
                   </button>
@@ -277,14 +302,14 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed flex flex-col gap-8 rounded-r-[15px] items-start top-0 left-0 h-full w-[370px] max-w-[380px] bg-white border border-gray-300 shadow-2xl md:hidden z-50"
+            className="fixed flex flex-col  gap-6 sm:gap-8 rounded-r-[15px] items-start top-0 left-0 h-full w-[80%] sm:w-[370px] max-w-[380px] bg-white border border-gray-300 shadow-2xl md:hidden z-50"
             variants={sidebarVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
             <motion.div className="relative w-full" variants={sidebarItemVariants}>
-              <h1 className="text-2xl font-bold p-10 mt-[3em]">
+              <h1 className="text-xl sm:text-2xl font-bold pl-15 pt-10 sm:p-10 mt-[2em] sm:mt-[3em]">
                 <Link to="/" onClick={toggleMenu}>
                   {t.brand.split(" ")[0]}{" "}
                   <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
@@ -292,16 +317,16 @@ const Navbar = () => {
               </h1>
               <motion.button
                 onClick={toggleMenu}
-                className="absolute top-0 right-0 text-2xl p-3"
+                className="absolute top-0 right-0 text-xl sm:text-2xl p-3 sm:p-4"
                 whileHover={{ rotate: 180, scale: 1.2 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 ✕
               </motion.button>
             </motion.div>
-            <div className="p-10">
+            <div className="pl-15 pt-10 sm:p-10">
               <motion.ul
-                className="flex flex-col font-normal text-lg gap-10"
+                className="flex flex-col  font-normal text-base sm:text-lg gap-6 sm:gap-10"
                 variants={sidebarItemVariants}
                 initial="hidden"
                 animate="visible"
@@ -320,18 +345,27 @@ const Navbar = () => {
                 ))}
               </motion.ul>
               <motion.div
-                className="flex mt-10 gap-10 w-full"
+                className="flex mt-15 sm:mt-10 gap-6 sm:gap-10 w-full"
                 variants={sidebarItemVariants}
               >
                 <motion.button
-                  className="text-orange-500 text-left text-lg"
+                  className="text-orange-500 text-base sm:text-lg"
                   variants={linkVariants}
                   whileHover="hover"
                 >
                   {t.logIn}
                 </motion.button>
                 <motion.button
-                  className="bg-orange-500 text-white px-3 py-2 rounded-xl"
+                  className="bg-orange-500 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-xl min-w-[100px] sm:min-w-[113px]"
+                  variants={buttonVariants}
+                  initial="initial"
+                  whileHover="hover"
+                  whileTap="tap"
+                  style={{
+                    borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+                    borderBottom: "3px solid rgba(0, 0, 0, 0.2)",
+                    position: "relative",
+                  }}
                 >
                   {t.signUp}
                 </motion.button>

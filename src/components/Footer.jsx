@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../lib/translations";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const { language } = useLanguage();
@@ -14,9 +14,9 @@ const Footer = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
   const itemVariants = {
@@ -26,9 +26,9 @@ const Footer = () => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const lineVariants = {
@@ -37,9 +37,9 @@ const Footer = () => {
       scaleX: 1,
       transition: {
         duration: 1,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   const socialIconVariants = {
@@ -49,9 +49,9 @@ const Footer = () => {
       transition: {
         duration: 0.3,
         yoyo: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   const linkVariants = {
@@ -60,34 +60,35 @@ const Footer = () => {
       color: "#f97316", // orange-500
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
-    <motion.div 
-      className='bg-black text-[#FFFFFF] p-10'
+    <motion.div
+      className="bg-black text-[#FFFFFF] p-4 sm:p-6 md:p-10"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
       variants={containerVariants}
     >
-      <div className='md:flex items-center justify-between'>
-        <motion.div variants={itemVariants}>
-          <h1 className='font-700 md:text-[30px] text-[28px]'>
-            {t.brand.split(" ")[0]} <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
+      <div className="flex flex-col md:flex-row items-center justify-between">
+        <motion.div variants={itemVariants} className="mb-8 md:mb-0">
+          <h1 className="font-bold text-2xl sm:text-3xl md:text-[30px] lg:text-[30px]">
+            {t.brand.split(" ")[0]}{" "}
+            <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
           </h1>
-          <p className='font-400 md:text-[15px] md:w-[484px] text-[14px] w-[360px] mt-5'>
+          <p className="font-normal text-sm sm:text-base md:text-[15px] lg:text-[15px] mt-3 sm:mt-4 md:mt-5 max-w-xs sm:max-w-sm md:max-w-[484px] lg:max-w-[484px]">
             {t.footerdes}
           </p>
-          <div className='flex gap-3 mt-5'>
-            {['linked.svg', 'fb.png', 'insta.png'].map((src, index) => (
+          <div className="flex gap-2 sm:gap-3 mt-3 sm:mt-4 md:mt-5">
+            {["insta.svg", "fb.svg", "in.svg"].map((src, index) => (
               <motion.img
                 key={index}
                 src={`/${src}`}
-                alt={src.split('.')[0]}
-                className='w-[36px] h-[36px] cursor-pointer'
+                alt={src.split(".")[0]}
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-[36px] md:h-[36px] cursor-pointer"
                 variants={socialIconVariants}
                 whileHover="hover"
               />
@@ -95,14 +96,16 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        <div className='md:flex flex flex-col md:flex-row gap-10 items-start mt-10'>
-          <motion.div variants={itemVariants}>
-            <h2 className='font-700 md:text-[24px] text-[24px] mb-5'>{t.footerlinktitle}</h2>
-            <ul className='cursor-pointer'>
+        <div className="flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-10 items-start mt-6 sm:mt-8 md:mt-0">
+          <motion.div variants={itemVariants} className="mb-6 md:mb-0">
+            <h2 className="font-bold text-xl sm:text-2xl md:text-[24px] lg:text-[24px] mb-3 sm:mb-4 md:mb-5">
+              {t.footerlinktitle}
+            </h2>
+            <ul className="cursor-pointer">
               {[t.footerlinkhome, t.footerlinkabout, t.footerlinklistings, t.footerlistingblogs, t.footerlistingcontactus].map((link, index) => (
                 <motion.li
                   key={index}
-                  className='md:text-[18px] font-400'
+                  className="text-base sm:text-lg md:text-[18px] lg:text-[18px] font-normal mb-2"
                   variants={linkVariants}
                   whileHover="hover"
                 >
@@ -113,20 +116,28 @@ const Footer = () => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h2 className='font-700 text-[24px] mb-5'>{t.footerlistingcontactus}</h2>
-            <div className='flex flex-col gap-4'>
+            <h2 className="font-bold text-xl sm:text-2xl md:text-[24px] lg:text-[24px] mb-3 sm:mb-4 md:mb-5">
+              {t.footerlistingcontactus}
+            </h2>
+            <div className="flex flex-col gap-2 sm:gap-3">
               {[
-                { src: 'location.svg', text: t.footercontactmap },
-                { src: 'phone.svg', text: '+12 345 6789' },
-                { src: 'mail.svg', text: 'support@marketplaceplatform.com' }
+                { src: "location.svg", text: t.footercontactmap },
+                { src: "phone.svg", text: "+12 345 6789" },
+                { src: "mail.svg", text: "support@marketplaceplatform.com" },
               ].map((item, index) => (
                 <motion.div
                   key={index}
-                  className='flex gap-2 items-center'
+                  className="flex gap-2 sm:gap-3 items-center"
                   variants={itemVariants}
                 >
-                  <img src={`/${item.src}`} alt={item.src.split('.')[0]} className='h-[38px] w-[38px]' />
-                  <p className='md:w-[283px] font-400 md:text-[18px]'>{item.text}</p>
+                  <img
+                    src={`/${item.src}`}
+                    alt={item.src.split(".")[0]}
+                    className="h-8 w-8 sm:h-9 sm:w-9 md:h-[38px] md:w-[38px]"
+                  />
+                  <p className="text-sm sm:text-base md:text-[18px] lg:text-[18px] max-w-xs sm:max-w-sm md:max-w-[283px] lg:max-w-[283px]">
+                    {item.text}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -134,16 +145,16 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className='flex flex-col items-center'>
+      <div className="flex flex-col items-center mt-6 sm:mt-8 md:mt-10">
         <motion.div
-          className='bg-white h-[2px] w-full mt-10'
+          className="bg-white h-[1px] sm:h-[1.5px] md:h-[2px] w-full"
           variants={lineVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         />
         <motion.p
-          className='md:w-[313px] font-400 md:text-[18px] text-center mt-5'
+          className="text-sm sm:text-base md:text-[18px] lg:text-[18px] font-normal text-center mt-3 sm:mt-4 md:mt-5 max-w-xs sm:max-w-sm md:max-w-[313px] lg:max-w-[313px]"
           variants={itemVariants}
         >
           {t.copyright}

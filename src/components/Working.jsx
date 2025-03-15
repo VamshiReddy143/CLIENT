@@ -1,6 +1,10 @@
-import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+
+
+
+
+import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../lib/translations";
 
@@ -31,12 +35,13 @@ const Working = () => {
     const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
 
     return (
-        <div className='min-h-screen py-[5em] flex flex-col items-center overflow-hidden md:py-[7em] px-4 md:px-10'>
+        <div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 flex flex-col items-center overflow-hidden px-4 sm:px-6 md:px-10 lg:px-12">
+            {/* Header Section */}
             <motion.h1
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className='font-700 text-[57px] font-bold'
+                className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-[57px] text-gray-800 leading-tight text-center"
             >
                 {t.workingTitle}
             </motion.h1>
@@ -44,31 +49,47 @@ const Working = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className='font-200 text-gray-400 text-[18px] text-center max-w-2xl'
+                className="font-normal text-sm sm:text-base md:text-lg lg:text-[18px] text-gray-400 mt-2 sm:mt-4 max-w-md sm:max-w-lg md:max-w-2xl text-center"
             >
                 {t.workingDescription}
             </motion.p>
 
+            {/* Cards Section */}
             <motion.div
                 ref={ref}
                 variants={containerVariants}
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
-                className='md:grid grid-cols-3 gap-12 mt-[8em] px-8 flex flex-col'
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 mt-10 sm:mt-12 md:mt-16 px-4 sm:px-6 md:px-8"
                 style={{ y: yParallax }}
             >
                 {/* Card 1 */}
                 <motion.div
                     variants={cardVariants}
                     whileHover="hover"
-                    className='h-[400px] w-[320px] rounded-[20px] bg-gradient-to-br from-[#FF8126] to-[#FF5E00] shadow-2xl relative overflow-hidden cursor-pointer'
+                    className="h-[320px] sm:h-[360px] md:h-[380px] lg:h-[400px] w-full max-w-[280px] sm:max-w-[300px] md:max-w-[320px] lg:max-w-[320px] rounded-[20px] bg-gradient-to-br from-[#FF8126] to-[#FF5E00] shadow-2xl relative overflow-hidden cursor-pointer mx-auto"
                 >
-                    <div className='flex flex-col items-center gap-3 p-8 h-full'>
-                        <motion.h1 className='font-700 text-[60px] font-extrabold text-[#FFFFFF] z-10' whileHover={{ scale: 1.1 }}>1</motion.h1>
-                        <motion.img variants={imageVariants} src="/search.png" alt="search" className='w-20 h-20 object-contain z-10' />
-                        <h2 className='font-400 text-[28px] text-[#FFFFFF] z-10 text-center'>{t.card1Title}</h2>
-                        <p className='font-400 text-[18px] text-[#FFFFFF] opacity-90 z-10 text-center' dangerouslySetInnerHTML={{ __html: t.card1Description }} />
-                        <div className='absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.2),transparent)]' />
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 p-6 sm:p-8 h-full">
+                        <motion.h1
+                            className="font-extrabold text-4xl sm:text-5xl md:text-[60px] text-[#FFFFFF] z-10"
+                            whileHover={{ scale: 1.1 }}
+                        >
+                            1
+                        </motion.h1>
+                        <motion.img
+                            variants={imageVariants}
+                            src="/search111.svg"
+                            alt="search"
+                            className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 object-contain z-10"
+                        />
+                        <h2 className="font-medium text-lg sm:text-xl md:text-2xl lg:text-[28px] text-[#FFFFFF] z-10 text-center">
+                            {t.card1Title}
+                        </h2>
+                        <p
+                            className="font-normal text-sm sm:text-base md:text-lg lg:text-[18px] text-[#FFFFFF] opacity-90 z-10 text-center"
+                            dangerouslySetInnerHTML={{ __html: t.card1Description }}
+                        />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.2),transparent)]" />
                     </div>
                 </motion.div>
 
@@ -76,14 +97,29 @@ const Working = () => {
                 <motion.div
                     variants={cardVariants}
                     whileHover="hover"
-                    className='h-[400px] w-[320px] rounded-[20px] bg-gradient-to-br from-white to-gray-100 shadow-2xl relative overflow-hidden cursor-pointer'
+                    className="h-[320px] sm:h-[360px] md:h-[380px] lg:h-[400px] w-full max-w-[280px] sm:max-w-[300px] md:max-w-[320px] lg:max-w-[320px] rounded-[20px] bg-gradient-to-br from-white to-gray-100 shadow-2xl relative overflow-hidden cursor-pointer mx-auto"
                 >
-                    <div className='flex flex-col items-center gap-3 p-8 h-full'>
-                        <motion.h1 className='font-700 text-[60px] font-extrabold text-[#FF8126] z-10' whileHover={{ scale: 1.1 }}>2</motion.h1>
-                        <motion.img variants={imageVariants} src="/mail.png" alt="request" className='w-20 h-20 object-contain z-10' />
-                        <h2 className='font-400 text-[28px] text-black z-10 text-center'>{t.card2Title}</h2>
-                        <p className='font-400 text-[18px] text-gray-700 z-10 text-center' dangerouslySetInnerHTML={{ __html: t.card2Description }} />
-                        <div className='absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,129,38,0.1),transparent)]' />
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 p-6 sm:p-8 h-full">
+                        <motion.h1
+                            className="font-extrabold text-4xl sm:text-5xl md:text-[60px] text-[#FF8126] z-10"
+                            whileHover={{ scale: 1.1 }}
+                        >
+                            2
+                        </motion.h1>
+                        <motion.img
+                            variants={imageVariants}
+                            src="/mail111.svg"
+                            alt="request"
+                            className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 object-contain z-10"
+                        />
+                        <h2 className="font-medium text-lg sm:text-xl md:text-2xl lg:text-[28px] text-black z-10 text-center">
+                            {t.card2Title}
+                        </h2>
+                        <p
+                            className="font-normal text-sm sm:text-base md:text-lg lg:text-[18px] text-gray-700 z-10 text-center"
+                            dangerouslySetInnerHTML={{ __html: t.card2Description }}
+                        />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,129,38,0.1),transparent)]" />
                     </div>
                 </motion.div>
 
@@ -91,20 +127,39 @@ const Working = () => {
                 <motion.div
                     variants={cardVariants}
                     whileHover="hover"
-                    className='h-[400px] w-[320px] rounded-[20px] bg-gradient-to-br from-white to-gray-100 shadow-2xl relative overflow-hidden cursor-pointer'
+                    className="h-[320px] sm:h-[360px] md:h-[380px] lg:h-[400px] w-full max-w-[280px] sm:max-w-[300px] md:max-w-[320px] lg:max-w-[320px] rounded-[20px] bg-gradient-to-br from-white to-gray-100 shadow-2xl relative overflow-hidden cursor-pointer mx-auto"
                 >
-                    <div className='flex flex-col items-center gap-3 p-8 h-full'>
-                        <motion.h1 className='font-700 text-[60px] font-extrabold text-[#FF8126] z-10' whileHover={{ scale: 1.1 }}>3</motion.h1>
-                        <motion.img variants={imageVariants} src="/tag.png" alt="start" className='w-20 h-20 object-contain z-10' />
-                        <h2 className='font-400 text-[28px] text-black z-10 text-center' dangerouslySetInnerHTML={{ __html: t.card3Title }} />
-                        <p className='font-400 text-[18px] text-gray-700 z-10 text-center' dangerouslySetInnerHTML={{ __html: t.card3Description }} />
-                        <div className='absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,129,38,0.1),transparent)]' />
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 p-6 sm:p-8 h-full">
+                        <motion.h1
+                            className="font-extrabold text-4xl sm:text-5xl md:text-[60px] text-[#FF8126] z-10"
+                            whileHover={{ scale: 1.1 }}
+                        >
+                            3
+                        </motion.h1>
+                        <motion.img
+                            variants={imageVariants}
+                            src="/tag111.svg"
+                            alt="start"
+                            className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 object-contain z-10"
+                        />
+                        <h2
+                            className="font-medium text-lg sm:text-xl md:text-2xl lg:text-[28px] text-black z-10 text-center"
+                            dangerouslySetInnerHTML={{ __html: t.card3Title }}
+                        />
+                        <p
+                            className="font-normal text-sm sm:text-base md:text-lg lg:text-[18px] text-gray-700 z-10 text-center"
+                            dangerouslySetInnerHTML={{ __html: t.card3Description }}
+                        />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,129,38,0.1),transparent)]" />
                     </div>
                 </motion.div>
             </motion.div>
 
-            <div className='mt-[2em] w-[744px] h-[229.96px] flex justify-end bg-[#F3F3F4]'>
-                <img src='/sideimg.png' className='m-0 p-0 right-0 absolute' />
+           
+
+
+            <div className="mt-8 sm:mt-10 md:mt-12 w-full max-w-[744px] h-[229.96px] flex justify-end bg-[#F3F3F4] overflow-hidden">
+                <img src='/shops.svg' className='m-0 p-0 right-0 absolute' />
             </div>
         </div>
     );

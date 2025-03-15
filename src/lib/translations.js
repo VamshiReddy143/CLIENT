@@ -133,8 +133,8 @@ export const translations = {
     signUp: "S'inscrire",
     // Hero
     heroTitlePart1: "Trouvez l'",
-    heroTitlePart2: "Espace Parfait",
-    heroTitlePart3: "pour Développer Votre Entreprise !",
+    heroTitlePart2: "Espace Parfait pour",
+    heroTitlePart3: "Développer Votre Entreprise !",
     heroDescription:
       "Que vous soyez un propriétaire de marché cherchant à louer votre espace commercial ou un vendeur à la recherche de l’emplacement idéal pour vendre vos produits, nous sommes là pour vous.",
     location: "Emplacement",
