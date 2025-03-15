@@ -89,7 +89,7 @@ const Blog = () => {
               variants={fadeInUp}
               transition={{ delay: index * 0.2 }}
             >
-              <div className="flex flex-col  gap-1">
+              <div className="flex flex-col  gap-2">
                 <h1 className="font-normal leading-[132%] text-[14px] sm:text-[16px] md:text-[20px] max-w-[220px] sm:max-w-[260px] md:max-w-[294px]">
                   {index === 1 
                     ? `${t.blog2title}`
@@ -111,7 +111,7 @@ const Blog = () => {
               <img 
                 src={`/blog${index + 1}.jpg`} 
                 alt="blog" 
-                className="w-[145px] sm:w-[170px] md:w-[198px] h-[94px] sm:h-[110px] md:h-[129px] rounded-[6px] transition-transform duration-300 hover:scale-105 hover:shadow-md object-cover"
+                className="w-[175px] sm:w-[170px] md:w-[198px] h-[99px] sm:h-[110px] md:h-[129px] rounded-[6px] transition-transform duration-300 hover:scale-105 hover:shadow-md object-cover"
               />
             </motion.div>
           ))}
