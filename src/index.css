@@ -2,6 +2,7 @@
 @import '@fontsource/josefin-sans';
 body {
     font-family: 'Josefin Sans', sans-serif;
+    overflow-x: hidden;
   }
 
   button{
@@ -17,4 +18,119 @@ body {
 
 *::-webkit-scrollbar {
   display: none;  /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+
+/* @media (min-width: 640px) and (max-width: 764px) {
+  #mobile{
+    display:block;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #btn1{
+    margin-right: 3em;
+  }
+
+  #card{
+    width: 100vw;
+  }
+  #image{
+    width: 10em;
+  }
+  #filterprice{
+    width: 100%;
+    margin-left: 10px;
+    
+  }
+  #title{
+      width: 90em;
+      margin-left: 10px;
+  }
+} */
+
+
+#filtercard{
+  overflow-x: hidden;
+}
+
+
+/* iPad-specific adjustments (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Ensure the main container fits within the viewport */
+  #filtercard {
+    @apply flex-col md:flex-row;
+    @apply max-w-full;
+    @apply mx-0;
+    @apply px-[1rem];
+  }
+
+  /* Adjust the sidebar to not overlap content */
+  #filtercard > div:first-child {
+    @apply w-[18.75rem];
+    @apply flex-shrink-0;
+  }
+
+  /* Main content adjustments */
+  #filtercard > div:nth-child(2) {
+    @apply w-full;
+    @apply flex-grow;
+    @apply p-[1rem];
+  }
+
+  /* ListingCard adjustments */
+  #card {
+    @apply w-full;
+    @apply max-w-[40rem];
+    @apply mx-auto;
+    @apply flex-col;
+    @apply p-[0.75rem];
+  }
+
+  /* Ensure image is visible and sized appropriately */
+  #image {
+    @apply w-full;
+    @apply max-w-[10.75rem];
+    @apply mx-auto;
+  }
+
+  #image img:first-child {
+    @apply w-full;
+    @apply h-[10rem];
+    @apply object-cover;
+    @apply block;
+  }
+
+  #image img:nth-child(2) {
+    @apply block;
+  }
+
+  /* Adjust filterprice section */
+  #filterprice {
+    @apply flex-col;
+    @apply items-start;
+    @apply gap-[0.5rem];
+  }
+
+  #title {
+    @apply w-full;
+    @apply text-[1rem];
+  }
+
+  /* Mobile buttons section */
+  #mobile {
+    @apply flex-row;
+    @apply w-full;
+    @apply gap-[1rem];
+    @apply mt-[1rem];
+  }
+
+  #btn1 {
+    @apply w-[50%];
+    @apply h-[2.5rem];
+  }
+
+  #mobile button:nth-child(2) {
+    @apply w-[50%];
+    @apply h-[2.5rem];
+  }
 }

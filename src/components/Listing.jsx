@@ -86,7 +86,7 @@ const Listing = () => {
               transition={{ delay: index * 0.2 }}
             >
               {/* Left Section: Image + Text */}
-              <div className="flex items-center gap-2 sm:gap-3 md:gap-6 lg:gap-7 w-full sm:w-[410px] p-4 sm:p-5 md:p-5 lg:p-5 xl:p-5">
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-6 lg:gap-7 w-full sm:w-[600px] p-4 sm:p-5 md:p-5 lg:p-5 xl:p-5">
                 <motion.img
                   src={listing.img}
                   alt="listing"
@@ -94,7 +94,7 @@ const Listing = () => {
                   whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
                 />
                 <div className="flex flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-7 xl:gap-7 w-full">
-                  <h1 className="font-normal text-[13px] sm:text-[15px] md:text-[18px] lg:text-[25.8px] xl:text-[25.8px] max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[300px] text-gray-800">
+                  <h1 className="font-normal text-[13px] sm:text-[15px] md:text-[18px] lg:text-[25.8px] xl:text-[25.8px] max-w-[150px] sm:max-w-[200px] md:max-w-[350px] lg:max-w-[400px] xl:max-w-[300px] text-gray-800">
                     {listing.title1} <span className="block">{listing.title2}</span>
                   </h1>
                   <h4 className="font-bold text-[16px] sm:text-[20px] md:text-[24px] lg:text-[30.8px] xl:text-[30.8px] text-orange-500">
