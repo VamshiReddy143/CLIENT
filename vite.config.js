@@ -13,6 +13,8 @@ export default defineConfig({
     extend:{
       fontFamily:{
         sans: ['Josefin Sans', 'sans-serif'],
+        belanosima: ['Belanosima', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
       }
     }
   },

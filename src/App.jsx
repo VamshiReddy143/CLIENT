@@ -10,6 +10,8 @@ import Blog from "./components/Blog";
 import Subscribe from "./components/Subscribe";
 import Footer from "./components/Footer";
 import FindSpace from "./components/FindSpace"; 
+import ListingPage from "./ListingPage";
+import AboutUsPage from "./AboutUsPage";
 
 const App = () => {
   return (
@@ -33,6 +35,8 @@ const App = () => {
             />
             {/* Find a Space Page Route */}
             <Route path="/find-space" element={<FindSpace />} />
+            <Route path="/list-space" element={<ListingPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
             {/* Add more routes as needed */}
           </Routes>
           <Subscribe />

@@ -73,10 +73,8 @@ export const translations = {
     copyright:"Copyright@2025. All Rights Reserved.",
     spacepageherotitle1:"Discover the Perfect",
     spacepageherotitle2:"Location for Your Business",
- 
 
-
-
+  
 
     filters: "Filters",
     resetall: "Reset all",
@@ -117,6 +115,102 @@ export const translations = {
     pricerangeslider: "Price range slider",
     price175: "$175",
     price3175: "$3175",
+    
+
+
+
+     // List your space page
+
+
+  Downtown_Shopping_Center: "Downtown Shopping Center",
+  Downtown_Shopping_Center_New_York: "Downtown Shopping Center, New York",
+  Space_Highlights:"Space Highlights:",
+  Fully_Furnished: "Fully Furnished",
+  Near_Metro:"Near Metro",
+  Prime_Location:"Prime Location",
+  High_Foot_Traffic:"High Foot Traffic",
+  Flexible_Lease:"Flexible Lease",
+  Business_Friendly:"Business-Friendly",
+  Easy_Booking:"Easy Booking",
+  _24_7_Security:"24/7 Security",
+  Send_Request:"Send Request",
+  _$500_Month:"500/Month",
+
+  //Highlights
+
+  prime_loc_des:"Prime Location – Situated in one of New York’s busiest commercial hubs, attracting high foot traffic.",
+  heading2:"Location & Neighborhood",
+  heading3:"Ideal For",
+  heading4:"How to Secure This Space?",
+  point1:"Fully Furnished – Includes display shelves, counters, lighting, and seating (customizable).",
+  point2:"Flexible Lease Options – Short-term and long-term rental agreements available.",
+  point3:"Secure & Safe – 24/7 security surveillance and controlled access.",
+  point4:"Ample Parking – Dedicated parking slots for business owners and customers.",
+  point5:"Modern Amenities – High-speed internet, climate control, and power backup.",
+  point6:"Retail-Ready – Ideal for fashion boutiques, electronics shops, beauty salons, and specialty stores.",
+  point7:"Surrounded by top retail brands, restaurants, and entertainment venues.",
+  point8:"Walking distance from major metro and bus stations.",
+  point9:"Located in a business-friendly district with a growing customer base.",
+  point10:"Clothing and Fashion Boutiques",
+  point11:"Electronics and Gadget Stores",
+  point12:"Beauty and Skincare Salons",
+  point13:"Specialty Retailers and Pop-up Shops",
+  point14:"Small Businesses and Startups",
+  point15:"Click 'View Listing' – Get more images and details about the space.",
+  point16:"Submit an Inquiry – Fill out a request form, and our team will review it.",
+  point17:"Admin Review – Our team will verify your request and coordinate with the owner.",
+  point18:"Schedule a Visit – Once approved, we’ll arrange a site visit for you.",
+  point19:"Finalize the Lease – Secure your business location with a verified agreement.",
+  question1:"Have Questions? ",
+  question2:"Contact us at +43 1 234 5678 or Send a Message!",
+
+  //for mobile
+
+  question3:"Contact us at ",
+  question4:"or Send a Message!",
+
+
+  //Aboutuspage/vision
+  visiontitle:"Our Vision",
+  visiondes1:"At Placy Market, our vision is to create a seamless and efficient platform where marketplace owners, vendors, and franchise investors can connect effortlessly. We aim to simplify the process of renting, buying, and selling commercial spaces by providing a user-friendly interface with verified listings, secure transactions, and smart search filters. Our goal is to empower businesses by offering them the right locations to thrive and grow",
+  visiondes2:"Our platform is fully optimized for all devices, allowing users to manage their business needs anytime, anywhere. By fostering a transparent and efficient marketplace, we help businesses expand, investors discover new opportunities, and property owners find reliable tenants with ease.",
+
+
+   //Aboutuspage/serve
+   serveTitle:"Who We Serve",
+   servecard1Title:"Marketplace Owners",
+   servecard1Description:"Have a commercial space for rent? Connect with serious tenants effortlessly.",
+   servecard2Title:" Vendors & Retailers",
+   servecard2Description:"Searching for a prime location? Explore listings and secure the perfect spot for your business.",
+   servecard3Title:"Franchise Partners",
+   servecard3Description:"Looking for investors or retail partners? Use our platform to establish strong business connections.",
+
+
+
+   //AboutUsPage/Offer
+
+   OfferTitle:"What We Offer",
+   OfferCard1Title:"A Centralized Marketplace",
+   OfferCard1Description:"Easily browse and list commercial spaces with verified details and secure transactions.",
+   OfferCard2Title:"Verified & Quality Listings",
+   OfferCard2Description:"Every listing is reviewed to ensure accuracy, helping vendors make informed decisions.",
+   OfferCard3Title:"Smart Search & Filters",
+   OfferCard3Description:"Find spaces based on location, price, availability, and size with our advanced filtering system.",
+   OfferCard4Title:"Direct & Secure Communication",
+   OfferCard4Description:"Vendors and property owners can negotiate terms directly, ensuring transparency and efficiency.",
+   OfferCard5Title:"Support for Business Growth",
+   OfferCard5Description:"Whether youre starting out or expanding, we help you find the right space to succeed.",
+
+
+
+
+
+
+
+  
+
+
+    
 
 
 
@@ -236,6 +330,88 @@ export const translations = {
     pricerangeslider: "Curseur de plage de prix",
     price175: "$175",
     price3175: "$3175",
+
+    //list your space page
+
+    Downtown_Shopping_Center: "Centre commercial du centre-ville",
+    Downtown_Shopping_Center_New_York: "Centre commercial du centre-ville, New York",
+    Space_Highlights: "oints forts de l'espace:",
+    Fully_Furnished: "Entièrement_Meublé",
+    Near_Metro:"Près du métro",
+    Prime_Location:"Emplacement_Premium",
+    High_Foot_Traffic:"Fort_trafic_piétonnier",
+    Flexible_Lease:"Bail flexible",
+    Business_Friendly:"Adapté_aux_entreprises",
+    Easy_Booking:"Réservation facile",
+    Security:"Sécurité",
+    Send_Request:"Envoyer un message",
+    _$500_Month:"500 $/mois",
+
+
+    //Highlights
+
+    prime_loc_des:"Emplacement Premium – Situé dans l’un des centres commerciaux les plus fréquentés de New York, attirant un fort trafic piétonnier.",
+    heading2:"Emplacement & Quartier",
+    heading3:"Idéal Pour",
+    heading4:"Comment Réserver Cet Espace ?",
+    point1:"Entièrement Meublé – Comprend des étagères d'exposition, des comptoirs, un éclairage et des sièges (personnalisables).",
+    point2:"Options de Bail Flexibles – Locations à court et long terme disponibles.",
+    point3:"Sécurisé & Sûr – Surveillance 24h/24 et accès contrôlé.",
+    point4:"Parking Spacieux – Places de stationnement dédiées pour les commerçants et les clients.Équipements Modernes – Internet haut débit, contrôle du climat et alimentation de secours.",
+    point5:"Prêt pour le commerce – Idéal pour les boutiques de mode, les magasins d’électronique, les salons de beauté et les magasins spécialisés.",
+    point6:"Entouré des plus grandes marques de détail, restaurants et lieux de divertissement.",
+    point7:"À distance de marche des principales stations de métro et de bus.",
+    point8:"Situé dans un quartier favorable aux affaires avec une clientèle en expansion.",
+    point9 : "Boutiques de vêtements et de mode",
+    point10:"Magasins d’électronique et de gadgets",
+    point11:"Salons de beauté et de soins de la peau",
+    point12:"Commerçants spécialisés et magasins éphémères",
+    point13:"Petites entreprises et startups",
+    point14:"Magasins d’électronique et de gadgets",
+    point15:"Soumettez une demande – Remplissez un formulaire de demande, et notre équipe l'examinera.",
+    point16:"Validation par l'admin – Notre équipe vérifiera votre demande et contactera le propriétaire.",
+    point17:"Planifiez une visite – Une fois approuvée, nous organiserons une visite du site pour vous.",
+    point18:"Finalisez la location – Sécurisez votre emplacement commercial avec un contrat vérifié.",
+    point19:"Soumettez une demande – Remplissez un formulaire de demande, et notre équipe l'examinera.",
+    question1:"Des Questions ?",
+    question2:"Contactez-nous au +43 1 234 5678 ou envoyez un message !",
+
+    //for mobile
+    question3:"Contactez-nous au ",
+    question4:" ou envoyez un message !",
+
+
+      //Aboutuspage/vision
+  visiontitle:"Notre Vision",
+  visiondes1:"Chez Placy Market, notre vision est de créer une plateforme fluide et efficace où les propriétaires de marchés, les vendeurs et les investisseurs en franchise peuvent se connecter sans effort. Nous visons à simplifier le processus de location, d'achat et de vente d'espaces commerciaux en offrant une interface conviviale avec des annonces vérifiées, des transactions sécurisées et des filtres de recherche intelligents. Notre objectif est d'aider les entreprises à prospérer en leur offrant les emplacements idéaux pour se développer.",
+  visiondes2:"Notre plateforme est entièrement optimisée pour tous les appareils, permettant aux utilisateurs de gérer leurs besoins professionnels à tout moment et en tout lieu. En favorisant un marché transparent et efficace, nous aidons les entreprises à s’étendre, les investisseurs à découvrir de nouvelles opportunités et les propriétaires à trouver des locataires fiables en toute simplicité.",
+
+
+     //Aboutuspage/serve
+     serveTitle:"Qui Servons-Nous ?",
+     servecard1Title:"Propriétaires de Marché",
+     servecard1Description:"Avez-vous un espace commercial à louer ? Trouvez des locataires sérieux sans effort.",
+     servecard2Title:"Vendeurs & Commerçants",
+     servecard2Description:"Vous cherchez un emplacement stratégique ? Parcourez nos annonces et trouvez l’endroit parfait pour votre entreprise.",
+     servecard3Title:"Partenaires de Franchise",
+     servecard3Description:"À la recherche d’investisseurs ou de partenaires commerciaux ? Utilisez notre plateforme pour créer des connexions solides.",
+
+
+      //AboutUsPage/Offer
+
+   OfferTitle:" Ce Que Nous Offrons",
+   OfferCard1Title:"Un Marché Centralisé",
+   OfferCard1Description:"Parcourez et publiez facilement des espaces commerciaux avec des détails vérifiés et des transactions sécurisées.",
+   OfferCard2Title:"Annonces Vérifiées & Fiables",
+   OfferCard2Description:"Chaque annonce est examinée pour garantir son exactitude, aidant ainsi les vendeurs à prendre des décisions éclairées.",
+   OfferCard3Title:"Recherche Intelligente & Filtres",
+   OfferCard3Description:"Trouvez des espaces en fonction de la localisation, du prix, de la disponibilité et de la taille grâce à notre système de filtrage avancé.",
+   OfferCard4Title:"Communication Directe & Sécurisée",
+   OfferCard4Description:"Les vendeurs et les propriétaires peuvent négocier les conditions directement, garantissant transparence et efficacité.",
+   OfferCard5Title:"Un Soutien Pour la Croissance des Entreprises",
+   OfferCard5Description:"Que vous débutiez ou souhaitiez vous développer, nous vous aidons à trouver le bon espace pour réussir.",
+
+
   
   },
 };

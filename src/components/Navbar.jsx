@@ -125,7 +125,7 @@ const Navbar = () => {
       key={location.pathname}
     >
       {/* Mobile Navbar */}
-      <div className="md:hidden flex justify-between items-center py-3 sm:py-4">
+      <div className="lg:hidden  flex justify-between items-center py-3 sm:py-4">
         <motion.h1
           className="text-xl sm:text-2xl font-bold"
           initial={{ opacity: 0 }}
@@ -187,7 +187,7 @@ const Navbar = () => {
           </div>
           <motion.button
             onClick={toggleMenu}
-            className="text-xl sm:text-2xl"
+            className="text-xl md:mr-2 md:ml-2  sm:text-2xl"
             whileHover={{ rotate: 90, scale: 1.2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
@@ -197,7 +197,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Navbar */}
-      <div className="hidden md:flex justify-between items-center py-4">
+      <div className="hidden md:hidden lg:flex justify-between items-center py-4">
         <motion.h1
           className="text-xl md:text-2xl lg:text-3xl font-bold"
           initial={{ opacity: 0 }}
@@ -210,7 +210,7 @@ const Navbar = () => {
         </motion.h1>
         <div className="flex items-center gap-4 md:gap-6 lg:gap-8 xl:gap-10">
           <motion.ul
-            className="flex gap-3 md:gap-4 lg:gap-6 xl:gap-8 text-sm md:text-base lg:text-lg font-normal cursor-pointer"
+            className="flex gap-3 md:gap-4 lg:gap-6 xl:gap-8 text-sm md:text-base lg:text-[16px] font-normal cursor-pointer"
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
@@ -230,7 +230,7 @@ const Navbar = () => {
           </motion.ul>
         </div>
         <div className="flex items-center gap-2 md:gap-3 lg:gap-4 xl:gap-5">
-          <button className="text-orange-500 text-sm md:text-base lg:text-lg mr-6">
+          <button className="text-orange-500 text-sm md:text-base lg:text-[16px] mr-6">
             {t.logIn}
           </button>
           <motion.button
@@ -302,7 +302,7 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed flex flex-col  gap-6 sm:gap-8 rounded-r-[15px] items-start top-0 left-0 h-full w-[80%] sm:w-[370px] max-w-[380px] bg-white border border-gray-300 shadow-2xl md:hidden z-50"
+            className="fixed flex flex-col  gap-6 sm:gap-8 rounded-r-[15px] items-start top-0 left-0 h-full w-[80%] sm:w-[370px] max-w-[380px] bg-white border border-gray-300 shadow-2xl lg:hidden z-50"
             variants={sidebarVariants}
             initial="hidden"
             animate="visible"

@@ -48,7 +48,7 @@ function App() {
         </p>
 
         {/* Input and Button */}
-        <div className="relative w-full md:mt-[5em] max-w-[360px] sm:max-w-[700px] md:w-[600px] md:h-[57px] h-[48px] sm:h-[57px] mx-auto">
+        <div className="relative w-full md:mt-[2em] max-w-[360px] sm:max-w-[700px] md:w-[600px] md:h-[57px] h-[48px] sm:h-[57px] mx-auto">
           <input
             type="text"
             placeholder={t.subph}

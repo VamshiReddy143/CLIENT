@@ -123,7 +123,7 @@ const Hero = () => {
           >
             {t.heroTitlePart1}
             <motion.span
-              className={`text-[#FF8126] inline-block ${language === "en" ? "ml-2 md:mr-12 lg:mr-[50px]" : "ml-1 md:mr-1"}`}
+              className={`text-[#FF8126] inline-block ${language === "en" ? "ml-2 md:mr-12 lg:mr-[50px]" : "ml-1 md:mr-1  lg:mr-0"}`}
               variants={textVariants}
             >
               {t.heroTitlePart2}
