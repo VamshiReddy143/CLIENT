@@ -118,7 +118,7 @@ const Hero = () => {
         {/* Left Section: Text and Inputs */}
         <div className="w-full md:w-2/3 lg:w-[70%] max-w-[945px]">
           <motion.h1
-            className="font-bold text-[28px] sm:text-[34px] md:text-[40px] lg:text-[55px] leading-tight"
+            className="font-bold text-[28px] sm:text-[34px] md:text-[30px] lg:text-[55px] leading-tight"
             variants={textVariants}
           >
             {t.heroTitlePart1}
@@ -152,13 +152,13 @@ const Hero = () => {
                 whileHover="hover"
               >
                 <div className="w-full">
-                  <label className="font-medium text-[16px] sm:text-[17px] md:text-[18px] font-sans block">
+                  <label className="font-medium text-[16px] sm:text-[17px] md:text-[7px] lg:text-[13px] font-sans block">
                     {item.title}
                   </label>
                   <input
                     type={item.type}
                     placeholder={item.placeholder}
-                    className="w-full text-gray-500 text-[14px] font-sans bg-transparent border-none outline-none truncate"
+                    className="w-full text-gray-500 md:placeholder:text-[10px] text-[14px] font-sans bg-transparent border-none outline-none truncate"
                   />
                 </div>
                 {item.icon && (
@@ -175,7 +175,7 @@ const Hero = () => {
             ))}
             <motion.div variants={inputVariants}>
               <motion.button
-                className="bg-[#FF8126] text-white px-4 py-3 md:py-[18px] rounded-xl shadow-2xl w-full md:w-[110px] lg:w-[110px] flex items-center justify-center"
+                className="bg-[#FF8126] text-white px-4 py-3 md:py-[14px] rounded-xl shadow-2xl w-full md:w-[90px] lg:w-[110px] flex items-center justify-center"
                 variants={buttonVariants}
                 initial="initial"
                 whileHover="hover"

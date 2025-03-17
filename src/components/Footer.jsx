@@ -73,13 +73,13 @@ const Footer = () => {
       viewport={{ once: true }}
       variants={containerVariants}
     >
-      <div className="flex flex-col md:flex-row items-center justify-between">
+      <div className="flex flex-col lg:flex-row items-center md:gap-10 md:items-start justify-between">
         <motion.div variants={itemVariants} className="mb-8 md:mb-0">
           <h1 className="font-bold text-2xl sm:text-3xl md:text-[30px] lg:text-[30px]">
             {t.brand.split(" ")[0]}{" "}
             <span className="text-orange-500">{t.brand.split(" ")[1]}</span>
           </h1>
-          <p className="font-normal text-sm sm:text-base md:text-[15px] lg:text-[15px] mt-3 sm:mt-4 md:mt-5 max-w-xs sm:max-w-sm md:max-w-[484px] lg:max-w-[484px]">
+          <p className="font-normal text-sm sm:text-base md:text-[15px] lg:text-[15px] mt-3 sm:mt-4 md:mt-5 max-w-xs sm:max-w-sm md:max-w-[490px] lg:max-w-[484px]">
             {t.footerdes}
           </p>
           <div className="flex gap-2 sm:gap-3 mt-3 sm:mt-4 md:mt-5">
@@ -96,7 +96,7 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        <div className="flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-10 items-start mt-6 sm:mt-8 md:mt-0">
+        <div className="flex flex-col md:flex-row  gap-6 mr-3 sm:gap-8 md:gap-20 lg:gap-10 items-start mt-6 sm:mt-8 md:mt-0">
           <motion.div variants={itemVariants} className="mb-6 md:mb-0">
             <h2 className="font-bold text-xl sm:text-2xl md:text-[24px] lg:text-[24px] mb-3 sm:mb-4 md:mb-5">
               {t.footerlinktitle}

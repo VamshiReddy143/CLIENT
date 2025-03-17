@@ -7,12 +7,12 @@ const Highlights = () => {
    const { language } = useLanguage();
     const t = translations[language];
   return (
-    <div className="relative  lg:min-h-[100vh] mt-[1rem] mx-auto px-[1rem] sm:px-[1.5rem] md:px-[2.5rem] md:py-10 lg:py-10 lg:px-[3rem] w-full max-w-[1440px] md:mb-10">
-     <div className='md:shadow-xl py-5 px-1 md:w-fit rounded-xl'>
+    <div className="relative mt-[1rem] mx-auto px-[1rem] sm:px-[1.5rem] md:px-[2.5rem] md:py-10 lg:py-10 lg:px-[3rem] w-full max-w-[1440px] md:mb-10">
+     <div className='md:shadow-xl py-5 px-1 lg:max-w-[70%]  md:w-[100%] rounded-xl'>
      <div>
      <h1 className='text-[30px] leading-[100%] font-400  mb-[1em] font-[belanosima]'>{t.Space_Highlights}</h1>
      <div>
-       <p className='text-[#7D7D7D] md:w-[700px] lg:w-[823px] w-full font-[poppins] text-[14.4px]'>{t.prime_loc_des}</p>      
+       <p className='text-[#7D7D7D] md:w-[700px] lg:w-fit w-full font-[poppins] text-[14.4px]'>{t.prime_loc_des}</p>      
     <div className='ml-3 clear-both text-[#7D7D7D]  font-[poppins] text-[14.4px] leading-[170%]'>
         <li>{t.point1}</li>
         <li>{t.point2}</li>

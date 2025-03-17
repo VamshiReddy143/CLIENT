@@ -130,7 +130,7 @@ const Listing = () => {
               </div>
 
               {/* Desktop Icons */}
-              <div className="hidden md:flex w-full sm:w-auto md:w-[400px] lg:w-[555px] xl:w-[555px] items-center gap-2 lg:gap-3 xl:gap-5">
+              <div className="hidden md:flex w-full sm:w-auto md:w-[500px] lg:w-[555px] xl:w-[555px] items-center gap-2 lg:gap-3 xl:gap-5">
                 {["listinghome", "listingplace", "listinglocation"].map((key, i) => (
                   <motion.div
                     key={i}
@@ -181,7 +181,7 @@ const Listing = () => {
       {/* View More Button with 3D Effect */}
       <div className="flex justify-center mt-4 sm:mt-6 md:mt-8 lg:mt-10 xl:mt-10">
         <motion.button
-          className="bg-orange-500 text-white px-3 sm:px-4 md:px-5 lg:px-6 xl:px-6 py-1 sm:py-2 md:py-3 lg:py-3 xl:py-3 rounded-xl shadow-xl min-w-[120px] sm:min-w-[130px] md:min-w-[140px] lg:min-w-[150px] xl:min-w-[150px] flex items-center justify-center font-medium text-sm sm:text-base md:text-base lg:text-base xl:text-base"
+          className="bg-orange-500 w-full  py-3 px-3 text-white  sm:px-4 md:px-5 lg:px-6 xl:px-6  sm:py-2 md:py-3 lg:py-3 xl:py-3 rounded-xl shadow-xl min-w-[120px] sm:min-w-[130px] md:min-w-[140px] lg:w-[150px] xl:min-w-[150px] flex items-center justify-center font-medium text-sm sm:text-base md:text-base lg:text-base xl:text-base"
           variants={buttonVariants3D}
           initial="initial"
           whileHover="hover"

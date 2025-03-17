@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, AtSign } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 
 
@@ -41,7 +42,7 @@ function App() {
               onChange={handleChange}
               placeholder="Email"
               className="w-full px-4 py-3 bg-gray-100 rounded-lg pr-10 border-1 border-[#DCDCDC]  focus:outline-none focus:ring-1 focus:ring-[#EA7A39]  transition-all"
-              required
+            
             />
             <AtSign className="w-5 h-5 text-gray-400 absolute right-3 top-3.5" />
           </div>
@@ -54,7 +55,7 @@ function App() {
               onChange={handleChange}
               placeholder="Password"
               className="w-full px-4 py-3 bg-gray-100 rounded-lg pr-10 border-1 border-[#DCDCDC] focus:outline-none focus:ring-1 focus:ring-[#EA7A39] transition-all"
-              required
+            
             />
             <button
               type="button"
@@ -79,13 +80,13 @@ function App() {
           <div className="text-left space-y-2">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <a href="/signup" className="text-[#EA7A39] hover:text-orange-500 font-medium ">
+              <Link to="/signup" className="text-[#EA7A39] hover:text-orange-500 font-medium ">
                 Register
-              </a>
+              </Link>
             </p>
-            <a href="#" className="block text-sm text-center text-[#EA7A39] hover:text-orange-500 mt-10">
+            <Link to="#" className="block text-sm text-center text-[#EA7A39] hover:text-orange-500 mt-10">
               Forgot Password?
-            </a>
+            </Link>
           </div>
         </form>
       </div>

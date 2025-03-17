@@ -4,16 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../lib/translations";
 
-
-
-// Reusable Components
+// Reusable Components (unchanged from your original)
 const CheckboxItem = ({ label, count }) => (
-  <div className="flex justify-between items-center mb-[0.75rem] px-[1rem]">
+  <div className="flex justify-between lg:w-[16em] items-center   mb-[0.75rem] px-[1rem]">
     <div className="flex items-center gap-[0.5rem]">
       <input type="checkbox" className="accent-[#FF8126] w-[1rem] h-[1rem]" />
       <p className="text-gray-500 text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] truncate flex-1">{label}</p>
     </div>
-    {count && <p className="text-gray-500 text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] ml-[0.5rem]">{count}</p>}
+    {count && <p className="text-gray-500 text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] ">{count}</p>}
   </div>
 );
 
@@ -36,18 +34,25 @@ const FilterSection = ({ title, children }) => (
   </div>
 );
 
+
+
+
+
 FilterSection.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
 
 const ListingCard = ({ t }) => (
-  <div id="card" className="p-[0.75rem] md:shadow-lg md:rounded-xl md:p-0">
-    <div className="flex sm:flex-row items-start sm:items-center gap-[0.75rem] sm:gap-[1rem] md:pr-[1rem] rounded-xl w-[23.375rem] md:w-full">
+  <div
+    id="card"
+    className="md:shadow-lg md:rounded-xl md:p-0 w-full max-w-[23.375rem]  lg:max-w-[77.375rem] mx-auto"
+  >
+    <div className="flex sm:flex-row items-start sm:items-center gap-[0.75rem] sm:gap-[1rem] lg:pr-[1rem] rounded-xl w-[23.375rem] md:w-full lg:w-full">
       <div id="image" className="relative sm:w-auto">
         <img
           src="/img1.jpg"
-          className="w-[5rem] sm:w-[5.8125rem] md:w-[10.75rem] h-[5.625rem] sm:h-[7.1875rem] md:h-[13.25rem] object-cover rounded-md"
+          className="w-[5rem]  sm:w-[5.8125rem] lg:w-[10.75rem] h-[5.625rem] sm:h-[7.1875rem] lg:h-[13.25rem] object-cover rounded-md"
         />
         <img
           src="/heart1.svg"
@@ -56,8 +61,11 @@ const ListingCard = ({ t }) => (
       </div>
 
       <div className="flex-1">
-        <div id="filterprice" className="flex sm:flex-row sm:items-start items-center gap-[0.5rem] sm:gap-[1rem]">
-          <h1 id="title" className="w-[11rem] sm:w-[60%] md:w-[18.75rem] font-normal text-[0.75rem] sm:text-[1rem] md:text-[1.25rem] leading-tight">
+        <div id="filterprice" className="flex md:flex sm:flex sm:items-start items-center gap-[0.5rem] sm:gap-[1rem]">
+          <h1
+            id="title"
+            className="w-[11rem] sm:w-[60%] md:w-[18.75rem] font-normal text-[0.75rem] sm:text-[1rem] md:text-[1.25rem] leading-tight"
+          >
             {t.downtownshoppingcenter}
           </h1>
           <h1 className="text-[#FF8126] text-[0.625rem] sm:text-[0.875rem] md:text-[1.25rem] font-normal leading-tight">
@@ -66,7 +74,7 @@ const ListingCard = ({ t }) => (
         </div>
 
         <div className="flex w-[16.875rem] md:w-full sm:flex-row gap-[0.75rem] sm:gap-[1rem] mt-[0.5rem]">
-          <div className="flex w-[13.125rem] md:w-[7.6875rem] flex-col">
+          <div className="flex w-[12.125rem] md:w-[14.6875rem] flex-col">
             <h1 className="text-[#FF8126] text-[0.625rem] sm:text-[0.875rem] md:text-[1rem] font-bold leading-tight">
               {t.services}
             </h1>
@@ -82,7 +90,7 @@ const ListingCard = ({ t }) => (
               </p>
             </div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col lg:justify-center md:justify-between justify-between">
             <div className="flex items-center gap-[0.5rem]">
               <img src="/phone2.svg" alt="phone" className="h-[0.5rem] sm:h-[0.75rem] w-[0.5rem] sm:w-[0.75rem]" />
               <p className="text-[#FF8126] font-mono text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight">
@@ -109,11 +117,17 @@ const ListingCard = ({ t }) => (
       </div>
     </div>
 
-    <div id="mobile" className="flex md:hidden w-[23.3125rem] flex-row sm:flex-col items-center gap-[0.5rem] sm:w-auto mt-[0.75rem] sm:mt-0">
-      <button id="btn1" className="bg-[#FF8126] w-[11.25rem] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-white text-[0.875rem] md:text-[1rem]">
+    <div
+      id="mobile"
+      className="flex md:hidden w-[23.3125rem] flex-row sm:flex-col items-center gap-[0.5rem] sm:w-auto mt-[0.75rem] sm:mt-0"
+    >
+      <button
+        id="btn1"
+        className="bg-[#FF8126] sm:min-w-[10.5rem] w-[47%] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-white text-[0.875rem] md:text-[1rem]"
+      >
         {t.viewlisting}
       </button>
-      <button className="border-[0.0625rem] border-[#FF8126] w-[11.25rem] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-[0.875rem] md:text-[1rem]">
+      <button className="border-[0.0625rem] border-[#FF8126] sm:min-w-[10.5rem] w-[47%] mx-w-[12rem] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-[0.875rem] md:text-[1rem]">
         {t.sendmessage}
       </button>
     </div>
@@ -190,7 +204,7 @@ const SpaceFilter = () => {
     <div id="filtercard" className="min-h-[100vh] flex flex-col md:flex-row relative w-full max-w-[90rem] mx-auto">
       {/* Sidebar - Desktop */}
       <div
-        className="hidden md:block w-full md:w-[18.75rem] lg:w-[22.3125rem] border-r border-gray-300 relative"
+        className="hidden  lg:block w-full md:w-[18.75rem] lg:w-[20.3125rem] border-r border-gray-300 relative"
         style={{ height: sidebarHeight }}
       >
         <div className="p-[1rem] sm:p-[1.5rem] lg:p-[2rem] sticky top-0">
@@ -229,6 +243,8 @@ const SpaceFilter = () => {
               <CheckboxItem key={index} label={size} />
             ))}
           </FilterSection>
+
+         
 
           <FilterSection title={t.location}>
             {FILTER_SECTIONS.locations.map((location, index) => (
@@ -303,10 +319,10 @@ const SpaceFilter = () => {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="w-full px-[0.5rem] mt-[1rem] md:mt-0 mb-[1.25rem] md:mb-0 sm:p-[1.5rem] md:p-[2rem]" ref={contentRef}>
-        <div className="max-w-[54.375rem] mx-auto">
+      <div className="w-full px-[0.5rem] mt-[1rem] md:mt-0 mb-[1.25rem]  md:mb-0 sm:p-[1.5rem] md:p-[2rem]" ref={contentRef}>
+        <div className="w-full max-w-[54.375rem]  mx-auto">
           <div className="flex justify-between items-center mb-[1.5rem]">
-            <div className="hidden md:flex items-center gap-[0.5rem]">
+            <div className="hidden lg:flex items-center gap-[0.5rem]">
               <h1 className="text-[1.5rem] sm:text-[1.75rem] md:text-[2rem] lg:text-[3rem] font-semibold leading-tight">
                 {t.searchresults}
               </h1>
@@ -314,7 +330,7 @@ const SpaceFilter = () => {
             </div>
 
             <button
-              className="flex md:hidden items-center gap-[0.5rem]"
+              className="flex lg:hidden items-center gap-[0.5rem]"
               onClick={() => setIsMobileSidebarOpen(true)}
             >
               <img src="/vis.svg" alt={t.visualizer} className="h-[0.75rem] sm:h-[1rem] w-[1rem] sm:w-[1rem]" />
@@ -335,7 +351,7 @@ const SpaceFilter = () => {
             {t.exploretext}
           </p>
 
-          <div className="space-y-[1.5rem]">
+          <div className="space-y-[1.5rem] flex flex-col items-center">
             {Array(7)
               .fill(null)
               .map((_, index) => (

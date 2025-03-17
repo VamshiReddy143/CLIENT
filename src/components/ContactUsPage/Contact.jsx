@@ -51,7 +51,6 @@ function Contact() {
               id="name"
               autoComplete='off'
               name="name"
-              required
               value={formData.name}
               onChange={handleChange}
               className="w-full px-4 py-2 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent transition"
@@ -69,7 +68,6 @@ function Contact() {
                 autoComplete='off'
                 id="email"
                 name="email"
-                required
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full px-4 py-2 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent transition"
@@ -101,7 +99,6 @@ function Contact() {
             <textarea
               id="message"
               name="message"
-              required
               value={formData.message}
               onChange={handleChange}
               rows={6}

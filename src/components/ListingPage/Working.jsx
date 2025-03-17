@@ -36,7 +36,7 @@ const Working = () => {
     const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
 
     return (
-        <div className="min-h-screen py-8 sm:py-10 md:py-0  lg:py-16 flex flex-col items-center overflow-hidden px-4 sm:px-6 md:px-10 lg:px-12">
+        <div className=" py-8 sm:py-10 md:py-0  lg:py-16 flex flex-col items-center overflow-hidden px-4 sm:px-6 md:px-10 lg:px-12">
             {/* Header Section */}
             <motion.h1
                 initial={{ opacity: 0, y: -50 }}

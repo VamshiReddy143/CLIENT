@@ -98,7 +98,7 @@ const Hero = () => {
   ];
 
   return (
-    <div className="lg:min-h-[100vh] mt-[1rem] mx-auto px-[1rem] sm:px-[1.5rem] md:px-[2.5rem] lg:px-[3rem] w-full max-w-[1440px]">
+    <div className=" mt-[1rem] mx-auto px-[1rem] sm:px-[1.5rem] md:px-[2.5rem] lg:px-[3rem] w-full max-w-[1440px]">
       {/* Animated Title */}
       <motion.h1
         className="w-full text-[2.375rem] leading-[3rem] md:text-[2.5625rem] md:leading-[4.5625rem] font-bold text-center md:text-start p-[1rem] mx-auto"
@@ -184,7 +184,7 @@ const Hero = () => {
 
       {/* Bottom Section with Scroll Animations */}
       <motion.div
-        className="w-full flex flex-col md:justify-between md:flex-row gap-[1rem] md:gap-[2rem] lg:justify-between lg:flex-row lg:gap-[2rem] items-center p-[2rem] shadow-xl mx-auto rounded-xl"
+        className="w-full flex flex-col md:justify-between md:flex-row gap-[1rem] md:gap-[2rem] lg:items-center  lg:flex-row lg:gap-[1rem] items-center p-[1rem] shadow-xl mx-auto rounded-xl"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }} // Triggers when 30% in view
@@ -198,7 +198,7 @@ const Hero = () => {
           />
           <div className="flex flex-col gap-[0.8em] w-full max-w-[19.1rem]">
             <h2 className="text-[2rem] md:text-[1.25rem] font-normal leading-[100%]">
-              {t.Downtown_Shopping_Center}
+            Downtown Shopping Center
             </h2>
             <div className="flex gap-[0.5rem] items-center">
               <img src="/phone2.svg" alt="phonesvg" className="w-[0.749rem] h-[0.749rem]" />
@@ -216,19 +216,19 @@ const Hero = () => {
         {/* Highlights Section */}
         <div className="w-full md:w-auto md:mt-0 lg:w-auto lg:mt-0 mt-[2em]">
           <h2 className="font-bold md:hidden text-[#FF8126] text-[1rem] leading-[100%] text-center flex md:text-left lg:flex mb-[1em]">
-            {t.Space_Highlights}
+              Space Highlights:
           </h2>
 
           {/* Desktop Version */}
-          <div className="hidden lg:flex gap-[1.5rem] justify-center">
+          <div className="hidden lg:flex gap-[2rem] lg:gap-[1rem] justify-center">
             {Array(3)
               .fill()
               .map((_, colIdx) => (
-                <div key={colIdx} className="flex flex-col">
+                <div key={colIdx} className="flex flex-col ">
                   {highlights.slice(colIdx * 3, colIdx * 3 + 3).map((text, idx) => (
                     <p key={idx}>
                       ✓
-                      <span className="ml-[0.5rem] font-normal text-gray-500 text-[0.75rem] lg:leading-[120%]">
+                      <span className="ml-[0.5rem]  font-normal text-gray-500 text-[0.75rem] lg:leading-[120%]">
                         {text}
                       </span>
                     </p>

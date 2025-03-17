@@ -93,11 +93,11 @@ const SpaceHero = () => {
   };
 
   return (
-    <div className="relative bg-[url('/spacebg.png')] bg-cover bg-center">
+    <div className="relative bg-[url('/spacebg.png')] bg-cover bg-center  min-h-screen  flex flex-col items-center justify-center">
       <div className="absolute inset-0 bg-white opacity-80 z-10"></div>
 
       <motion.div
-        className={`relative z-20 flex flex-col items-center justify-center min-h-screen transition-all duration-300 ${showCalendar ? "backdrop-blur-sm" : ""}`}
+        className={`relative z-20 flex flex-col items-center justify-center lg:min-h-screen    transition-all duration-300 ${showCalendar ? "backdrop-blur-sm" : ""}`}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -111,7 +111,7 @@ const SpaceHero = () => {
           {t.spacepageherotitle2}
         </motion.h1>
 
-        <div className="flex flex-col bg-white px-5 md:flex-row md:items-center md:justify-between gap-4 md:gap-2 mt-6 md:mt-7 w-full md:w-[825px] md:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] md:rounded-[26px] md:p-3">
+        <div className="flex flex-col bg-white px-5 md:flex-row md:items-center md:justify-between gap-4 md:gap-2 mt-6 md:mt-7 w-full md:w-[700px] md:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] md:rounded-[26px] md:p-3">
           {[
             { title: t.location, placeholder: t.locationPlaceholder, type: "text" },
             { title: t.priceRange, placeholder: t.priceRangePlaceholder, type: "text" },
@@ -127,7 +127,7 @@ const SpaceHero = () => {
               viewport={{ once: true }}
             >
               <div className="w-full">
-                <label className="font-medium text-[16px] sm:text-[17px] md:text-[18px] font-sans block">
+                <label className="font-medium text-[16px] sm:text-[17px] md:text-[18px] lg:text-[14px] font-sans block">
                   {item.title}
                 </label>
                 <input
