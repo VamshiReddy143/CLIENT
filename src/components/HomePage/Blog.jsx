@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useLanguage } from "../context/LanguageContext";
-import { translations } from "../lib/translations";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../lib/translations";
 
 const Blog = () => {
   const { language } = useLanguage();

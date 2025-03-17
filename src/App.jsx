@@ -4,11 +4,9 @@ import PropTypes from 'prop-types'; // Add this import
 import { LanguageProvider } from "./context/LanguageContext";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Working from "./components/Working";
-import Listing from "./components/Listing";
-import Blog from "./components/Blog";
+import Hero from "./components/HomePage/Hero";
+
+
 import Subscribe from "./components/Subscribe";
 import Footer from "./components/Footer";
 import FindSpace from "./components/FindSpace";
@@ -17,6 +15,10 @@ import AboutUsPage from "./AboutUsPage";
 import Contact from "./components/ContactUsPage/Contact";
 import SignUp from "./components/Auth/SignUp";
 import Login from "./components/Auth/Login";
+import About from "./components/HomePage/About";
+import Blog from "./components/HomePage/Blog";
+import Working from "./components/HomePage/Working";
+import Listing from "./components/HomePage/Listing";
 
 
 const MainLayout = ({ children }) => (

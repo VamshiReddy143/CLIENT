@@ -5,8 +5,8 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { useLanguage } from "../context/LanguageContext";
-import { translations } from "../lib/translations";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../lib/translations";
 
 const Working = () => {
     const { language } = useLanguage();

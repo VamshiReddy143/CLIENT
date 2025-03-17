@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useLanguage } from "../context/LanguageContext";
-import { translations } from "../lib/translations";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../lib/translations";
 import { motion } from "framer-motion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Default styles
-import "../customDatePicker.css"; // Custom styles
+import "../../customDatePicker.css"; // Custom styles
 
 const SpaceHero = () => {
   const { language } = useLanguage();

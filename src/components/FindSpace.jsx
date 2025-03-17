@@ -1,6 +1,6 @@
 import React from 'react'
-import SpaceHero from './SpaceHero'
-import SpaceFilter from './SpaceFilter'
+import SpaceHero from '../components/FindSpacePage/SpaceHero'
+import SpaceFilter from '../components/FindSpacePage/SpaceFilter'
 
 
 const FindSpace = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useLanguage } from "../context/LanguageContext";
-import { translations } from "../lib/translations";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../lib/translations";
 
 const About = () => {
   const { language } = useLanguage();

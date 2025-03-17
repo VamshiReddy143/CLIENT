@@ -1,6 +1,6 @@
 import React from "react";
-import { useLanguage } from "../context/LanguageContext";
-import { translations } from "../lib/translations";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../lib/translations";
 import { motion, AnimatePresence } from "framer-motion";
 
 // 3D Button Variants (for View More button)
