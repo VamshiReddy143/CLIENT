@@ -230,9 +230,12 @@ const Navbar = () => {
           </motion.ul>
         </div>
         <div className="flex items-center gap-2 md:gap-3 lg:gap-4 xl:gap-5">
-          <button className="text-orange-500 text-sm md:text-base lg:text-[16px] mr-6">
+         <Link to="/login">
+         <button className="text-orange-500 text-sm md:text-base lg:text-[16px] mr-6">
             {t.logIn}
           </button>
+         </Link>
+          <Link to="/signup">
           <motion.button
             className="bg-[#FF8126] text-white px-3 py-2 md:px-4 md:py-2 lg:px-5 lg:py-3 rounded-lg shadow-xl min-w-[100px] md:min-w-[113px] lg:min-w-[130px] flex items-center justify-center"
             variants={buttonVariants}
@@ -247,6 +250,7 @@ const Navbar = () => {
           >
             {t.signUp}
           </motion.button>
+          </Link>
           <div className="relative">
             <motion.button
               onClick={toggleLangDropdown}
@@ -345,9 +349,10 @@ const Navbar = () => {
                 ))}
               </motion.ul>
               <motion.div
-                className="flex mt-15 sm:mt-10 gap-6 sm:gap-10 w-full"
+                className="flex mt-15 sm:mt-10 items-center gap-6 sm:gap-10 w-full"
                 variants={sidebarItemVariants}
               >
+                <Link to="/login">
                 <motion.button
                   className="text-orange-500 text-base sm:text-lg"
                   variants={linkVariants}
@@ -355,6 +360,8 @@ const Navbar = () => {
                 >
                   {t.logIn}
                 </motion.button>
+                </Link>
+                <Link to="/signup">
                 <motion.button
                   className="bg-orange-500 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-xl min-w-[100px] sm:min-w-[113px]"
                   variants={buttonVariants}
@@ -369,6 +376,7 @@ const Navbar = () => {
                 >
                   {t.signUp}
                 </motion.button>
+                </Link>
               </motion.div>
             </div>
           </motion.div>

@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../lib/translations";
 
+
+
 // Reusable Components
 const CheckboxItem = ({ label, count }) => (
   <div className="flex justify-between items-center mb-[0.75rem] px-[1rem]">
@@ -215,7 +217,7 @@ const SpaceFilter = () => {
                 </svg>
               </div>
             </div>
-            <img src="/bar.png" alt={t.pricerangeslider} className="w-full" />
+            <img src="/pricebar.svg" alt={t.pricerangeslider} className="w-full" />
             <div className="flex justify-between mt-[0.5rem]">
               <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price175}</p>
               <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price3175}</p>
@@ -277,7 +279,7 @@ const SpaceFilter = () => {
                     </svg>
                   </div>
                 </div>
-                <img src="/bar.png" alt={t.pricerangeslider} className="w-full" />
+                <img src="/pricebar.svg" alt={t.pricerangeslider} className="w-full" />
                 <div className="flex justify-between mt-[0.5rem]">
                   <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price175}</p>
                   <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price3175}</p>

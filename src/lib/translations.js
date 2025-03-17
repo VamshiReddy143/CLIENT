@@ -203,6 +203,24 @@ export const translations = {
 
 
 
+   //ContactUsPage
+
+   contacttitle:"Get in Touch with us",
+   contactdes:"We’re here to assist you! Whether you have questions about listing a property, finding the right rental space, or need help with your account, our team is ready to support you.",
+   contactnameheading:"Name",
+   contactemailheading:"Email",
+   contactmessageheading:"Message",
+   contactsubmitbutton:"Submit",
+   contactNumberheading:"Mobile Number",
+
+
+   nameplaceholder:"Enter your name",
+   emailplaceholder:"Enter your Email Address",
+   messageplaceholder:"Enter your Message",
+   numberplaceholder:"Enter your Mobile Number",
+
+
+
 
 
 
@@ -410,6 +428,25 @@ export const translations = {
    OfferCard4Description:"Les vendeurs et les propriétaires peuvent négocier les conditions directement, garantissant transparence et efficacité.",
    OfferCard5Title:"Un Soutien Pour la Croissance des Entreprises",
    OfferCard5Description:"Que vous débutiez ou souhaitiez vous développer, nous vous aidons à trouver le bon espace pour réussir.",
+
+
+
+
+    //ContactUsPage
+
+    contacttitle:" Contactez-nous",
+    contactdes:"Nous sommes là pour vous aider ! Que vous ayez des questions sur la mise en ligne d'une propriété, la recherche de l’espace idéal à louer ou que vous ayez besoin d'aide avec votre compte, notre équipe est prête à vous accompagner.",
+    contactnameheading:"Nom",
+    contactemailheading:" Adresse e-mail",
+    contactmessageheading:"Message",
+    contactsubmitbutton:"Envoyer",
+    contactNumberheading:"Numéro de mobile",
+ 
+ 
+    nameplaceholder:"Entrez votre nom",
+    emailplaceholder:"Entrez votre adresse e-mail",
+    messageplaceholder:"Entrez votre message",
+    numberplaceholder:"Entrez votre numéro de mobile",
 
 
   
