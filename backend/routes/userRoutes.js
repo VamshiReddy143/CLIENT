@@ -18,5 +18,6 @@ router.get('/users', authenticateJWT, userController.getAllUsers);
 
 // Delete user by ID
 router.delete('/user/:id', authenticateJWT, userController.deleteUser);
+router.put('/user/:id/password', authenticateJWT, userController.updatePassword);
 
 module.exports = router;

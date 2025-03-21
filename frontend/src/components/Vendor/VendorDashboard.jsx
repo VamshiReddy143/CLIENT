@@ -24,17 +24,10 @@ const requestData = [
 
 const VendorDashboard = () => {
   return (
-    <div className='bg-white lg:bg-gray-100 min-h-screen p-4 mb-10 lg:mb-0 md:mb-0'>
+    <div className='bg-white lg:bg-gray-100  p-4 lg:px-10 mb-10 lg:mb-0 md:mb-0'>
     <SearchPage/>
 
-      <div className="relative flex   lg:hidden items-center"> 
-          <Search className="absolute left-4 text-gray-400" />    
-          <input
-            type="search"
-            placeholder="Search anything"
-            className="lg:w-[542px] lg:h-[56px] w-full h-[50px] border border-gray-200 bg-white pl-14 rounded-xl placeholder:text-gray-300 focus:outline-none"
-          />
-    </div>
+      
 
       <div id='second' className='mt-10 grid lg:grid-cols-4 grid-cols-2 gap-4'>
         <div className=' lg:h-[110px] bg-white rounded-xl lg:p-3 flex items-center lg:gap-4 gap-4'>
@@ -141,8 +134,6 @@ const VendorDashboard = () => {
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
 
@@ -217,7 +208,7 @@ const VendorDashboard = () => {
         }
 
         .custom-scrollbar::-webkit-scrollbar {
-          height: 8px; /* Height of the horizontal scrollbar */
+          height: 10px; /* Height of the horizontal scrollbar */
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {

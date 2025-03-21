@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel'); // Import the user model
-
+const db = require('../utils/db');
 
 
 exports.registerUser = async (req, res) => {
@@ -109,4 +109,35 @@ exports.deleteUser = async (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Error deleting user' });
     }
+};
+
+
+
+exports.updatePassword = async (req, res) => {
+  const userId = req.params.id;
+  const { password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const sql = 'UPDATE users SET password = ? WHERE id = ?';
+    const values = [hashedPassword, userId];
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Error updating password' });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json({ message: 'Password updated successfully' });
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error hashing password' });
+  }
 };

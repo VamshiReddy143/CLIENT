@@ -14,7 +14,7 @@ const VendorLayout = ({ children }) => {
         <VendorMobileNavbar />
       </div>
 
-      <main className="flex-1 h-screen overflow-auto bg-gray-100 p-4">
+      <main className="flex-1 h-screen overflow-auto lg:bg-gray-100 p-4">
         {children}
       </main>
     </div>

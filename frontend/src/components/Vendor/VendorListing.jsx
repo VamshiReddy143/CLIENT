@@ -103,12 +103,12 @@ function App() {
   });
 
   return (
-    <div id="nunito-text" className="bg-gray-100 px-10">
-      <div className="mx-auto">
-        <SearchPage />
+    <div id="nunito-text" className="lg:bg-gray-100 min-h-screen lg:px-10">
+      <div className="relative">
+        <SearchPage  />
 
         <div className="rounded-xl mt-20">
-          <div className="">
+          <div className="fixed  bg-white z-10 md:static md:bg-transparent">
             <div id="nunito-text" className="flex gap-8 bg-white w-fit rounded-xl px-6">
               {tabs.map((tab) => (
                 <button
@@ -128,7 +128,7 @@ function App() {
             </div>
           </div>
 
-          <div className="mt-5">
+          <div className="mt-5 pt-16 md:pt-0 max-h-[calc(100vh-80px)] overflow-y-auto custom-scrollbar">
             {/* Conditionally render the listings table or the invoices table */}
             {activeTab !== 'Invoices' ? (
               <>
@@ -293,61 +293,105 @@ function App() {
               </>
             ) : (
               <>
-                {/* Invoices Table for "Invoices" Tab */}
-                <div className="flex items-center text-sm text-gray-500 ml-7 pb-4">
-                  <div className="min-w-[128px] max-w-[128px] flex items-center">
-                    Invoice ID <ChevronDown className="ml-1 w-4 h-4" />
-                  </div>
-                  <div className="min-w-[128px] max-w-[128px] flex items-center">
-                    Listing ID <ChevronDown className="ml-1 w-4 h-4" />
-                  </div>
-                  <div className="min-w-[192px] max-w-[192px] flex items-center">
-                    Owner Name <ChevronDown className="ml-1 w-4 h-4" />
-                  </div>
-                  <div className="min-w-[128px] max-w-[128px] flex items-center">
-                    Amount <ChevronDown className="ml-1 w-4 h-4" />
-                  </div>
-                  <div className="min-w-[128px] max-w-[128px] flex items-center">
-                    Due Date <ChevronDown className="ml-1 w-4 h-4" />
-                  </div>
-                  <div className="min-w-[128px] max-w-[128px] flex items-center">
-                    Status <ChevronDown className="ml-1 w-4 h-4" />
-                  </div>
-                </div>
+               <div className='mt-10 flex flex-col gap-1 text-[#858585] '>
+                <p>Marketplace Name : Downtown Vendor Hub</p>
+                <p>MarketOwner&apos;s Name : John Doe</p>
+                <p>Email Address: john@gmailcom</p>
+                <p>Invoice Number : (INV-2025001)</p>
+                <p>Invoice Date : 23 -2 -2025</p>
+                <p>Due Date : 15 - 3 - 2025</p>
+               </div>
+               <div className='mt-10 flex flex-col gap-1 text-[#858585]'>
+                <p>Vendor Name:  John Doe</p>
+                <p>Vendor Contact Email : timothy@gmail.com</p>
+                <p>Vendor Phone Number : +971-348-34345</p>
+                <p>Vendor Business Address : XYZ</p>
+               </div>
 
-                <div className="space-y-4">
-                  {invoices.map((invoice, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center py-4 text-sm bg-white border border-gray-200 rounded-lg px-4"
-                    >
-                      <div className="min-w-[128px] max-w-[128px] text-gray-900">{invoice.invoiceId}</div>
-                      <div className="min-w-[128px] max-w-[128px] text-gray-900">{invoice.listingId}</div>
-                      <div className="min-w-[192px] max-w-[192px] text-gray-900">{invoice.ownerName}</div>
-                      <div className="min-w-[128px] max-w-[128px] text-gray-500">{invoice.amount}</div>
-                      <div className="min-w-[128px] max-w-[128px] text-gray-500">{invoice.dueDate}</div>
-                      <div className="min-w-[128px] max-w-[128px]">
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm italic ${invoice.status === 'Paid'
-                            ? 'bg-green-50 text-green-700'
-                            : invoice.status === 'Overdue'
-                              ? 'bg-red-50 text-red-700'
-                              : 'bg-blue-50 text-blue-700'
-                            }`}
-                        >
-                          {invoice.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+               <div className='mt-10'>
+                <h1 className='mt-8 mb-8 text-[1.5rem] font-semibold '>Space Highlights</h1>
+                <div className='flex gap-10 text-[#858585]'>
+                  <div >
+                    <p>Fully Furnished</p>
+                    <p>300 sq. ft.</p>
+                    <p>Near Metro</p>
+                  </div>
+
+                  <div>
+                    <p>Prime Location</p>
+                    <p>High Foot Traffic</p>
+                    <p>Flexible Lease</p>
+                  </div>
+
+                  <div>
+                    <p>Business-Friendly</p>
+                    <p>Easy Booking</p>
+                    <p>24/7 Security</p>
+                  </div>
                 </div>
+               </div>
+
+               <div className='flex items-center gap-5'>
+                <h1 className='text-black mt-8 mb-8 text-[1.5rem] font-semibold '>Total Price</h1>
+                <h1 className='text-[#EA7A39] text-[1.5rem] font-semibold '>$1,466</h1>
+               </div>
+
+               <div className='pb-10'>
+               <button className='bg-[#EA7A39] text-white h-[48px] w-[224px] rounded-xl '>
+                Pay Now
+               </button>
+               </div>
               </>
             )}
           </div>
+          
         </div>
       </div>
+      <div className="h-20 md:h-0"></div>
+
+      {/* Inline CSS for scrollbars */}
+      <style >{`
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #f97316 #e5e7eb;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 20px;
+          height: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #e5e7eb;
+          border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #f97316;
+          border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #ea580c;
+        }
+
+        /* Force scrollbar visibility */
+        .custom-scrollbar {
+          -ms-overflow-style: scrollbar;
+          overflow-y: hidden;
+        }
+      `}</style>
+
+
     </div>
+
+
   );
 }
+
+
+
+
+
 
 export default App;
