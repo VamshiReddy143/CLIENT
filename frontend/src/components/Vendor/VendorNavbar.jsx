@@ -15,13 +15,13 @@ const VendorNavbar = () => {
   const svgClass = "w-6 h-6 transition-colors duration-0 ease-in-out"; 
 
   return (
-    <div className=" bg-white min-h-screen   lg:w-[276px] flex flex-col relative">
+    <div className=" bg-white h-auto    lg:w-[280px] flex flex-col">
       <div className="flex flex-col flex-1">
         <div className="flex flex-col items-center gap-10 p-10">
           <h1 className="text-2xl font-bold text-gray-800">
             Placy <span className="text-orange-500">Market</span>
           </h1>
-          <div className="flex flex-col gap-6 w-full">
+          <div className="flex flex-col gap-2 w-full">
             {/* Dashboard Link */}
             <NavLink
               to="/vendor"
@@ -36,7 +36,7 @@ const VendorNavbar = () => {
               {({ isActive }) => (
                 <>
                   <span
-                    className={`absolute left-0 top-0 h-full w-2 rounded-l-lg transition-all duration-300 ease-in-out ${
+                    className={`absolute left-0 top-0 h-full  rounded-l-lg transition-all duration-300 ease-in-out ${
                       isActive ? 'bg-orange-500' : 'bg-transparent group-hover:bg-orange-500'
                     }`}
                   />
@@ -56,7 +56,7 @@ const VendorNavbar = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  <h2 className="text-lg font-medium">Dashboard</h2>
+                  <h2 className="text-lg lg:text-[15px] font-medium">Dashboard</h2>
                 </>
               )}
             </NavLink>
@@ -74,7 +74,7 @@ const VendorNavbar = () => {
               {({ isActive }) => (
                 <>
                   <span
-                    className={`absolute left-0 top-0 h-full w-2 rounded-l-lg transition-all duration-300 ease-in-out ${
+                    className={`absolute left-0 top-0 h-full  rounded-l-lg transition-all duration-300 ease-in-out ${
                       isActive ? 'bg-orange-500' : 'bg-transparent group-hover:bg-orange-500'
                     }`}
                   />
@@ -94,7 +94,7 @@ const VendorNavbar = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  <h2 className="text-lg font-medium">Listings</h2>
+                  <h2 className="text-lg lg:text-[15px] font-medium">Listings</h2>
                 </>
               )}
             </NavLink>
@@ -112,7 +112,7 @@ const VendorNavbar = () => {
               {({ isActive }) => (
                 <>
                   <span
-                    className={`absolute left-0 top-0 h-full w-2 rounded-l-lg transition-all duration-300 ease-in-out ${
+                    className={`absolute left-0 top-0 h-full  rounded-l-lg transition-all duration-300 ease-in-out ${
                       isActive ? 'bg-orange-500' : 'bg-transparent group-hover:bg-orange-500'
                     }`}
                   />
@@ -132,7 +132,7 @@ const VendorNavbar = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  <h2 className="text-lg font-medium">Requests</h2>
+                  <h2 className="text-lg lg:text-[15px] font-medium">Requests</h2>
                 </>
               )}
             </NavLink>
@@ -150,7 +150,7 @@ const VendorNavbar = () => {
               {({ isActive }) => (
                 <>
                   <span
-                    className={`absolute left-0 top-0 h-full w-2 rounded-l-lg transition-all duration-300 ease-in-out ${
+                    className={`absolute left-0 top-0 h-full  rounded-l-lg transition-all duration-300 ease-in-out ${
                       isActive ? 'bg-orange-500' : 'bg-transparent group-hover:bg-orange-500'
                     }`}
                   />
@@ -170,7 +170,7 @@ const VendorNavbar = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  <h2 className="text-lg font-medium">Settings</h2>
+                  <h2 className="text-lg lg:text-[15px] font-medium">Settings</h2>
                 </>
               )}
             </NavLink>
@@ -178,7 +178,7 @@ const VendorNavbar = () => {
         </div>
 
         {/* Logout Button */}
-        <div className="flex gap-4 items-center p-10 mt-auto">
+        <div className="flex gap-4 absolute bottom-10 items-center ml-10 ">
           <button
             onClick={handleLogout}
             className="relative group flex gap-4 items-center p-3 rounded-lg text-gray-600 hover:bg-orange-100  transition-all duration-300 ease-in-out w-full"

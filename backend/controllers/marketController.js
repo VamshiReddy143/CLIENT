@@ -1,92 +1,25 @@
-// const Market = require('../models/marketModel');
-
-// // Create a new market
-// exports.createMarket = async (req, res) => {
-//   const { owner, renter, location, price, size, type, content, highlights, status, rating, featured, images } = req.body;
-  
-//   try {
-//     const newMarket = await Market.create({
-//       owner, renter, location, price, size, type, content, highlights, status, rating, featured, images
-//     });
-//     res.status(201).json({ message: 'Market created successfully', market: newMarket });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error creating market' });
-//   }
-// };
-
-// // Get market by ID
-// exports.getMarketById = async (req, res) => {
-//   const marketId = req.params.id;
-
-//   try {
-//     const market = await Market.findById(marketId);
-//     if (!market) {
-//       return res.status(404).json({ message: 'Market not found' });
-//     }
-//     res.json(market);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error fetching market' });
-//   }
-// };
-
-// // Get all markets
-// exports.getAllMarkets = async (req, res) => {
-//   try {
-//     const markets = await Market.findAll();
-//     res.json(markets);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error fetching markets' });
-//   }
-// };
-
-// // Update a market
-// exports.updateMarket = async (req, res) => {
-//   const marketId = req.params.id;
-//   const { location, price, size, type, content, highlights, status, rating, featured, images } = req.body;
-
-//   try {
-//     const updatedMarket = await Market.update(marketId, {
-//       location, price, size, type, content, highlights, status, rating, featured, images
-//     });
-//     res.json({ message: 'Market updated successfully' });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error updating market' });
-//   }
-// };
-
-// // Delete a market
-// exports.deleteMarket = async (req, res) => {
-//   const marketId = req.params.id;
-
-//   try {
-//     await Market.delete(marketId);
-//     res.json({ message: 'Market deleted successfully' });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error deleting market' });
-//   }
-// };
-
-
-// backend/controllers/marketController.js
-// backend/controllers/marketController.js
 const marketModel = require('../models/marketModel');
+const userModel = require('../models/userModel');
 
+// Create a new market (set status to 'pending' by default for market owners)
 exports.createMarket = async (req, res) => {
-  console.log('Request body:', req.body); // Debug log
+  console.log('Request body:', req.body);
   const { 
     ownerName, email, phone, marketName, location, price, size, type, services, 
-    status, rating, featured, images, videos, highlights // Add highlights here
+    status, rating, featured, images, videos, highlights 
   } = req.body;
+  const ownerId = req.user?.id; // Get owner_id from JWT
+  const userRole = req.user?.userRole; // Get user role from JWT
+
+  if (!ownerId) {
+    return res.status(401).json({ message: 'Authentication required' });
+  }
 
   try {
     const marketData = {
-      ownerName,
-      email,
+      owner_id: ownerId,
+      ownerName: ownerName || req.user.name,
+      email: email || req.user.email,
       phone,
       marketName,
       location,
@@ -95,27 +28,27 @@ exports.createMarket = async (req, res) => {
       type,
       videos: Array.isArray(videos) ? videos : [],
       services: Array.isArray(services) ? services : [],
-      status: status || 'available',
+      status: userRole === 'admin' ? (status || 'available') : 'pending', // Admins can set status, others get 'pending'
       rating: rating ? parseInt(rating, 10) : null,
       featured: featured === true || featured === 'true',
       images: Array.isArray(images) ? images : [],
-      highlights: highlights || null, // Include highlights
+      highlights: highlights || null,
     };
-    console.log('Market data to DB:', marketData); // Debug log
+    console.log('Market data to DB:', marketData);
 
     const result = await marketModel.create(marketData);
-    res.status(201).json({ message: 'Market created successfully', marketId: result.insertId });
+    res.status(201).json({ message: 'Market submitted for approval', marketId: result.insertId });
   } catch (err) {
     console.error('Error in createMarket:', err);
     res.status(500).json({ message: 'Error creating market', error: err.message });
   }
 };
 
+// Get market by ID
 exports.getMarketById = async (req, res) => {
   const marketId = req.params.id;
   try {
-    const market = await marketModel.findById(marketId)
-    console.log("Market",market)
+    const market = await marketModel.findById(marketId);
     if (!market) return res.status(404).json({ message: 'Market not found' });
     res.json(market);
   } catch (err) {
@@ -124,33 +57,63 @@ exports.getMarketById = async (req, res) => {
   }
 };
 
-exports.getAllMarkets = async (req, res) => {
-  try {
-    const { type, sizeMin, sizeMax, location, priceMin, priceMax, page = 1, limit = 5 } = req.query;
+// Get all markets with filters (including status for admin)const marketModel = require('../models/marketModel');
 
-    const filters = {
-      type,
-      sizeMin: sizeMin ? parseInt(sizeMin) : undefined,
-      sizeMax: sizeMax ? parseInt(sizeMax) : undefined,
-      location,
-      priceMin: priceMin ? parseInt(priceMin) : undefined,
-      priceMax: priceMax ? parseInt(priceMax) : undefined,
-    };
 
-    const markets = await marketModel.findAll(filters, parseInt(page), parseInt(limit));
+
+console.log('Imported marketModel in marketController.js:', marketModel);
+
+exports.getAllMarkets = (req, res) => {
+  const { type, sizeMin, sizeMax, location, priceMin, priceMax, page = 1, limit = 5, status } = req.query;
+
+  const filters = {
+    type,
+    sizeMin: sizeMin ? parseInt(sizeMin) : undefined,
+    sizeMax: sizeMax ? parseInt(sizeMax) : undefined,
+    location,
+    priceMin: priceMin ? parseInt(priceMin) : undefined,
+    priceMax: priceMax ? parseInt(priceMax) : undefined,
+    status, // Add status filter for admin
+  };
+
+  console.log('Fetching markets with filters:', filters, 'page:', page, 'limit:', limit);
+  marketModel.findAll(filters, parseInt(page), parseInt(limit), (err, markets) => {
+    if (err) {
+      console.error('Error in getAllMarkets:', err);
+      return res.status(500).json({ message: 'Error fetching markets', error: err.message });
+    }
+    console.log('Markets fetched:', markets);
     res.status(200).json(markets);
-  } catch (err) {
-    console.error('Error in getAllMarkets:', err);
-    res.status(500).json({ message: 'Error fetching markets', error: err.message });
-  }
+  });
 };
 
+exports.updateMarketStatus = (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: 'Status is required' });
+  }
+
+  marketModel.updateStatus(id, status, (err, result) => {
+    if (err) {
+      console.error('Error in updateMarketStatus:', err);
+      return res.status(500).json({ message: 'Error updating market status', error: err.message });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Market not found' });
+    }
+    console.log(`Market ${id} status updated to ${status}`);
+    res.status(200).json({ message: 'Market status updated successfully' });
+  });
+};
+// Update market (admins can change status)
 exports.updateMarket = async (req, res) => {
   const marketId = req.params.id;
   console.log('Update request body:', req.body);
   const { 
     ownerName, email, phone, marketName, location, price, size, type, services, 
-    status, rating, featured, images, videos, highlights // Add highlights here
+    status, rating, featured, images, videos, highlights 
   } = req.body;
 
   try {
@@ -169,7 +132,7 @@ exports.updateMarket = async (req, res) => {
       rating: rating ? parseInt(rating, 10) : null,
       featured: featured === true || featured === 'true',
       images: Array.isArray(images) ? images : [],
-      highlights: highlights || null, // Include highlights
+      highlights: highlights || null,
     };
 
     const result = await marketModel.update(marketId, marketData);
@@ -181,6 +144,7 @@ exports.updateMarket = async (req, res) => {
   }
 };
 
+// Delete market
 exports.deleteMarket = async (req, res) => {
   const marketId = req.params.id;
   try {
@@ -190,5 +154,67 @@ exports.deleteMarket = async (req, res) => {
   } catch (err) {
     console.error('Error in deleteMarket:', err);
     res.status(500).json({ message: 'Error deleting market' });
+  }
+};
+
+
+exports.ownermarkets=(req,res)=> {
+  try {
+    const ownerId = req.user?.id;
+    const userRole = req.user?.userRole;
+
+    console.log('Fetching markets for ownerId:', ownerId, 'with role:', userRole);
+
+    if (userRole !== 'market_owner') {
+      return res.status(403).json({ message: 'Access denied. Market owner only.' });
+    }
+
+    const query = `
+      SELECT 
+        id,
+        marketName,
+        size AS spaceSize,
+        price AS rentalPrice,
+        type AS propertyType,
+        status,
+        COALESCE(images, '[]') AS images,
+        COALESCE(services, '[]') AS services,
+        COALESCE(videos, '[]') AS videos,
+        COALESCE(highlights, '{}') AS highlights
+      FROM markets
+      WHERE owner_id = ?
+    `;
+    db.query(query, [ownerId], (err, results) => {
+      if (err) {
+        console.error('Error fetching owner markets:', err);
+        return res.status(500).json({ message: 'Error fetching markets', error: err.message });
+      }
+
+      console.log('Raw query results:', results);
+
+      if (results.length === 0) {
+        console.log('No markets found for ownerId:', ownerId);
+        return res.status(200).json([]);
+      }
+
+      const formattedResults = results.map((market) => ({
+        id: market.id,
+        marketName: market.marketName,
+        size: market.spaceSize,
+        price: market.rentalPrice,
+        type: market.propertyType,
+        status: market.status,
+        images: JSON.parse(market.images),
+        services: JSON.parse(market.services),
+        videos: JSON.parse(market.videos),
+        highlights: JSON.parse(market.highlights),
+      }));
+
+      console.log('Formatted results:', formattedResults);
+      res.status(200).json(formattedResults);
+    });
+  } catch (error) {
+    console.error('Error fetching owner markets:', error);
+    res.status(500).json({ message: 'Failed to fetch markets', error: error.message });
   }
 };

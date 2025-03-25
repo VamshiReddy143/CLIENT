@@ -4,11 +4,11 @@ import { translations } from "../lib/translations";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authSlice";
-import { FiLogOut } from 'react-icons/fi';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // New state for user dropdown
   const { language, setLanguage } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangDropdown = () => setIsLangDropdownOpen(!isLangDropdownOpen);
+  const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen); // Toggle user dropdown
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
     setIsLangDropdownOpen(false);
@@ -35,12 +36,42 @@ const Navbar = () => {
     logoutUser();
     navigate("/");
     setIsMenuOpen(false);
+    setIsUserDropdownOpen(false); // Close dropdown on logout
+  };
+
+  // Redirect to dashboard based on user role
+  const handleDashboardRedirect = () => {
+    if (!user || !user.user_role) {
+      console.error("User or user_role is undefined:", user);
+      navigate("/"); // Redirect to homepage or show an error
+      setIsUserDropdownOpen(false);
+      return;
+    }
+  
+    // Log the user_role to debug
+    console.log("User role:", user.user_role);
+  
+    // Normalize the user_role to lowercase for case-insensitive comparison
+    const role = user.user_role.toLowerCase().trim();
+  
+    if (role === "admin") {
+      navigate("/admin");
+    } else if (role === "vendor") {
+      navigate("/vendor");
+    } else if (role === "market_owner") { // Fixed: Removed the forward slash
+      navigate("/market-owner");
+    } else {
+      console.error("Unknown user role:", role);
+      navigate("/"); // Fallback redirect for unknown roles
+    }
+  
+    setIsUserDropdownOpen(false); // Close dropdown after redirect
   };
 
   const t = translations[language];
 
   const navLinks = [
-    { to: "/", label: t.home},
+    { to: "/", label: t.home },
     { to: "/find-space", label: t.findSpace },
     { to: "/about", label: t.aboutUs },
     { to: "/contact", label: t.contactUs },
@@ -134,13 +165,13 @@ const Navbar = () => {
 
   const expandingButtonVariants = {
     initial: {
-      width: 48, // Circular size (48px diameter)
+      width: 48,
       scale: 1,
       boxShadow: "0 4px 15px rgba(255, 93, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2)",
       transition: { duration: 0.2, ease: "easeOut" },
     },
     hover: {
-      width: 140, // Expands to show text (adjust as needed)
+      width: 140,
       scale: 1.05,
       boxShadow: "0 8px 25px rgba(255, 93, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3)",
       transition: { duration: 0.3, ease: "easeOut" },
@@ -151,11 +182,11 @@ const Navbar = () => {
       transition: { duration: 0.15, ease: "easeIn" },
     },
   };
-  
+
   const textVariants = {
     initial: { opacity: 0, x: -10 },
     hover: { opacity: 1, x: 0, transition: { duration: 0.2, delay: 0.1 } },
-  }
+  };
 
   return (
     <motion.div
@@ -271,22 +302,58 @@ const Navbar = () => {
           </motion.ul>
         </div>
         <div className="flex items-center gap-2 md:gap-3 lg:gap-4 xl:gap-5">
-          {token ? ( // Check token instead of user for auth state
-            <motion.button
-              onClick={handleLogout}
-              className="bg-[#FF8126] text-white px-3 py-2 md:px-4 md:py-2 lg:px-5 lg:py-3 rounded-lg shadow-xl min-w-[100px] md:min-w-[113px] lg:min-w-[130px] flex items-center justify-center"
-              variants={buttonVariants}
-              initial="initial"
-              whileHover="hover"
-              whileTap="tap"
-              style={{
-                borderTop: "1px solid rgba(255, 255, 255, 0.3)",
-                borderBottom: "3px solid rgba(0, 0, 0, 0.2)",
-                position: "relative",
-              }}
-            >
-              {t.logout || "Logout"}
-            </motion.button>
+          {token ? (
+            <div className="relative">
+              <motion.button
+                onClick={toggleUserDropdown}
+                className="flex items-center gap-2 bg-white text-gray-800 px-3 py-2 rounded-lg border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <img
+                  src={user.avatar}
+                  alt="User"
+                  className="w-8 h-8 rounded-full"
+                />
+                <span className="text-sm lg:text-base font-medium">
+                  {user?.name || "User"} {/* Display user name */}
+                </span>
+                <motion.svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  animate={{ rotate: isUserDropdownOpen ? 180 : 0 }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </motion.svg>
+              </motion.button>
+              <AnimatePresence>
+                {isUserDropdownOpen && (
+                  <motion.div
+                    className="absolute top-12 right-0 w-48 bg-white border border-gray-200 rounded-lg shadow-xl z-[99]"
+                    variants={dropdownVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    <button
+                      onClick={handleDashboardRedirect}
+                      className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                    >
+                      Go to Dashboard
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ) : (
             <>
               <Link to="/login">
@@ -413,22 +480,58 @@ const Navbar = () => {
                 className="flex mt-15 sm:mt-10 items-center gap-6 sm:gap-10 w-full"
                 variants={sidebarItemVariants}
               >
-                {token ? ( // Check token instead of user for auth state
-                  <motion.button
-                    onClick={handleLogout}
-                    className="bg-orange-500 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-xl min-w-[100px] sm:min-w-[113px]"
-                    variants={buttonVariants}
-                    initial="initial"
-                    whileHover="hover"
-                    whileTap="tap"
-                    style={{
-                      borderTop: "1px solid rgba(255, 255, 255, 0.3)",
-                      borderBottom: "3px solid rgba(0, 0, 0, 0.2)",
-                      position: "relative",
-                    }}
-                  >
-                    {t.logout || "Logout"}
-                  </motion.button>
+                {token ? (
+                  <div className="relative">
+                    <motion.button
+                      onClick={toggleUserDropdown}
+                      className="flex items-center gap-2 bg-white text-gray-800 px-3 py-2 rounded-lg border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <img
+                        src="https://via.placeholder.com/32"
+                        alt="User"
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <span className="text-sm font-medium">
+                        {user?.name || "User"}
+                      </span>
+                      <motion.svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        animate={{ rotate: isUserDropdownOpen ? 180 : 0 }}
+                        transition={{ type: "spring", stiffness: 200 }}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </motion.svg>
+                    </motion.button>
+                    <AnimatePresence>
+                      {isUserDropdownOpen && (
+                        <motion.div
+                          className="absolute top-12 left-0 w-48 bg-white border border-gray-200 rounded-lg shadow-xl z-[99]"
+                          variants={dropdownVariants}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                        >
+                          <button
+                            onClick={handleDashboardRedirect}
+                            className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                          >
+                            Go to Dashboard
+                          </button>
+                          <button
+                            onClick={handleLogout}
+                            className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                          >
+                            Logout
+                          </button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 ) : (
                   <>
                     <Link to="/login">

@@ -13,7 +13,7 @@ const useAuthStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const response = await axios.post('http://localhost:3000/api/register', userData);
-      const { user, token } = response.data; // Expect user and token from backend
+      const { user, token } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       set({ user, token, loading: false });
@@ -47,6 +47,35 @@ const useAuthStore = create((set) => ({
     }
   },
 
+  forgotPassword: async (email) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.post('http://localhost:3000/api/forgot-password', { email });
+      set({ loading: false });
+      return response.data; // Contains resetToken and userId
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to process forgot password request';
+      set({ error: errorMessage, loading: false });
+      throw error;
+    }
+  },
+
+  resetPassword: async (token, newPassword) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.post('http://localhost:3000/api/reset-password', {
+        token,
+        newPassword,
+      });
+      set({ loading: false });
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to reset password';
+      set({ error: errorMessage, loading: false });
+      throw error;
+    }
+  },
+
   logoutUser: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -54,7 +83,7 @@ const useAuthStore = create((set) => ({
   },
 
   checkAuth: async () => {
-    set({ loading: true }); // Indicate auth check is in progress
+    set({ loading: true });
     const token = localStorage.getItem('token');
     if (token) {
       try {
@@ -63,24 +92,23 @@ const useAuthStore = create((set) => ({
           headers: { Authorization: `Bearer ${token}` },
         });
         const user = userResponse.data;
-        localStorage.setItem('user', JSON.stringify(user)); // Update localStorage if user data changes
+        localStorage.setItem('user', JSON.stringify(user));
         set({ user, token, loading: false });
-        return true; // Indicate success
+        return true;
       } catch (error) {
         console.error('Token validation failed:', error);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         set({ user: null, token: null, loading: false });
-        return false; // Indicate failure
+        return false;
       }
     } else {
       set({ loading: false });
-      return false; // No token present
+      return false;
     }
   },
 }));
 
-// Optionally call checkAuth on store initialization (not always reliable in React)
 useAuthStore.getState().checkAuth();
 
 export default useAuthStore;

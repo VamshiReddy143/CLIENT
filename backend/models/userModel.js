@@ -15,39 +15,42 @@ exports.create = (userData) => {
 
 // Get all users
 exports.findAll = () => {
-    return new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM users';
-      db.query(query, (err, result) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(result);
-      });
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM users';
+    db.query(query, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
     });
-  };
-  
+  });
+};
+
 // Delete a user by ID
 exports.delete = (id) => {
-    return new Promise((resolve, reject) => {
-        const query = 'DELETE FROM users WHERE id = ?';
-        db.query(query, [id], (err, result) => {
-        if (err) {
-            return reject(err);
-        }
-        resolve(result);
-        });
+  return new Promise((resolve, reject) => {
+    const query = 'DELETE FROM users WHERE id = ?';
+    db.query(query, [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
     });
+  });
 };
 
 // Find a user by email
 exports.findByEmail = (email) => {
   return new Promise((resolve, reject) => {
+    if (!email) {
+      return reject(new Error('Email is required'));
+    }
     const query = 'SELECT * FROM users WHERE email = ?';
     db.query(query, [email], (err, result) => {
       if (err) {
         return reject(err);
       }
-      resolve(result[0]);
+      resolve(result[0] || null); // Ensure null is returned if no user is found
     });
   });
 };
@@ -60,7 +63,7 @@ exports.findById = (id) => {
       if (err) {
         return reject(err);
       }
-      resolve(result[0]);
+      resolve(result[0] || null);
     });
   });
 };
@@ -77,3 +80,31 @@ exports.update = (id, userData) => {
     });
   });
 };
+
+// New method: Get total number of market owners
+exports.getMarketOwnersCount = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT COUNT(*) AS count FROM users WHERE user_role = 'market_owner'";
+    db.query(query, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result[0].count);
+    });
+  });
+};
+
+// New method: Get total number of vendors
+exports.getVendorsCount = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT COUNT(*) AS count FROM users WHERE user_role = 'vendor'";
+    db.query(query, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result[0].count);
+    });
+  });
+};
+
+module.exports = exports;

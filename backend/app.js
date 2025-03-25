@@ -2,7 +2,9 @@ const express = require('express');
 const userRoutes = require('./routes/userRoutes');
 const marketRoutes = require('./routes/marketRoutes');
 const requestRoutes = require('./routes/requestRoutes');
+const adminRoutes = require('./routes/admin');
 const bodyParser = require('body-parser');
+const marketController = require('./controllers/marketController');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -22,6 +24,11 @@ app.use(bodyParser.json()); // For parsing application/json
 app.use('/api', userRoutes); // Use user routes
 app.use('/api', marketRoutes);
 app.use('/api', requestRoutes); // Use request routes
+app.use('/api/admin', adminRoutes);
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

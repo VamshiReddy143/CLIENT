@@ -6,9 +6,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import useAuthStore from '../../store/authSlice'; 
+import useAuthStore from '../../store/authSlice';
+import emailjs from '@emailjs/browser';
 
-// Define validation schema using zod
+// Define validation schema for login
 const loginSchema = z.object({
   email: z
     .string()
@@ -20,11 +21,21 @@ const loginSchema = z.object({
     .max(50, 'Password must not exceed 50 characters'),
 });
 
+// Define validation schema for forgot password
+const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Please enter a valid email address'),
+});
+
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const { loginUser, loading } = useAuthStore();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { loginUser, forgotPassword, loading } = useAuthStore();
   const navigate = useNavigate();
 
+  // Form for login
   const {
     register,
     handleSubmit,
@@ -34,6 +45,19 @@ function Login() {
     defaultValues: {
       email: '',
       password: '',
+    },
+  });
+
+  // Form for forgot password
+  const {
+    register: registerForgot,
+    handleSubmit: handleForgotSubmit,
+    formState: { errors: forgotErrors },
+    reset: resetForgot,
+  } = useForm({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: '',
     },
   });
 
@@ -60,6 +84,38 @@ function Login() {
     } catch (error) {
       toast.error(error.response?.data?.message || 'Something went wrong');
       console.error('Login error:', error.message);
+    }
+  };
+
+  const onForgotPasswordSubmit = async (data) => {
+    try {
+      const { resetToken, userId } = await forgotPassword(data.email);
+
+      // Create the reset link
+      const resetLink = `${window.location.origin}/reset-password?token=${resetToken}&userId=${userId}`;
+
+      // Send email using EmailJS
+      const emailParams = {
+        to_email: data.email,
+        reset_link: resetLink,
+        to_name: 'User', // You can fetch the user's name if available
+      };
+
+      await emailjs.send(
+        'service_isdydze', // Replace with your EmailJS service ID
+        'template_p97m8bd', // Replace with your EmailJS template ID
+        emailParams,
+        'mdLTZtXyzSWR4vHsm' // Replace with your EmailJS public key
+      );
+
+     
+
+      toast.success('Password reset link sent to your email!');
+      setIsDialogOpen(false);
+      resetForgot();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to send reset link');
+      console.error('Forgot password error:', error.message);
     }
   };
 
@@ -126,15 +182,69 @@ function Login() {
                 Register
               </Link>
             </p>
-            <Link
-              to="#"
-              className="block text-sm text-center text-[#EA7A39] hover:text-orange-500 mt-10"
+            <button
+              type="button"
+              onClick={() => setIsDialogOpen(true)}
+              className="block text-sm text-center text-[#EA7A39] hover:text-orange-500 mt-10 w-full"
             >
               Forgot Password?
-            </Link>
+            </button>
           </div>
         </form>
       </div>
+
+      {/* Forgot Password Dialog */}
+      {isDialogOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
+            <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">
+              Forgot Password
+            </h2>
+            <p className="text-center text-gray-600 mb-6">
+              Enter your email address to receive a password reset link.
+            </p>
+            <form onSubmit={handleForgotSubmit(onForgotPasswordSubmit)} className="space-y-6">
+              <div className="relative">
+                <input
+                  {...registerForgot('email')}
+                  type="email"
+                  autoComplete="off"
+                  placeholder="Email"
+                  className={`w-full px-4 py-3 bg-gray-100 rounded-lg pr-10 border-1 ${
+                    forgotErrors.email ? 'border-red-500' : 'border-[#DCDCDC]'
+                  } focus:outline-none focus:ring-1 focus:ring-[#EA7A39] transition-all`}
+                />
+                <AtSign className="w-5 h-5 text-gray-400 absolute right-3 top-3.5" />
+                {forgotErrors.email && (
+                  <p className="mt-1 text-sm text-red-500">{forgotErrors.email.message}</p>
+                )}
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDialogOpen(false);
+                    resetForgot();
+                  }}
+                  className="w-full py-3 px-6 rounded-full text-gray-600 font-medium border border-gray-300 hover:bg-gray-100 transition duration-200 ease-in-out"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-3 px-6 rounded-full text-white font-medium transition duration-200 ease-in-out ${
+                    loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#EA7A39] hover:bg-orange-500'
+                  }`}
+                >
+                  {loading ? 'Sending...' : 'Send Reset Link'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

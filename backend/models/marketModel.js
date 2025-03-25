@@ -1,109 +1,184 @@
-// backend/models/marketModel.js
-// backend/models/marketModel.js
 const db = require('../utils/db');
+console.log('Imported db in marketModel.js:', db); // Debug log to confirm the import
 
-exports.create = (marketData) => {
-  return new Promise((resolve, reject) => {
-    const query = `
+const Market = {
+  create: async (marketData) => {
+    const sql = `
       INSERT INTO markets (
-        ownerName, email, phone, marketName, location, price, size, type, services, 
-        images, videos, status, rating, featured, highlights
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        owner_id, ownerName, email, phone, marketName, location, price, size, type, 
+        services, status, rating, featured, images, videos, highlights
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const values = [
-      marketData.ownerName, marketData.email, marketData.phone, marketData.marketName, 
-      marketData.location, marketData.price, marketData.size, marketData.type, 
-      JSON.stringify(marketData.services), JSON.stringify(marketData.images), 
-      JSON.stringify(marketData.videos), marketData.status, marketData.rating, 
-      marketData.featured, marketData.highlights ? JSON.stringify(marketData.highlights) : null // Handle highlights
+      marketData.owner_id,
+      marketData.ownerName,
+      marketData.email,
+      marketData.phone,
+      marketData.marketName,
+      marketData.location,
+      marketData.price,
+      marketData.size,
+      marketData.type,
+      JSON.stringify(marketData.services),
+      marketData.status,
+      marketData.rating,
+      marketData.featured,
+      JSON.stringify(marketData.images),
+      JSON.stringify(marketData.videos),
+      JSON.stringify(marketData.highlights),
     ];
-    db.query(query, values, (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
-    });
-  });
-};
+    const result = await db.query(sql, values);
+    return { insertId: result.insertId };
+  },
 
-exports.findById = (id) => {
-  return new Promise((resolve, reject) => {
-    const query = 'SELECT * FROM markets WHERE id = ?';
-    db.query(query, [id], (err, result) => {
-      if (err) return reject(err);
-      resolve(result[0]);
-    });
-  });
-};
+  findById: async (id) => {
+    const sql = 'SELECT * FROM markets WHERE id = ?';
+    const rows = await db.query(sql, [id]);
+    return rows[0];
+  },
 
-exports.findAll = (filters, page, limit) => {
-  return new Promise((resolve, reject) => {
-    let query = 'SELECT * FROM markets WHERE 1=1';
+  findAll: async (filters, page, limit) => {
+    let sql = 'SELECT * FROM markets WHERE 1=1';
     const values = [];
-    if (filters.featured) { // Add featured filter
-      query += ' AND featured = ?';
-      values.push(1);
-    }
     if (filters.type) {
-      query += ' AND type = ?';
+      sql += ' AND type = ?';
       values.push(filters.type);
     }
-    if (filters.location) {
-      query += ' AND location LIKE ?';
-      values.push(`%${filters.location}%`);
-    }
-    if (filters.priceMin) {
-      query += ' AND price >= ?';
-      values.push(filters.priceMin);
-    }
-    if (filters.priceMax) {
-      query += ' AND price <= ?';
-      values.push(filters.priceMax);
-    }
     if (filters.sizeMin) {
-      query += ' AND size >= ?';
+      sql += ' AND size >= ?';
       values.push(filters.sizeMin);
     }
     if (filters.sizeMax) {
-      query += ' AND size <= ?';
+      sql += ' AND size <= ?';
       values.push(filters.sizeMax);
     }
-    query += ' LIMIT ? OFFSET ?';
-    values.push(limit, (page - 1) * limit);
+    if (filters.priceMin) {
+      sql += ' AND price >= ?';
+      values.push(filters.priceMin);
+    }
+    if (filters.priceMax) {
+      sql += ' AND price <= ?';
+      values.push(filters.priceMax);
+    }
+    if (filters.location) {
+      sql += ' AND location LIKE ?';
+      values.push(`%${filters.location}%`);
+    }
+    if (filters.status) {
+      sql += ' AND status = ?';
+      values.push(filters.status);
+    }
+    const offset = (page - 1) * limit;
+    sql += ' LIMIT ? OFFSET ?';
+    values.push(limit, offset);
 
-    db.query(query, values, (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
-    });
-  });
-};
+    console.log('Executing query in marketModel.js:', sql, 'with values:', values);
+    const rows = await db.query(sql, values);
+    console.log('Query result in marketModel.js:', rows);
+    return rows;
+  },
 
-exports.update = (id, marketData) => {
-  return new Promise((resolve, reject) => {
-    const query = `
-      UPDATE markets SET ownerName = ?, email = ?, phone = ?, marketName = ?, location = ?, 
-      price = ?, size = ?, type = ?, services = ?, images = ?, videos = ?, status = ?, 
-      rating = ?, featured = ?, highlights = ? WHERE id = ?
+  update: async (id, marketData) => {
+    const sql = `
+      UPDATE markets 
+      SET ownerName = ?, email = ?, phone = ?, marketName = ?, location = ?, price = ?, 
+          size = ?, type = ?, services = ?, status = ?, rating = ?, featured = ?, 
+          images = ?, videos = ?, highlights = ?
+      WHERE id = ?
     `;
     const values = [
-      marketData.ownerName, marketData.email, marketData.phone, marketData.marketName, 
-      marketData.location, marketData.price, marketData.size, marketData.type, 
-      JSON.stringify(marketData.services), JSON.stringify(marketData.images), 
-      JSON.stringify(marketData.videos), marketData.status, marketData.rating, 
-      marketData.featured, marketData.highlights ? JSON.stringify(marketData.highlights) : null, 
-      id
+      marketData.ownerName,
+      marketData.email,
+      marketData.phone,
+      marketData.marketName,
+      marketData.location,
+      marketData.price,
+      marketData.size,
+      marketData.type,
+      JSON.stringify(marketData.services),
+      marketData.status,
+      marketData.rating,
+      marketData.featured,
+      JSON.stringify(marketData.images),
+      JSON.stringify(marketData.videos),
+      JSON.stringify(marketData.highlights),
+      id,
     ];
-    db.query(query, values, (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
-    });
-  });
+    const result = await db.query(sql, values);
+    return { affectedRows: result.affectedRows };
+  },
+
+
+
+    findAll: (filters, page, limit, callback) => {
+      let sql = 'SELECT * FROM markets WHERE 1=1';
+      const values = [];
+      if (filters.type) {
+        sql += ' AND type = ?';
+        values.push(filters.type);
+      }
+      if (filters.sizeMin) {
+        sql += ' AND size >= ?';
+        values.push(filters.sizeMin);
+      }
+      if (filters.sizeMax) {
+        sql += ' AND size <= ?';
+        values.push(filters.sizeMax);
+      }
+      if (filters.priceMin) {
+        sql += ' AND price >= ?';
+        values.push(filters.priceMin);
+      }
+      if (filters.priceMax) {
+        sql += ' AND price <= ?';
+        values.push(filters.priceMax);
+      }
+      if (filters.location) {
+        sql += ' AND location LIKE ?';
+        values.push(`%${filters.location}%`);
+      }
+      if (filters.status) {
+        sql += ' AND status = ?';
+        values.push(filters.status);
+      }
+      const offset = (page - 1) * limit;
+      sql += ' LIMIT ? OFFSET ?';
+      values.push(limit, offset);
+  
+      console.log('Executing query in marketModel.js:', sql, 'with values:', values);
+      db.query(sql, values, (err, rows) => {
+        if (err) {
+          console.error('Error in Market.findAll:', err);
+          return callback(err);
+        }
+        console.log('Query result in marketModel.js:', rows);
+        callback(null, rows);
+      });
+    },
+  
+    updateStatus: (id, status, callback) => {
+      const sql = 'UPDATE markets SET status = ? WHERE id = ?';
+      db.query(sql, [status, id], (err, result) => {
+        if (err) {
+          console.error('Error in Market.updateStatus:', err);
+          return callback(err);
+        }
+        callback(null, { affectedRows: result.affectedRows });
+      });
+    },
+  
+
+  updateStatus: async (id, status) => {
+    const sql = 'UPDATE markets SET status = ? WHERE id = ?';
+    const result = await db.query(sql, [status, id]);
+    return { affectedRows: result.affectedRows };
+  },
+
+  delete: async (id) => {
+    const sql = 'DELETE FROM markets WHERE id = ?';
+    const result = await db.query(sql, [id]);
+    return { affectedRows: result.affectedRows };
+  },
 };
 
-exports.delete = (id) => {
-  return new Promise((resolve, reject) => {
-    const query = 'DELETE FROM markets WHERE id = ?';
-    db.query(query, [id], (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
-    });
-  });
-};
+module.exports = Market;

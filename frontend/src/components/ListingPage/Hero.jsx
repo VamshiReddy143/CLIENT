@@ -1,24 +1,81 @@
-// src/components/Hero.jsx
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "../../lib/translations";
 import { useParams } from 'react-router-dom';
 import useMarketStore from '../../store/marketStore';
+import useAuthStore from '@/store/authSlice';
+import toast from 'react-hot-toast';
 
 const Hero = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const { id } = useParams();
-  const { selectedMarket, fetchMarketById, loading, error } = useMarketStore();
+  const { user } = useAuthStore();
+  const { selectedMarket, fetchMarketById, loading, error, sendRequest } = useMarketStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [hasSentRequest, setHasSentRequest] = useState(false);
 
+  // Fetch market data and check for sent requests
   useEffect(() => {
     if (!selectedMarket || selectedMarket.id !== parseInt(id)) {
-      fetchMarketById(id); // Fetch if not already in store or ID mismatch
+      fetchMarketById(id);
     }
-  }, [id, fetchMarketById, selectedMarket]);
+
+    const sentRequests = JSON.parse(localStorage.getItem('sentRequests')) || {};
+    if (sentRequests[id] && sentRequests[id].userId === user?.id) {
+      setHasSentRequest(true);
+    }
+  }, [id, fetchMarketById, selectedMarket, user]);
+
+  // Auto-slide every 5 seconds
+  useEffect(() => {
+    const autoSlide = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prevIndex) =>
+        prevIndex === media.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(autoSlide); // Cleanup on unmount
+  }, [currentIndex]); // Re-run when currentIndex changes
+
+  const handleSendRequest = async () => {
+    if (!user) {
+      toast.error('Please log in to send a request');
+      return;
+    }
+
+    if (hasSentRequest) {
+      toast.error('You already sent the request');
+      return;
+    }
+
+    const requestData = {
+      vendorId: user.id,
+      vendorName: user.name,
+      marketId: selectedMarket.id,
+      marketName: selectedMarket.marketName,
+      spaceSize: selectedMarket.size || 300,
+      rentalPrice: selectedMarket.price,
+      propertyType: selectedMarket.type,
+    };
+
+    try {
+      await sendRequest(requestData);
+      setHasSentRequest(true);
+      const sentRequests = JSON.parse(localStorage.getItem('sentRequests')) || {};
+      sentRequests[id] = { userId: user.id, timestamp: Date.now() };
+      localStorage.setItem('sentRequests', JSON.stringify(sentRequests));
+      toast.success('Request sent successfully!');
+    } catch (err) {
+      toast.error('Failed to send request. Please try again.');
+    }
+  };
+
+  if (loading) return <div className="text-center p-4">Loading market data...</div>;
+  if (error) return <div className="text-center p-4 text-red-500">Error: {error}</div>;
 
   const media = selectedMarket ? [...(selectedMarket.images || []), ...(selectedMarket.videos || [])] : [
     '/listingpageimage11.svg',
@@ -98,9 +155,6 @@ const Hero = () => {
     `24/7 ${t.Security}`,
   ];
 
-  if (loading) return <div className="text-center p-4">Loading market data...</div>;
-  if (error) return <div className="text-center p-4 text-red-500">Error: {error}</div>;
-
   return (
     <div className="mt-[1rem] mx-auto px-[1rem] sm:px-[1.5rem] md:px-[2.5rem] lg:px-[3rem] w-full max-w-[1440px]">
       <motion.h1
@@ -127,9 +181,9 @@ const Hero = () => {
                     animate="center"
                     exit="exit"
                     transition={{
-                      x: { type: "spring", stiffness: 200, damping: 25, mass: 0.5 },
-                      opacity: { duration: 0.3 },
-                      scale: { duration: 0.3 },
+                      x: { type: "spring", stiffness: 300, damping: 30, mass: 0.8 },
+                      opacity: { duration: 0.5 },
+                      scale: { duration: 0.5 },
                     }}
                     className={`flex-shrink-0 px-[0.5rem] ${
                       position === 0 ? 'w-full md:w-1/3 order-1' :
@@ -141,7 +195,9 @@ const Hero = () => {
                       {media[index].endsWith('.mp4') ? (
                         <video
                           src={media[index]}
-                          controls
+                          autoPlay
+                          muted
+                          loop
                           className="w-full max-w-[28.75rem] h-[22.8125rem] rounded-[0.5rem] border-none mx-auto object-cover"
                         />
                       ) : (
@@ -185,7 +241,10 @@ const Hero = () => {
         {media.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentIndex(index)}
+            onClick={() => {
+              setDirection(index > currentIndex ? 1 : -1);
+              setCurrentIndex(index);
+            }}
             className={`w-3 h-3 rounded-full ${currentIndex === index ? 'bg-orange-500' : 'bg-gray-400'}`}
           ></button>
         ))}
@@ -283,11 +342,15 @@ const Hero = () => {
             {selectedMarket ? `$${selectedMarket.price}/Month` : t._$500_Month}
           </h1>
           <motion.button
-            className="text-white bg-[#FF8126] h-[2.875rem] w-[9.9375rem] rounded-[0.5625rem]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className={`text-white h-[2.875rem] w-[9.9375rem] rounded-[0.5625rem] ${
+              hasSentRequest ? 'bg-orange-300 text-gray-100 cursor-not-allowed' : 'bg-[#FF8126] hover:bg-[#E67320]'
+            }`}
+            whileHover={hasSentRequest ? {} : { scale: 1.05 }}
+            whileTap={hasSentRequest ? {} : { scale: 0.95 }}
+            onClick={handleSendRequest}
+            disabled={hasSentRequest}
           >
-            {t.Send_Request}
+            {hasSentRequest ? "RequestSent" : t.Send_Request}
           </motion.button>
         </motion.div>
       </motion.div>
