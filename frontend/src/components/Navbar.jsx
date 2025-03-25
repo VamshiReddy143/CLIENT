@@ -8,7 +8,7 @@ import useAuthStore from "../store/authSlice";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // New state for user dropdown
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangDropdown = () => setIsLangDropdownOpen(!isLangDropdownOpen);
-  const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen); // Toggle user dropdown
+  const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen);
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
     setIsLangDropdownOpen(false);
@@ -35,37 +35,29 @@ const Navbar = () => {
   const handleLogout = () => {
     logoutUser();
     navigate("/");
-    setIsMenuOpen(false);
-    setIsUserDropdownOpen(false); // Close dropdown on logout
+    setIsUserDropdownOpen(false);
   };
 
-  // Redirect to dashboard based on user role
   const handleDashboardRedirect = () => {
     if (!user || !user.user_role) {
       console.error("User or user_role is undefined:", user);
-      navigate("/"); // Redirect to homepage or show an error
+      navigate("/");
       setIsUserDropdownOpen(false);
       return;
     }
-  
-    // Log the user_role to debug
-    console.log("User role:", user.user_role);
-  
-    // Normalize the user_role to lowercase for case-insensitive comparison
+
     const role = user.user_role.toLowerCase().trim();
-  
     if (role === "admin") {
       navigate("/admin");
     } else if (role === "vendor") {
       navigate("/vendor");
-    } else if (role === "market_owner") { // Fixed: Removed the forward slash
+    } else if (role === "market_owner") {
       navigate("/market-owner");
     } else {
       console.error("Unknown user role:", role);
-      navigate("/"); // Fallback redirect for unknown roles
+      navigate("/");
     }
-  
-    setIsUserDropdownOpen(false); // Close dropdown after redirect
+    setIsUserDropdownOpen(false);
   };
 
   const t = translations[language];
@@ -163,31 +155,6 @@ const Navbar = () => {
     },
   };
 
-  const expandingButtonVariants = {
-    initial: {
-      width: 48,
-      scale: 1,
-      boxShadow: "0 4px 15px rgba(255, 93, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2)",
-      transition: { duration: 0.2, ease: "easeOut" },
-    },
-    hover: {
-      width: 140,
-      scale: 1.05,
-      boxShadow: "0 8px 25px rgba(255, 93, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3)",
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-    tap: {
-      scale: 0.95,
-      boxShadow: "0 2px 10px rgba(255, 93, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.1)",
-      transition: { duration: 0.15, ease: "easeIn" },
-    },
-  };
-
-  const textVariants = {
-    initial: { opacity: 0, x: -10 },
-    hover: { opacity: 1, x: 0, transition: { duration: 0.2, delay: 0.1 } },
-  };
-
   return (
     <motion.div
       className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 max-w-[1440px] mx-auto"
@@ -209,6 +176,87 @@ const Navbar = () => {
           </Link>
         </motion.h1>
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Profile Image/Icon with Dropdown */}
+          <div className="relative">
+            <motion.button
+              onClick={toggleUserDropdown}
+              className="flex items-center focus:outline-none"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {token ? (
+                <img
+                  src={user?.avatar || "https://via.placeholder.com/24"}
+                  alt="User"
+                  className="w-6 h-6 sm:w-7 sm:h-7 rounded-full"
+                />
+              ) : (
+                <svg
+                  className="w-6 h-6 sm:w-7 sm:h-7 text-gray-800"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              )}
+            </motion.button>
+            <AnimatePresence>
+              {isUserDropdownOpen && (
+                <motion.div
+                  className="absolute top-9 sm:top-10 right-0 w-48 bg-white border border-gray-200 rounded-lg shadow-xl z-[99]"
+                  variants={dropdownVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  {token ? (
+                    <>
+                      <button
+                        onClick={handleDashboardRedirect}
+                        className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                      >
+                        Go to Dashboard
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/login">
+                        <button
+                          className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                          onClick={() => setIsUserDropdownOpen(false)}
+                        >
+                          Login
+                        </button>
+                      </Link>
+                      <Link to="/signup">
+                        <button
+                          className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+                          onClick={() => setIsUserDropdownOpen(false)}
+                        >
+                          Signup
+                        </button>
+                      </Link>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Language Dropdown */}
           <div className="relative">
             <motion.button
               onClick={toggleLangDropdown}
@@ -257,6 +305,7 @@ const Navbar = () => {
               )}
             </AnimatePresence>
           </div>
+
           <motion.button
             onClick={toggleMenu}
             className="text-xl md:mr-2 md:ml-2 sm:text-2xl"
@@ -311,12 +360,12 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <img
-                  src={user.avatar}
+                  src={user?.avatar || "https://via.placeholder.com/32"}
                   alt="User"
                   className="w-8 h-8 rounded-full"
                 />
                 <span className="text-sm lg:text-base font-medium">
-                  {user?.name || "User"} {/* Display user name */}
+                  {user?.name || "User"}
                 </span>
                 <motion.svg
                   className="w-4 h-4"
@@ -476,92 +525,40 @@ const Navbar = () => {
                   </motion.li>
                 ))}
               </motion.ul>
-              <motion.div
-                className="flex mt-15 sm:mt-10 items-center gap-6 sm:gap-10 w-full"
-                variants={sidebarItemVariants}
-              >
-                {token ? (
-                  <div className="relative">
+              {!token && (
+                <motion.div
+                  className="flex mt-15 sm:mt-10 items-center gap-6 sm:gap-10 w-full"
+                  variants={sidebarItemVariants}
+                >
+                  <Link to="/login">
                     <motion.button
-                      onClick={toggleUserDropdown}
-                      className="flex items-center gap-2 bg-white text-gray-800 px-3 py-2 rounded-lg border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      className="text-orange-500 text-base sm:text-lg"
+                      variants={linkVariants}
+                      whileHover="hover"
+                      onClick={toggleMenu}
                     >
-                      <img
-                        src="https://via.placeholder.com/32"
-                        alt="User"
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <span className="text-sm font-medium">
-                        {user?.name || "User"}
-                      </span>
-                      <motion.svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        animate={{ rotate: isUserDropdownOpen ? 180 : 0 }}
-                        transition={{ type: "spring", stiffness: 200 }}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </motion.svg>
+                      {t.logIn}
                     </motion.button>
-                    <AnimatePresence>
-                      {isUserDropdownOpen && (
-                        <motion.div
-                          className="absolute top-12 left-0 w-48 bg-white border border-gray-200 rounded-lg shadow-xl z-[99]"
-                          variants={dropdownVariants}
-                          initial="hidden"
-                          animate="visible"
-                          exit="exit"
-                        >
-                          <button
-                            onClick={handleDashboardRedirect}
-                            className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-                          >
-                            Go to Dashboard
-                          </button>
-                          <button
-                            onClick={handleLogout}
-                            className="w-full text-left px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-                          >
-                            Logout
-                          </button>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <>
-                    <Link to="/login">
-                      <motion.button
-                        className="text-orange-500 text-base sm:text-lg"
-                        variants={linkVariants}
-                        whileHover="hover"
-                      >
-                        {t.logIn}
-                      </motion.button>
-                    </Link>
-                    <Link to="/signup">
-                      <motion.button
-                        className="bg-orange-500 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-xl min-w-[100px] sm:min-w-[113px]"
-                        variants={buttonVariants}
-                        initial="initial"
-                        whileHover="hover"
-                        whileTap="tap"
-                        style={{
-                          borderTop: "1px solid rgba(255, 255, 255, 0.3)",
-                          borderBottom: "3px solid rgba(0, 0, 0, 0.2)",
-                          position: "relative",
-                        }}
-                      >
-                        {t.signUp}
-                      </motion.button>
-                    </Link>
-                  </>
-                )}
-              </motion.div>
+                  </Link>
+                  <Link to="/signup">
+                    <motion.button
+                      className="bg-orange-500 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-xl min-w-[100px] sm:min-w-[113px]"
+                      variants={buttonVariants}
+                      initial="initial"
+                      whileHover="hover"
+                      whileTap="tap"
+                      style={{
+                        borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+                        borderBottom: "3px solid rgba(0, 0, 0, 0.2)",
+                        position: "relative",
+                      }}
+                      onClick={toggleMenu}
+                    >
+                      {t.signUp}
+                    </motion.button>
+                  </Link>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         )}

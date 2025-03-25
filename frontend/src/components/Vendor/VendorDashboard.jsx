@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Bell, ChevronDown, Search } from 'lucide-react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import SearchPage from '../SearchPage';
 import useMarketStore from '@/store/marketStore';
 import useAuthStore from '@/store/authSlice';
-
 
 const VendorDashboard = () => {
   const { requests, fetchRequests, loading, error } = useMarketStore();
@@ -93,17 +93,23 @@ const VendorDashboard = () => {
         <div className="lg:flex grid lg:gap-15 gap-5">
           {activeRequests?.length > 0 ? (
             activeRequests.slice(0, 2).map((request, index) => (
-              <div key={index} className="flex gap-5  mb-4 lg:mb-0">
-                <div className="lg:w-[150px] lg:h-[120px] h-[100px]  w-[200px] object-cover">
+              <div key={index} className="flex gap-5 mb-4 lg:mb-0">
+                <div className="lg:w-[150px] lg:h-[120px] h-[100px] w-[200px] object-cover">
                   <img
                     src={request.images?.[0] || defaultImage}
                     alt={request.marketName}
-                    className="lg:w-full lg:h-full w-[150px] h-[120px]  object-cover rounded-xl"
+                    className="lg:w-full lg:h-full w-[150px] h-[120px] object-cover rounded-xl"
                     onError={(e) => (e.target.src = defaultImage)}
                   />
                 </div>
                 <div className="flex flex-col gap-2 lg:w-full w-[50%]">
-                  <h2 className="w-full text-[15px]">{request.marketName}</h2>
+                  {/* Wrap marketName in a Link to navigate to the market details page */}
+                  <Link
+                    to={`/market/${request.marketId}`} // Adjust the route as per your app's structure
+                    className="w-full text-[15px] text-gray-900 hover:text-orange-500 transition-colors"
+                  >
+                    {request.marketName}
+                  </Link>
                   <svg width="80" height="14" viewBox="0 0 80 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11.7899 8.27345C11.6054 8.44914 11.5206 8.70322 11.5627 8.9524L12.196 12.3962C12.2494 12.6881 12.1241 12.9834 11.8754 13.1521C11.6318 13.3271 11.3076 13.3481 11.0419 13.2081L7.88666 11.5912C7.77695 11.5338 7.65513 11.503 7.53046 11.4995H7.33739C7.27043 11.5093 7.20489 11.5303 7.14504 11.5625L3.98908 13.1871C3.83306 13.2641 3.65639 13.2914 3.48327 13.2641C3.06153 13.1857 2.78013 12.7909 2.84923 12.3745L3.48327 8.9307C3.5253 8.67942 3.44053 8.42394 3.25601 8.24545L0.683512 5.79561C0.468365 5.59053 0.393563 5.28255 0.491875 5.00467C0.587337 4.72748 0.83098 4.5252 1.1252 4.4797L4.66587 3.97503C4.93516 3.94774 5.17168 3.78675 5.29279 3.54876L6.85296 0.405973C6.89 0.335978 6.93773 0.271582 6.99544 0.216986L7.05955 0.167989C7.09304 0.131591 7.13151 0.101493 7.17425 0.0769949L7.2519 0.0489967L7.37301 0H7.67294C7.9408 0.0272982 8.17661 0.184788 8.29986 0.419972L9.88069 3.54876C9.99467 3.77765 10.2162 3.93654 10.472 3.97503L14.0126 4.4797C14.3119 4.5217 14.5619 4.72468 14.6609 5.00467C14.7543 5.28535 14.6738 5.59333 14.4543 5.79561L11.7899 8.27345Z" fill="#FFD66B" />
                     <path d="M27.9384 8.27345C27.7539 8.44914 27.6691 8.70322 27.7111 8.9524L28.3444 12.3962C28.3979 12.6881 28.2725 12.9834 28.0239 13.1521C27.7802 13.3271 27.4561 13.3481 27.1903 13.2081L24.0351 11.5912C23.9254 11.5338 23.8036 11.503 23.6789 11.4995H23.4858C23.4189 11.5093 23.3533 11.5303 23.2935 11.5625L20.1375 13.1871C19.9815 13.2641 19.8048 13.2914 19.6317 13.2641C19.21 13.1857 18.9286 12.7909 18.9977 12.3745L19.6317 8.9307C19.6737 8.67942 19.589 8.42394 19.4045 8.24545L16.8319 5.79561C16.6168 5.59053 16.542 5.28255 16.6403 5.00467C16.7358 4.72748 16.9794 4.5252 17.2736 4.4797L20.8143 3.97503C21.0836 3.94774 21.3201 3.78675 21.4412 3.54876L23.0014 0.405973C23.0384 0.335978 23.0862 0.271582 23.1439 0.216986L23.208 0.167989C23.2415 0.131591 23.2799 0.101493 23.3227 0.0769949L23.4003 0.0489967L23.5215 0H23.8214C24.0892 0.0272982 24.325 0.184788 24.4483 0.419972L26.0291 3.54876C26.1431 3.77765 26.3647 3.93654 26.6204 3.97503L30.1611 4.4797C30.4603 4.5217 30.7104 4.72468 30.8094 5.00467C30.9027 5.28535 30.8222 5.59333 30.6028 5.79561L27.9384 8.27345Z" fill="#FFD66B" />
@@ -113,10 +119,14 @@ const VendorDashboard = () => {
                   </svg>
                   <div className="flex justify-between mr-10">
                     <h1 className="text-[#FF8126] text-[17px] font-bold">${request.rentalPrice}</h1>
-                    <div>
-                      <p className="text-[#FF8126] lg:text-[14px]">view</p>
-                      <div className="h-[1px] bg-[#FF8126]" />
-                    </div>
+                    <Link
+                      to={`/market/${request.marketId}`}             
+                    >
+                      <div>
+                        <p className="text-[#FF8126] lg:text-[14px]">view</p>
+                        <div className="h-[1px] bg-[#FF8126]" />
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>

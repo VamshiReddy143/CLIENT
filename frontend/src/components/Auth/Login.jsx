@@ -1,5 +1,4 @@
-// src/components/Auth/Login.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, AtSign } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -32,8 +31,14 @@ const forgotPasswordSchema = z.object({
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { loginUser, forgotPassword, loading } = useAuthStore();
   const navigate = useNavigate();
+
+  // Initialize EmailJS with the new Public Key
+  useEffect(() => {
+    emailjs.init('h4y3mEsHwxszDXiXd'); // Your EmailJS Public Key
+  }, []);
 
   // Form for login
   const {
@@ -83,39 +88,50 @@ function Login() {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Something went wrong');
-      console.error('Login error:', error.message);
+      console.error('Login error:', error.response?.data || error.message);
     }
   };
 
   const onForgotPasswordSubmit = async (data) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
+      console.log('Submitting forgot password form with email:', data.email);
+      if (!data.email) {
+        throw new Error('data.email is empty or undefined');
+      }
       const { resetToken, userId } = await forgotPassword(data.email);
+      console.log('Received reset token:', resetToken, 'User ID:', userId);
 
-      // Create the reset link
       const resetLink = `${window.location.origin}/reset-password?token=${resetToken}&userId=${userId}`;
+      console.log('Generated reset link:', resetLink);
 
-      // Send email using EmailJS
       const emailParams = {
         to_email: data.email,
-        reset_link: resetLink,
-        to_name: 'User', // You can fetch the user's name if available
+        email: data.email,
+        to: data.email,
+        link: resetLink,
+        from_email: 'vamshireddy0726@gmail.com', // Replace with your verified email
       };
 
-      await emailjs.send(
-        'service_isdydze', // Replace with your EmailJS service ID
-        'template_p97m8bd', // Replace with your EmailJS template ID
-        emailParams,
-        'mdLTZtXyzSWR4vHsm' // Replace with your EmailJS public key
+      console.log('EmailJS params:', emailParams);
+
+      const response = await emailjs.send(
+        'service_z048xb8', // Your Service ID
+        'template_jbcjutp', // Your Template ID
+        emailParams
       );
 
-     
+      console.log('EmailJS send response:', response);
 
-      toast.success('Password reset link sent to your email!');
+      toast.success('Password reset link sent (check EmailJS logs for status)!');
       setIsDialogOpen(false);
       resetForgot();
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to send reset link');
-      console.error('Forgot password error:', error.message);
+      console.error('Forgot password error:', error);
+      toast.error(error.message || 'Failed to send reset link');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -233,12 +249,12 @@ function Login() {
                 </button>
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || isSubmitting}
                   className={`w-full py-3 px-6 rounded-full text-white font-medium transition duration-200 ease-in-out ${
-                    loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#EA7A39] hover:bg-orange-500'
+                    loading || isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#EA7A39] hover:bg-orange-500'
                   }`}
                 >
-                  {loading ? 'Sending...' : 'Send Reset Link'}
+                  {loading || isSubmitting ? 'Sending...' : 'Send Reset Link'}
                 </button>
               </div>
             </form>

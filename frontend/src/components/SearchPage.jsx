@@ -54,7 +54,28 @@ const SearchPage = () => {
   } else if (location.pathname === '/admin/settings') {
     pageTitle = 'Settings';
     searchPlaceholder = 'Search settings';
-  } else if (location.pathname.startsWith('/admin/owner/')) {
+  } 
+  
+  if (location.pathname === '/market-owner/vendors') {
+    pageTitle = 'Vendors';
+    searchPlaceholder = 'Search vendors';
+  } 
+  
+  if (location.pathname === '/market-owner/Requests') {
+    pageTitle = 'Requests';
+    searchPlaceholder = 'Search requests';
+  } 
+  
+  if (location.pathname === '/market-owner/listings') {
+    pageTitle = 'Listings';
+    searchPlaceholder = 'Search listings';
+  } 
+  
+  if (location.pathname === '/market-owner/settings') {
+    pageTitle = 'Settings';
+    searchPlaceholder = 'Search';
+  } 
+  else if (location.pathname.startsWith('/admin/owner/')) {
     pageTitle = 'Market Owner Profile';
     searchPlaceholder = 'Search markets';
   }
@@ -62,6 +83,7 @@ const SearchPage = () => {
     pageTitle = ' Owner Details';
     searchPlaceholder = 'Search markets';
   }
+  
 
   const defaultAvatar =
     'https://imgs.search.brave.com/GaCzNP9tEe6BCjo8HXaR6llOdnsLodGlGxYnFAhGsHA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4x/Lmljb25maW5kZXIu/Y29tL2RhdGEvaWNv/bnMvdXNlci1waWN0/dXJlcy8xMDAvdW5r/bm93bi01MTIucG5n';
@@ -140,7 +162,7 @@ const SearchPage = () => {
                 <div className="absolute z-[999] right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 top-10">
                   <Link
                     to="/vendor/settings"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="block w-full text-left px-4 py-2 text-gray-700 rounded-xl hover:text-white hover:bg-[#FF8126]"
                     onClick={() => setIsDropdownOpen(false)}
                   >
                     Settings
@@ -148,10 +170,18 @@ const SearchPage = () => {
 
                   <Link to={"/login"}>
                   <button
-                   
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                   className="block w-full text-left px-4 py-2 text-gray-700 rounded-xl hover:text-white hover:bg-[#FF8126]"
                   >
                     Logout
+                  </button>
+                  </Link>
+
+                  <Link to={"/"}>
+                  <button
+                   
+                    className="block w-full text-left px-4 py-2 text-gray-700 rounded-xl hover:text-white hover:bg-[#FF8126]"
+                  >
+                    Home
                   </button>
                   </Link>
                 </div>

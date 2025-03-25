@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authSlice';
 
 const VendorNavbar = () => {
@@ -18,9 +18,11 @@ const VendorNavbar = () => {
     <div className=" bg-white h-auto    lg:w-[280px] flex flex-col">
       <div className="flex flex-col flex-1">
         <div className="flex flex-col items-center gap-10 p-10">
+        <Link to={"/"}>
           <h1 className="text-2xl font-bold text-gray-800">
             Placy <span className="text-orange-500">Market</span>
           </h1>
+          </Link>
           <div className="flex flex-col gap-2 w-full">
             {/* Dashboard Link */}
             <NavLink

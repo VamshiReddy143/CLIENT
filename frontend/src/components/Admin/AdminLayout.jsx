@@ -6,7 +6,7 @@ import AdminMobileNavbar from './AdminMobileNavbar';
 
 const AdminLayout = ({ children }) => {
   return (
-    <div className="h-screen bg-gray-100  flex">
+    <div className="h-screen lg:bg-gray-100 bg-white  flex">
       <div className="w-64 hidden h-auto lg:block  hidden lg:block bg-white shadow-md">
         <AdminNavbar />
       </div>

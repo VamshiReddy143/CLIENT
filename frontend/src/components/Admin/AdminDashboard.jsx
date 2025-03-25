@@ -99,7 +99,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="lg:px-10 mb-10 md:mb-0">
+    <div className="lg:px-10  mb-10 md:mb-0">
       <SearchPage />
 
       {/* Stats Section */}
