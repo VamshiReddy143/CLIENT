@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
+const PROFILE_PLACEHOLDER= "/ph.png"
+const PROPERT_PLACEHOLDER="/pph.png"
+
 const VendorProfile = () => {
   const { vendorId } = useParams();
   const [vendor, setVendor] = useState(null);
@@ -34,14 +37,22 @@ const VendorProfile = () => {
     fetchVendorData();
   }, [vendorId]);
 
+  // Helper function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (str) => {
+    if (!str) return 'N/A'; // Handle null or undefined
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
   if (!vendor) return <div className="text-center p-4">Vendor not found</div>;
 
-  // Calculate rental request stats
-  const totalRequests = listings.length;
+
   const approvedRequests = listings.filter((listing) => listing.status.toLowerCase() === 'approved').length;
-  const unapprovedRequests = totalRequests - approvedRequests;
+ 
+
+  // Capitalize the vendor's name
+  const capitalizedName = capitalizeFirstLetter(vendor.name);
 
   return (
     <div className="p-6 bg-white rounded-xl lg:shadow-md max-w-7xl mx-auto mt-10">
@@ -50,15 +61,15 @@ const VendorProfile = () => {
         {vendor.avatar && (
           <div className="flex-shrink-0">
             <img
-              src={vendor.avatar}
-              alt={`${vendor.name}'s avatar`}
+              src={vendor.avatar || PROFILE_PLACEHOLDER}
+              alt={`${capitalizedName}'s avatar`}
               className="w-24 h-24 rounded-full object-cover border-4 border-orange-500"
-              onError={(e) => (e.target.src = 'https://via.placeholder.com/150')}
+              onError={(e) => (e.target.src = PROFILE_PLACEHOLDER)}
             />
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">{vendor.name}&apos;s Profile</h1>
+          <h1 className="text-3xl font-bold text-gray-800">{capitalizedName}'s Profile</h1>
           <p className="text-sm text-gray-500 mt-1">Vendor ID: {vendor.id}</p>
         </div>
       </div>
@@ -69,25 +80,7 @@ const VendorProfile = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
           <div className="w-full bg-gray-100 px-4 py-2 rounded-lg text-gray-900">
-            {vendor.name || 'N/A'}
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <div className="w-full bg-gray-100 px-4 py-2 rounded-lg text-gray-900">
-            {vendor.email || 'N/A'}
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-          <div className="w-full bg-gray-100 px-4 py-2 rounded-lg text-gray-900">
-            {vendor.phone || 'N/A'}
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-          <div className="w-full bg-gray-100 px-4 py-2 rounded-lg text-gray-900">
-            {vendor.address || 'N/A'}
+            {capitalizedName || 'N/A'}
           </div>
         </div>
       </div>
@@ -101,7 +94,6 @@ const VendorProfile = () => {
             {approvedRequests.toString().padStart(2, '0')}
           </div>
         </div>
-      
       </div>
 
       {/* Property Details Section */}
@@ -129,10 +121,10 @@ const VendorProfile = () => {
                 <div className="col-span-1">#{listing.requestId}</div>
                 <div className="col-span-1 flex items-center gap-2">
                   <img
-                    src={imageSrc}
+                    src={imageSrc || PROPERT_PLACEHOLDER}
                     alt={`${listing.marketName} image`}
                     className="w-10 h-10 rounded-md object-cover"
-                    onError={(e) => (e.target.src = 'https://via.placeholder.com/50')}
+                    onError={(e) => (e.target.src = PROPERT_PLACEHOLDER)}
                   />
                   <span>{listing.marketName}</span>
                 </div>

@@ -281,7 +281,7 @@ exports.getMarketById = (req, res) => {
 
 // Wrapper for getAllMarkets
 exports.getAllMarkets = (req, res) => {
-  const { type, sizeMin, sizeMax, location, priceMin, priceMax, page = 1, limit = 5, status } = req.query;
+  const { type, sizeMin, sizeMax, location, priceMin, priceMax, page = 1, limit = 5, status, sort } = req.query;
 
   const filters = {
     type,
@@ -291,6 +291,7 @@ exports.getAllMarkets = (req, res) => {
     priceMin: priceMin ? parseInt(priceMin) : undefined,
     priceMax: priceMax ? parseInt(priceMax) : undefined,
     status,
+    sort, // Ensure sort is included in the filters
   };
 
   console.log('Fetching markets with filters (wrapper):', filters, 'page:', page, 'limit:', limit);
@@ -413,6 +414,7 @@ exports.ownermarkets=(req,res)=> {
         COALESCE(highlights, '{}') AS highlights
       FROM markets
       WHERE owner_id = ?
+      ORDER BY created_at DESC
     `;
     db.query(query, [ownerId], (err, results) => {
       if (err) {

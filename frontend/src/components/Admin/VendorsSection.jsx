@@ -4,6 +4,8 @@ import axios from 'axios';
 import SearchPage from '../SearchPage';
 import useAuthStore from '@/store/authSlice';
 import useMarketStore from '@/store/marketStore';
+const PROFILE_PLACEHOLDER = "/ph.png"
+
 
 const AdminVendorDashboard = () => {
   const [vendors, setVendors] = useState([]);
@@ -109,7 +111,7 @@ const AdminVendorDashboard = () => {
                       <Link to={`/admin/vendor/profile/${vendor.id}`}>
                         <div className="h-8 w-8 overflow-hidden shadow-xl rounded-full">
                           <img
-                            src={vendor.avatar || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D'}
+                            src={vendor.avatar || PROFILE_PLACEHOLDER}
                             alt={vendor.name}
                             className="h-full w-full object-cover"
                           />

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import useMarketStore from '../../store/marketStore';
 import useAuthStore from '@/store/authSlice';
 import toast from 'react-hot-toast';
+import { GiResize } from 'react-icons/gi';
 
 const Hero = () => {
   const { language } = useLanguage();
@@ -268,9 +269,9 @@ const Hero = () => {
               {selectedMarket ? selectedMarket.marketName : 'Downtown Shopping Center'}
             </h2>
             <div className="flex gap-[0.5rem] items-center">
-              <img src="/phone2.svg" alt="phonesvg" className="w-[0.749rem] h-[0.749rem]" />
+             <GiResize />
               <p className="text-[#FF8126] text-[0.875rem]">
-                {selectedMarket ? selectedMarket.phone : '+43 1 234 5678'}
+                { selectedMarket?.size } sq.ft
               </p>
             </div>
             <div className="flex gap-[0.5rem] items-center">

@@ -4,6 +4,8 @@ import SearchPage from '../SearchPage';
 import useAuthStore from '@/store/authSlice';
 import useMarketStore from '@/store/marketStore';
 
+const PROFILE_PLACEHOLDER="/ph.png"
+
 const VendorTable = () => {
   const { ownerRequests, fetchOwnerRequests, updateRequestStatus, loading, error } = useMarketStore();
   const { user } = useAuthStore();
@@ -14,7 +16,6 @@ const VendorTable = () => {
 
   useEffect(() => {
     if (user && user.user_role === 'market_owner') {
-      console.log('Fetching owner requests for user:', user);
       fetchOwnerRequests();
     }
   }, [fetchOwnerRequests, user]);
@@ -127,13 +128,13 @@ const VendorTable = () => {
                         <img
                           src={
                             request.vendorAvatar ||
-                            'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D'
+                            PROFILE_PLACEHOLDER
                           }
                           alt={request.vendorName}
                           className="h-full w-full object-cover"
                           onError={(e) =>
                             (e.target.src =
-                              'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D')
+                              PROFILE_PLACEHOLDER)
                           }
                         />
                       </div>

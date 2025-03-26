@@ -360,6 +360,7 @@ exports.getVendorListings = (req, res) => {
       r.rental_price AS rentalPrice,
       r.property_type AS propertyType,
       r.status,
+      m.location,
       r.created_at,
       m.images AS images
     FROM requests r

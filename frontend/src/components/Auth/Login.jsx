@@ -37,7 +37,7 @@ function Login() {
 
   // Initialize EmailJS with the new Public Key
   useEffect(() => {
-    emailjs.init('h4y3mEsHwxszDXiXd'); // Your EmailJS Public Key
+    emailjs.init( import.meta.env.VITE_EMAILJS_PUBLIC_KEY_FOR_LOGIN); // Your EmailJS Public Key
   }, []);
 
   // Form for login
@@ -111,14 +111,14 @@ function Login() {
         email: data.email,
         to: data.email,
         link: resetLink,
-        from_email: 'vamshireddy0726@gmail.com', // Replace with your verified email
+        from_email:import.meta.env.VITE_OWNER_EMAIL_FOR_LOGIN, // Replace with your verified email
       };
 
       console.log('EmailJS params:', emailParams);
 
       const response = await emailjs.send(
-        'service_z048xb8', // Your Service ID
-        'template_jbcjutp', // Your Template ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID_FOR_LOGIN, // Your Service ID
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID_FOR_LOGIN, // Your Template ID
         emailParams
       );
 

@@ -83,10 +83,25 @@ const Market = {
       sql += ' AND markets.status = ?';
       values.push(filters.status);
     }
+  
+    // Add sorting logic
+    if (filters.sort) {
+      if (filters.sort === 'highToLow') {
+        sql += ' ORDER BY markets.price DESC';
+      } else if (filters.sort === 'lowToHigh') {
+        sql += ' ORDER BY markets.price ASC';
+      } else if (filters.sort === 'newest') {
+        sql += ' ORDER BY markets.created_at DESC';
+      }
+    } else {
+      // Default sorting: newest first
+      sql += ' ORDER BY markets.created_at DESC';
+    }
+  
     const offset = (page - 1) * limit;
     sql += ' LIMIT ? OFFSET ?';
     values.push(limit, offset);
-
+  
     console.log('Executing query in marketModelWrapper.js:', sql, 'with values:', values);
     db.query(sql, values, (err, rows) => {
       if (err) {
@@ -98,6 +113,7 @@ const Market = {
     });
   },
 
+  
   update: (id, marketData, callback) => {
     const sql = `
       UPDATE markets 

@@ -209,7 +209,7 @@ function VendorRequests() {
               <>
                 <div className="mt-10 flex flex-col gap-1 text-[#858585]">
                   <p>Marketplace Name: Downtown Vendor Hub</p>
-                  <p>MarketOwner's Name: John Doe</p>
+                  <p>MarketOwner&apos;s Name: John Doe</p>
                   <p>Email Address: john@gmail.com</p>
                   <p>Invoice Number: (INV-2025001)</p>
                   <p>Invoice Date: 23-02-2025</p>

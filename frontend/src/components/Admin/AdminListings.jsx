@@ -5,6 +5,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import useMarketStore from '@/store/marketStore';
 
+const PROFILE_PLACEHOLDER = "/ph.png";
+
 function AdminApproveTable() {
   const [activeTab, setActiveTab] = useState('All');
   const [markets, setMarkets] = useState([]);
@@ -26,7 +28,6 @@ function AdminApproveTable() {
       else if (activeTab === 'Approved') status = 'available';
       else if (activeTab === 'Rejected') status = 'rejected';
       else if (activeTab === 'Pending') status = 'pending';
-   
 
       try {
         const token = localStorage.getItem('token');
@@ -94,14 +95,13 @@ function AdminApproveTable() {
     fetchMarkets();
   }, [activeTab]);
 
-  // Filter markets based on searchQuery (by property type OR owner name)
   useEffect(() => {
     if (markets.length > 0) {
       const filtered = markets.filter((market) => {
         const searchLower = searchQuery.toLowerCase();
         const typeMatch = market.type?.toLowerCase().includes(searchLower);
         const ownerNameMatch = market.ownerName?.toLowerCase().includes(searchLower);
-        return typeMatch || ownerNameMatch; // Match if either type or ownerName contains the search query
+        return typeMatch || ownerNameMatch;
       });
       setFilteredMarkets(filtered);
     } else {
@@ -234,11 +234,13 @@ function AdminApproveTable() {
                       <div className="text-sm">{market.marketName}</div>
                       <div className="flex items-center gap-3">
                         <div className="h-8 w-8 overflow-hidden rounded-full">
+                   
                           <img
-                            src={`https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
+                            src={PROFILE_PLACEHOLDER}
                             alt={market.ownerName}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full  object-cover"
                           />
+                   
                         </div>
                         <span className="text-sm">{market.ownerName}</span>
                       </div>
@@ -336,16 +338,18 @@ function AdminApproveTable() {
                     </>
                   ) : (
                     <>
+                    <Link to={`/admin/market/${market.id}`}>
                       <div className="flex items-center gap-3">
                         <div className="h-8 w-8 overflow-hidden rounded-full">
                           <img
-                            src={market.ownerAvatar || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+                            src={market.ownerAvatar || PROFILE_PLACEHOLDER}
                             alt={market.ownerName}
                             className="h-full w-full object-cover"
                           />
                         </div>
                         <span className="text-sm">{market.ownerName}</span>
                       </div>
+                      </Link>
                       <div className="text-sm">{market.size} sq. ft.</div>
                       <div className="text-sm">${market.price}</div>
                       <div>
@@ -355,7 +359,7 @@ function AdminApproveTable() {
                       </div>
                       <div className="text-sm">{market.status}</div>
                       <div className="flex gap-2 relative">
-                        {activeTab === 'Pending' ? (
+                        {market.status === 'pending' ? (
                           <>
                             <button
                               className="rounded-full p-1 hover:bg-gray-100"
@@ -450,28 +454,26 @@ function AdminApproveTable() {
                             </Link>
                           </>
                         ) : (
-                          <>
-                            <Link to={`/admin/market/${market.id}`}>
-                              <button className="rounded-full p-1 hover:bg-gray-100">
-                                <svg
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M20.1885 10.934C20.5765 11.406 20.7705 11.641 20.7705 12C20.7705 12.359 20.5765 12.594 20.1885 13.066C18.7685 14.79 15.6365 18 12.0005 18C8.36447 18 5.23247 14.79 3.81247 13.066C3.42447 12.594 3.23047 12.359 3.23047 12C3.23047 11.641 3.42447 11.406 3.81247 10.934C5.23247 9.21 8.36447 6 12.0005 6C15.6365 6 18.7685 9.21 20.1885 10.934Z"
-                                    fill="#F29339"
-                                  />
-                                  <path
-                                    d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                    fill="white"
-                                  />
-                                </svg>
-                              </button>
-                            </Link>
-                          </>
+                          <Link to={`/market/${market.id}`}>
+                            <button className="rounded-full p-1 hover:bg-gray-100">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M20.1885 10.934C20.5765 11.406 20.7705 11.641 20.7705 12C20.7705 12.359 20.5765 12.594 20.1885 13.066C18.7685 14.79 15.6365 18 12.0005 18C8.36447 18 5.23247 14.79 3.81247 13.066C3.42447 12.594 3.23047 12.359 3.23047 12C3.23047 11.641 3.42447 11.406 3.81247 10.934C5.23247 9.21 8.36447 6 12.0005 6C15.6365 6 18.7685 9.21 20.1885 10.934Z"
+                                  fill="#F29339"
+                                />
+                                <path
+                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                  fill="white"
+                                />
+                              </svg>
+                            </button>
+                          </Link>
                         )}
                       </div>
                     </>

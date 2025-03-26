@@ -1,4 +1,3 @@
-// src/components/FindSpacePage/SpaceFilter.jsx
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
@@ -6,8 +5,21 @@ import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "../../lib/translations";
 import useMarketStore from "../../store/marketStore";
 import { useNavigate } from "react-router-dom";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import "./SpaceFilter.css";
+import { GiResize } from "react-icons/gi";
 
-// Reusable Components (unchanged)
+// Debounce utility function
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+};
+
+// Reusable Components
 const CheckboxItem = ({ label, count, checked, onChange }) => (
   <div className="flex justify-between lg:w-[16em] items-center mb-[0.75rem] px-[1rem]">
     <div className="flex items-center gap-[0.5rem]">
@@ -33,7 +45,7 @@ CheckboxItem.propTypes = {
 CheckboxItem.defaultProps = {
   count: null,
   checked: false,
-  onChange: () => {},
+  onChange: () => { },
 };
 
 const FilterSection = ({ title, children }) => (
@@ -51,112 +63,113 @@ FilterSection.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// ListingCard (unchanged)
-const ListingCard = ({ market, t }) => {
-  const navigate = useNavigate(); // Hook for navigation
+const ListingCard = React.memo(({ market, t }) => {
+  const navigate = useNavigate();
 
   const handleViewListing = () => {
-    navigate(`/market/${market.id}`); // Navigate to market details page
+    navigate(`/market/${market.id}`);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Smooth scrolling
+      behavior: 'smooth',
     });
   };
 
-  return(
+  return (
     <div
-    id="card"
-    className="md:shadow-lg md:rounded-xl md:p-0 w-full max-w-[23.375rem] lg:max-w-[77.375rem] mx-auto"
-  >
-    <div className="flex sm:flex-row items-start sm:items-center gap-[0.75rem] sm:gap-[1rem] lg:pr-[1rem] rounded-xl w-[23.375rem] md:w-full lg:w-full">
-      <div id="image" className="relative sm:w-auto">
-        <img
-          src={market.images && market.images.length > 0 ? market.images[0] : "/img1.jpg"}
-          className="w-[5rem] sm:w-[5.8125rem] lg:w-[10.75rem] h-[5.625rem] sm:h-[7.1875rem] lg:h-[13.25rem] object-cover rounded-md"
-        />
-        <img
-          src="/heart1.svg"
-          className="absolute hidden md:block top-[0.25rem] sm:top-[0.5rem] left-[0.25rem] sm:left-[0.5rem] w-[1.25rem] sm:w-[1.5rem] h-[1.25rem] sm:h-[1.5rem] cursor-pointer"
-        />
-      </div>
-
-      <div className="flex-1">
-        <div id="filterprice" className="flex md:flex sm:flex sm:items-start items-center gap-[0.5rem] sm:gap-[1rem]">
-          <h1
-            id="title"
-            className="w-[11rem] sm:w-[60%] md:w-[18.75rem] font-normal text-[0.75rem] sm:text-[1rem] md:text-[1.25rem] leading-tight"
-          >
-            {market.marketName}
-          </h1>
-          <h1 className="text-[#FF8126] text-[0.625rem] sm:text-[0.875rem] md:text-[1.25rem] font-normal leading-tight">
-            ${market.price}/month
-          </h1>
+      id="card"
+      className="md:shadow-lg md:rounded-xl md:p-0 w-full max-w-[23.375rem] lg:max-w-[77.375rem] mx-auto"
+    >
+      <div className="flex sm:flex-row items-start sm:items-center gap-[0.75rem] sm:gap-[1rem] lg:pr-[1rem] rounded-xl w-[23.375rem] md:w-full lg:w-full">
+        <div id="image" className="relative sm:w-auto">
+          <img
+            src={market.images && market.images.length > 0 ? market.images[0] : "/img1.jpg"}
+            className="w-[5rem] sm:w-[5.8125rem] lg:w-[10.75rem] h-[5.625rem] sm:h-[7.1875rem] lg:h-[13.25rem] object-cover rounded-md"
+          />
+          <img
+            src="/heart1.svg"
+            className="absolute hidden md:block top-[0.25rem] sm:top-[0.5rem] left-[0.25rem] sm:left-[0.5rem] w-[1.25rem] sm:w-[1.5rem] h-[1.25rem] sm:h-[1.5rem] cursor-pointer"
+          />
         </div>
 
-        <div className="flex w-[16.875rem] md:w-full sm:flex-row gap-[0.75rem] sm:gap-[1rem] mt-[0.5rem]">
-          <div className="flex w-[12.125rem] md:w-[14.6875rem] flex-col">
-            <h1 className="text-[#FF8126] text-[0.625rem] sm:text-[0.875rem] md:text-[1rem] font-bold leading-tight">
-              {t.services}
+        <div className="flex-1">
+          <div id="filterprice" className="flex md:flex sm:flex sm:items-start items-center gap-[0.5rem] sm:gap-[1rem]">
+            <h1
+              id="title"
+              className="w-[11rem] sm:w-[60%] md:w-[18.75rem] font-normal text-[0.75rem] sm:text-[1rem] md:text-[1.25rem] leading-tight"
+            >
+              {market.marketName}
             </h1>
-            <div className="mt-[0.5rem] md:mt-[0.75rem]">
-              {market.services && market.services.length > 0 ? (
-                market?.services?.slice(0, 3).map((service, index) => (
-                  <p key={index} className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight">
-                    ✓<span className="ml-[0.25rem]">{service}</span>
-                  </p>
-                ))
-              ) : (
-                <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight">
-                  ✓<span className="ml-[0.25rem]">{t.noServices}</span>
-                </p>
-              )}
-            </div>
+            <h1 className="text-[#FF8126] text-[0.625rem] sm:text-[0.875rem] md:text-[1.25rem] font-normal leading-tight">
+              ${market.price}/month
+            </h1>
           </div>
-          <div className="flex flex-col lg:justify-center md:justify-between justify-between">
-            <div className="flex items-center gap-[0.5rem]">
-              <img src="/phone2.svg" alt="phone" className="h-[0.5rem] sm:h-[0.75rem] w-[0.5rem] sm:w-[0.75rem]" />
-              <p className="text-[#FF8126] font-mono text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight">
-                {market.phone}
-              </p>
+
+          <div className="flex w-[16.875rem] md:w-full sm:flex-row gap-[0.75rem] sm:gap-[1rem] mt-[0.5rem]">
+            <div className="flex w-[12.125rem] md:w-[14.6875rem] flex-col">
+              <h1 className="text-[#FF8126] text-[0.625rem] sm:text-[0.875rem] md:text-[1rem] font-bold leading-tight">
+                {t.services}
+              </h1>
+              <div className="mt-[0.5rem] md:mt-[0.75rem]">
+                {market.services && market.services.length > 0 ? (
+                  market?.services?.slice(0, 3).map((service, index) => (
+                    <p key={index} className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight">
+                      ✓<span className="ml-[0.25rem]">{service}</span>
+                    </p>
+                  ))
+                ) : (
+                  <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight">
+                    ✓<span className="ml-[0.25rem]">{t.noServices}</span>
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="flex items-start gap-[0.5rem] mt-[0.5rem] md:mt-[1rem]">
-              <img src="/loc.svg" alt="location" className="h-[0.5rem] sm:h-[0.75rem] w-[0.5rem] sm:w-[0.75rem] mt-[0.25rem]" />
-              <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight flex-1">
-                {market.location}
-              </p>
+            <div className="flex flex-col lg:justify-center md:justify-between justify-between">
+              <div className="flex items-center gap-[0.5rem]">
+              <GiResize />
+                <p className="text-[#FF8126] font-mono font-bold text-[0.625rem] sm:text-[0.75rem] md:text-[18px] leading-tight">
+                  {market.size} sq.ft
+                </p>
+              </div>
+              <div className="flex items-start gap-[0.5rem] mt-[0.5rem] md:mt-[1rem]">
+                <img src="/loc.svg" alt="location" className="h-[0.5rem] sm:h-[0.75rem] w-[0.5rem] sm:w-[0.75rem] mt-[0.25rem]" />
+                <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.8125rem] leading-tight flex-1">
+                  {market.location}
+                </p>
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="md:flex hidden flex-row sm:flex-col items-center gap-[0.5rem] w-full sm:w-auto mt-[0.75rem] sm:mt-0">
+          <button onClick={handleViewListing} className="bg-[#FF8126] w-full sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-white text-[0.875rem] md:text-[1rem]">
+            {t.viewlisting}
+          </button>
+          <button className="border-[0.0625rem] border-[#FF8126] w-full sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-[0.875rem] md:text-[1rem]">
+            {t.sendmessage}
+          </button>
+        </div>
       </div>
 
-      <div className="md:flex hidden flex-row sm:flex-col items-center gap-[0.5rem] w-full sm:w-auto mt-[0.75rem] sm:mt-0">
-        <button onClick={handleViewListing} className="bg-[#FF8126] w-full sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-white text-[0.875rem] md:text-[1rem]">
+      <div
+        id="mobile"
+        className="flex md:hidden w-[23.3125rem] flex-row sm:flex-col items-center gap-[0.5rem] sm:w-auto mt-[0.75rem] sm:mt-0"
+      >
+        <button
+          id="btn1"
+          onClick={handleViewListing}
+          className="bg-[#FF8126] sm:min-w-[10.5rem] w-[47%] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-white text-[0.875rem] md:text-[1rem]"
+        >
           {t.viewlisting}
         </button>
-        <button className="border-[0.0625rem] border-[#FF8126] w-full sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-[0.875rem] md:text-[1rem]">
+        <button className="border-[0.0625rem] border-[#FF8126] sm:min-w-[10.5rem] w-[47%] mx-w-[12rem] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-[0.875rem] md:text-[1rem]">
           {t.sendmessage}
         </button>
       </div>
     </div>
+  );
+});
 
-    <div
-      id="mobile"
-      className="flex md:hidden w-[23.3125rem] flex-row sm:flex-col items-center gap-[0.5rem] sm:w-auto mt-[0.75rem] sm:mt-0"
-    >
-      <button
-        id="btn1"
-        onClick={handleViewListing}
-        className="bg-[#FF8126] sm:min-w-[10.5rem] w-[47%] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-white text-[0.875rem] md:text-[1rem]"
-      >
-        {t.viewlisting}
-      </button>
-      <button className="border-[0.0625rem] border-[#FF8126] sm:min-w-[10.5rem] w-[47%] mx-w-[12rem] sm:w-[8.75rem] md:w-[9.9375rem] h-[2.5rem] md:h-[3rem] rounded-lg text-[0.875rem] md:text-[1rem]">
-        {t.sendmessage}
-      </button>
-    </div>
-  </div>
-  )
-}
+ListingCard.displayName = 'ListingCard';
 
 ListingCard.propTypes = {
   market: PropTypes.object.isRequired,
@@ -185,7 +198,10 @@ const buttonVariants = {
 
 const SpaceFilter = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [sortOption, setSortOption] = useState('newest'); // Default to "Newest First"
   const contentRef = useRef(null);
+  const [resetKey, setResetKey] = useState(0);
   const [sidebarHeight, setSidebarHeight] = useState("auto");
   const { language } = useLanguage();
   const t = translations[language];
@@ -195,12 +211,24 @@ const SpaceFilter = () => {
   const [spaceTypeFilters, setSpaceTypeFilters] = useState({});
   const [sizeFilters, setSizeFilters] = useState({});
   const [locationFilters, setLocationFilters] = useState({});
+  const [priceRange, setPriceRange] = useState([0, 0]); // Both handles start at $0
+
+
+  // Debounced setFilters
+  const debouncedSetFilters = debounce((newFilters) => {
+    setFilters(newFilters);
+  }, 500);
 
   // Fetch markets on mount and when filters change
   useEffect(() => {
-    console.log('useEffect triggered with filters:', filters); // Debug log
-    fetchMarkets(filters, 1); // Reset to page 1 on filter change
-  }, [fetchMarkets, filters]);
+    console.log('useEffect triggered with filters:', filters);
+    // Set default sort to 'newest' if not already set
+    if (!filters.sort) {
+      setFilters({ ...filters, sort: 'newest' });
+    } else {
+      fetchMarkets(filters, 1); // Reset to page 1 when filters change
+    }
+  }, [fetchMarkets, filters, setFilters]);
 
   const handleLoadMore = () => {
     fetchMarkets(filters, page + 1);
@@ -218,6 +246,18 @@ const SpaceFilter = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [markets]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isSortDropdownOpen && !event.target.closest('.sort-dropdown')) {
+        setIsSortDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSortDropdownOpen]);
 
   // Filter options
   const FILTER_SECTIONS = {
@@ -264,12 +304,9 @@ const SpaceFilter = () => {
         updatedFilters.sizeMin = Math.min(...selectedSizes.map((s) => s.sizeMin));
         updatedFilters.sizeMax = Math.max(...selectedSizes.map((s) => s.sizeMax));
       } else {
-        updatedFilters.sizeMin = '';
-        updatedFilters.sizeMax = '';
+        updatedFilters.sizeMin = undefined;
+        updatedFilters.sizeMax = undefined;
       }
-      console.log('After size filter change - newSizeFilters:', newSizeFilters);
-      console.log('After size filter change - selectedSizes:', selectedSizes);
-      console.log('After size filter change - updatedFilters:', updatedFilters);
     } else if (category === "location") {
       const newLocationFilters = { ...locationFilters, [value]: checked };
       setLocationFilters(newLocationFilters);
@@ -277,7 +314,38 @@ const SpaceFilter = () => {
       updatedFilters.location = selectedLocations.length === 1 ? selectedLocations[0] : undefined;
     }
 
+    console.log('Updated filters after change:', updatedFilters);
     setFilters(updatedFilters);
+  };
+
+  // Handle reset filters
+  const handleResetFilters = () => {
+    setSpaceTypeFilters({});
+    setSizeFilters({});
+    setLocationFilters({});
+    setPriceRange([0, 0]); // Reset to $0 - $0
+    setSortOption('newest'); // Reset sort to "Newest First"
+
+    // Log the state after resetting
+    console.log('After reset - spaceTypeFilters:', spaceTypeFilters);
+    console.log('After reset - sizeFilters:', sizeFilters);
+    console.log('After reset - locationFilters:', locationFilters);
+
+    // Fully reset the filters state
+    const resetFilters = {
+      sort: 'newest',
+      type: undefined,
+      sizeMin: undefined,
+      sizeMax: undefined,
+      location: undefined,
+      priceMin: undefined,
+      priceMax: undefined,
+      status: 'available',
+    };
+
+    console.log('Resetting filters to:', resetFilters);
+    setFilters(resetFilters);
+    fetchMarkets(resetFilters, 1); // Fetch markets with fully reset filters
   };
 
   const sidebarVariants = {
@@ -290,6 +358,9 @@ const SpaceFilter = () => {
     visible: { opacity: 0.5, transition: { duration: 0.3 } },
   };
 
+  // Tooltip formatter for the price
+  const tipFormatter = (value) => `$${value}`;
+
   return (
     <div id="filtercard" className="min-h-[100vh] flex flex-col md:flex-row relative w-full max-w-[90rem] mx-auto">
       {/* Sidebar - Desktop */}
@@ -300,7 +371,9 @@ const SpaceFilter = () => {
         <div className="p-[1rem] sm:p-[1.5rem] lg:p-[2rem] sticky top-0">
           <div className="flex justify-between items-center mb-[1.5rem]">
             <h1 className="text-[1.25rem] sm:text-[1.5rem] md:text-[1.75rem] lg:text-[2.5rem] font-normal leading-tight">{t.filters}</h1>
-            <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] cursor-pointer">{t.resetall}</p>
+            <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] cursor-pointer" onClick={handleResetFilters}>
+              {t.resetall}
+            </p>
           </div>
 
           <FilterSection title={t.typeofspace}>
@@ -326,10 +399,48 @@ const SpaceFilter = () => {
                 </svg>
               </div>
             </div>
-            <img src="/pricebar.svg" alt={t.pricerangeslider} className="w-full" />
+
+            {/* Slider with min and max values on the sides */}
+            <div className="slider-container">
+              <span className="slider-label">$0</span>
+              <div className="flex-1 px-[0.5rem]">
+                <Slider
+                  range
+                  min={0}
+                  max={10000}
+                  value={priceRange}
+                  onChange={(value) => {
+                    setPriceRange(value);
+                    debouncedSetFilters({
+                      ...filters,
+                      priceMin: value[0],
+                      priceMax: value[1],
+                    });
+                  }}
+                  trackStyle={[{ backgroundColor: "#FF8126" }]}
+                  handleStyle={[
+                    { backgroundColor: "#FF8126", borderColor: "#FF8126" },
+                    { backgroundColor: "#FF8126", borderColor: "#FF8126" },
+                  ]}
+                  railStyle={{ backgroundColor: "#D1D5DB" }}
+                  tooltip={{
+                    formatter: tipFormatter,
+                    open: true,
+                    placement: "top",
+                  }}
+                />
+              </div>
+              <span className="slider-label">$10K</span>
+            </div>
+
+            {/* Selected range values below the slider */}
             <div className="flex justify-between mt-[0.5rem]">
-              <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price175}</p>
-              <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price3175}</p>
+              <p className="range-value">
+                ${priceRange[0]}
+              </p>
+              <p className="range-value">
+                ${priceRange[1]}
+              </p>
             </div>
           </FilterSection>
 
@@ -357,7 +468,7 @@ const SpaceFilter = () => {
         </div>
       </div>
 
-      {/* Sidebar - Mobile (unchanged for brevity) */}
+      {/* Sidebar - Mobile */}
       <AnimatePresence>
         {isMobileSidebarOpen && (
           <motion.div
@@ -371,7 +482,9 @@ const SpaceFilter = () => {
               <div className="flex justify-between items-center mb-[1.5rem]">
                 <h1 className="text-[1.25rem] sm:text-[1.5rem] md:text-[1.75rem] font-normal leading-tight">{t.filters}</h1>
                 <div className="flex items-center gap-[1rem]">
-                  <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] cursor-pointer">{t.resetall}</p>
+                  <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] cursor-pointer" onClick={handleResetFilters}>
+                    {t.resetall}
+                  </p>
                   <button onClick={() => setIsMobileSidebarOpen(false)} className="w-[1.5rem] h-[1.5rem]">
                     <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="none">
                       <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" />
@@ -403,10 +516,48 @@ const SpaceFilter = () => {
                     </svg>
                   </div>
                 </div>
-                <img src="/pricebar.svg" alt={t.pricerangeslider} className="w-full" />
+
+                {/* Slider with min and max values on the sides */}
+                <div className="slider-container">
+                  <span className="slider-label">$0</span>
+                  <div className="flex-1 px-[0.5rem]">
+                    <Slider
+                      range
+                      min={0}
+                      max={10000}
+                      value={priceRange}
+                      onChange={(value) => {
+                        setPriceRange(value);
+                        debouncedSetFilters({
+                          ...filters,
+                          priceMin: value[0],
+                          priceMax: value[1],
+                        });
+                      }}
+                      trackStyle={[{ backgroundColor: "#FF8126" }]}
+                      handleStyle={[
+                        { backgroundColor: "#FF8126", borderColor: "#FF8126" },
+                        { backgroundColor: "#FF8126", borderColor: "#FF8126" },
+                      ]}
+                      railStyle={{ backgroundColor: "#D1D5DB" }}
+                      tooltip={{
+                        formatter: tipFormatter,
+                        open: true,
+                        placement: "top",
+                      }}
+                    />
+                  </div>
+                  <span className="slider-label">$10K</span>
+                </div>
+
+                {/* Selected range values below the slider */}
                 <div className="flex justify-between mt-[0.5rem]">
-                  <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price175}</p>
-                  <p className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.75rem] lg:text-[0.75rem] text-gray-500">{t.price3175}</p>
+                  <p className="range-value">
+                    ${priceRange[0]}
+                  </p>
+                  <p className="range-value">
+                    ${priceRange[1]}
+                  </p>
                 </div>
               </FilterSection>
 
@@ -457,11 +608,61 @@ const SpaceFilter = () => {
               </h1>
             </button>
 
-            <div className="flex items-center gap-[0.5rem]">
-              <p className="text-[0.75rem] sm:text-[1rem] md:text-[1.25rem] font-normal text-gray-600 leading-tight">
-                {t.sortby}
-              </p>
-              <img src="/sort.svg" alt={t.sort} className="w-[1rem] sm:w-[1.25rem] h-[1rem] sm:h-[1.25rem]" />
+            {/* Sort By Dropdown */}
+            <div className="relative flex items-center gap-[0.5rem] sort-dropdown">
+              <button
+                onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                className="flex items-center gap-[0.5rem] text-[0.75rem] sm:text-[1rem] md:text-[1.25rem] font-normal text-gray-600 leading-tight"
+              >
+                {t.sortby}: {sortOption === 'newest' ? 'Newest First' : sortOption === 'highToLow' ? 'Price: High to Low' : 'Price: Low to High'}
+                <img src="/sort.svg" alt={t.sort} className="w-[1rem] sm:w-[1.25rem] h-[1rem] sm:h-[1.25rem]" />
+              </button>
+
+              {isSortDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-[2rem] right-0 bg-white shadow-lg rounded-lg w-[12rem] z-50"
+                >
+                  <ul className="py-2">
+                    <li
+                      onClick={() => {
+                        setSortOption('newest');
+                        setIsSortDropdownOpen(false);
+                        setFilters({ ...filters, sort: 'newest' });
+                      }}
+                      className={`px-4 py-2 text-[0.875rem] text-gray-700 hover:bg-gray-100 cursor-pointer ${sortOption === 'newest' ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                    >
+                      Newest First
+                    </li>
+                    <li
+                      onClick={() => {
+                        setSortOption('highToLow');
+                        setIsSortDropdownOpen(false);
+                        setFilters({ ...filters, sort: 'highToLow' });
+                      }}
+                      className={`px-4 py-2 text-[0.875rem] text-gray-700 hover:bg-gray-100 cursor-pointer ${sortOption === 'highToLow' ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                    >
+                      Price: High to Low
+                    </li>
+                    <li
+                      onClick={() => {
+                        setSortOption('lowToHigh');
+                        setIsSortDropdownOpen(false);
+                        setFilters({ ...filters, sort: 'lowToHigh' });
+                      }}
+                      className={`px-4 py-2 text-[0.875rem] text-gray-700 hover:bg-gray-100 cursor-pointer ${sortOption === 'lowToHigh' ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                    >
+                      Price: Low to High
+                    </li>
+                  </ul>
+                </motion.div>
+              )}
             </div>
           </div>
 
@@ -469,14 +670,17 @@ const SpaceFilter = () => {
             {t.exploretext}
           </p>
 
-          <div className="space-y-[1.5rem] flex flex-col items-center">
-            {loading && markets.length === 0 ? (
-              <p>Loading markets...</p>
-            ) : markets.length > 0 ? (
+          <div className="space-y-[1.5rem] flex flex-col items-center relative">
+            {loading && (
+              <div className="loading-overlay">
+                <p>Loading markets...</p>
+              </div>
+            )}
+            {markets.length > 0 ? (
               markets.map((market) => (
                 <ListingCard key={market.id} market={market} t={t} />
               ))
-            ) : (
+            ) : !loading && (
               <p>No markets found.</p>
             )}
           </div>

@@ -55,6 +55,11 @@ const SearchPage = () => {
     pageTitle = 'Settings';
     searchPlaceholder = 'Search settings';
   } 
+
+  if (location.pathname === '/market-owner') {
+    pageTitle = 'Market Owner';
+    searchPlaceholder = 'Search vendors';
+  } 
   
   if (location.pathname === '/market-owner/vendors') {
     pageTitle = 'Vendors';

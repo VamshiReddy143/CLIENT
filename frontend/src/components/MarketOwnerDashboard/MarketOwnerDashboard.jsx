@@ -30,7 +30,6 @@ const MarketOwnerDashboard = () => {
     }
   }, [fetchOwnerMarkets, fetchOwnerRequests, user]);
 
-  // Fetch stats for total market owners and vendors
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -65,15 +64,14 @@ const MarketOwnerDashboard = () => {
 
   useEffect(() => {
     if (!loading && !error && markets.length > 0) {
-      // Use the full market object instead of mapping a subset
       setStats((prevStats) => ({
         ...prevStats,
-        totalRequests: markets.length, // Use markets.length directly
+        totalRequests: markets.length,
       }));
-
       const availableMarkets = markets
         .filter((market) => market.status === 'available')
         .slice(0, 2);
+      console.log('Active listings with locations:', availableMarkets.map(m => ({ id: m.id, location: m.location })));
       setActiveListings(availableMarkets);
     }
   }, [markets, loading, error]);
@@ -85,7 +83,7 @@ const MarketOwnerDashboard = () => {
   }, [ownerRequests, loading, error]);
 
   const handleViewListing = (marketId) => {
-    navigate(`/market/${marketId}`); // Adjust to your actual route
+    navigate(`/market/${marketId}`);
   };
 
   const handleImageError = (e) => {
@@ -117,8 +115,7 @@ const MarketOwnerDashboard = () => {
     return <div className="text-center py-10 text-red-500">{statsError}</div>;
   }
 
-
-  console.log("activeListings", activeListings)
+  console.log("activeListings", activeListings);
 
   return (
     <div className='lg:px-10'>
@@ -195,12 +192,12 @@ const MarketOwnerDashboard = () => {
           </div>
 
           {/* Active Listings Section (Mobile View) */}
-          <div id="nunito-text" className='lg:w-[691px] bg-white rounded-xl md:hidden lg:p-4 mt-10'>
-            <h1 className='font-bold lg:text-[18px] mb-5'>Active Listings</h1>
+          <div id="nunito-text" className='bg-white rounded-xl md:hidden mt-10'>
+            <h1 className='font-bold text-[18px] mb-5 px-4 pt-4'>Active Listings</h1>
             {loading ? (
-              <p className="text-gray-500">Loading active listings...</p>
+              <p className="text-gray-500 px-4">Loading active listings...</p>
             ) : error ? (
-              <div className="text-red-500">
+              <div className="text-red-500 px-4">
                 <p>{error}</p>
                 <button
                   onClick={() => fetchOwnerMarkets(1, 10)}
@@ -210,32 +207,56 @@ const MarketOwnerDashboard = () => {
                 </button>
               </div>
             ) : activeListings.length === 0 ? (
-              <p className="text-gray-500">No active listings available.</p>
+              <p className="text-gray-500 px-4 pb-4">No active listings available.</p>
             ) : (
-              <div className='lg:flex gap-20'>
+              <div className="grid grid-cols-1 gap-4 px-4 pb-4">
                 {activeListings.map((listing) => (
-                  <div key={listing.id} className='flex gap-5'>
-                    <div className='lg:w-[150px]'>
-                      <img
-                        src={listing.images && listing.images.length > 0 ? listing.images[0] : '/activelistingimg1.svg'}
-                        alt='active listing'
-                        className='h-[100px] w-[90px] mt-2 rounded-xl'
-                        onError={handleImageError}
-                      />
-                    </div>
-                    <div className='flex flex-col gap-2 mt-2 lg:w-full'>
-                      <h2 className='w-full text-[15px]'>{listing.marketName}</h2>
-
-                      <div className='flex justify-between mr-10'>
-                        <h1 className='text-[#FF8126] text-[17px] font-bold'>${listing.price || 'N/A'}</h1>
-                        <div
-                          onClick={() => handleViewListing(listing.id)}
-                          className='cursor-pointer ml-5'
-                        >
-                          <p className='text-[#FF8126] lg:text-[14px]'>view</p>
-                          <div className='h-[1px] bg-[#FF8126]' />
+                  <div
+                    key={listing.id}
+                    className="bg-gray-50 rounded-lg shadow-sm p-3 sm:p-4 flex flex-col gap-3 hover:shadow-md transition-shadow duration-300 border border-gray-200"
+                  >
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-[70px] h-[70px] sm:w-[90px] sm:h-[90px] flex-shrink-0">
+                        <img
+                          src={listing.images && listing.images.length > 0 ? listing.images[0] : '/activelistingimg1.svg'}
+                          alt={listing.marketName}
+                          className="w-full h-full object-cover rounded-md"
+                          onError={handleImageError}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">{listing.marketName}</h2>
+                       
+                        <div className="mt-1 sm:mt-2 flex items-center justify-between flex-wrap gap-2">
+                          <span className="text-base sm:text-lg font-bold text-orange-500">${listing.price || 'N/A'}</span>
+                          <div
+                            onClick={() => handleViewListing(listing.id)}
+                            className="text-xs sm:text-sm text-orange-500 font-medium hover:text-orange-600 transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                          >
+                            View Details
+                            <svg
+                              className="w-3 h-3 sm:w-4 sm:h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="flex items-center justify-between text-xs sm:text-sm text-gray-500 flex-wrap gap-2">
+                      <span>{listing.size ? `${listing.size} sq. ft.` : 'Size not specified'}</span>
+                      <span className="px-2 py-1 bg-orange-100 text-orange-600 rounded-full">
+                        {listing.type || 'Type not specified'}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -305,13 +326,11 @@ const MarketOwnerDashboard = () => {
                               <div className="flex items-center justify-center text-sm text-gray-900">
                                 {`${request.spaceSize} sq.ft.`}
                               </div>
-                              
-                                <div className="flex items-center justify-center">
-                                  <span className="px-3 py-1 inline-flex text-[12px] leading-5 font-medium rounded-full bg-orange-100 text-orange-500">
-                                    {request.propertyType}
-                                  </span>
-                                </div>
-                         
+                              <div className="flex items-center justify-center">
+                                <span className="px-3 py-1 inline-flex text-[12px] leading-5 font-medium rounded-full bg-orange-100 text-orange-500">
+                                  {request.propertyType}
+                                </span>
+                              </div>
                               <div className="flex items-center justify-center text-sm text-gray-900">
                                 {`$${request.rentalPrice}`}
                               </div>
@@ -327,60 +346,76 @@ const MarketOwnerDashboard = () => {
           </div>
 
           {/* Active Listings Section (Desktop View) */}
-          <div id="nunito-text" className="bg-white w-full md:block lg:block hidden rounded-xl lg:p-4 mt-7">
-      <h1 className="font-bold lg:text-[18px] md:text-[18px] mb-5">Active Listings</h1>
-      {loading ? (
-        <p className="text-gray-500">Loading active listings...</p>
-      ) : error ? (
-        <div className="text-red-500">
-          <p>{error}</p>
-          <button
-            onClick={() => fetchOwnerMarkets(1, 10)}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Retry
-          </button>
-        </div>
-      ) : activeListings.length === 0 ? (
-        <p className="text-gray-500">No active listings available.</p>
-      ) : (
-        <div className="flex flex-wrap lg:gap-18 md:gap-18  overflow-x-auto lg:overflow-x-visible">
-          {activeListings.map((listing) => (
-            <div
-              key={listing.id}
-              className="flex flex-shrink-0  w-full sm:w-[300px] md:w-[280px] lg:w-[260px]"
-            >
-              <div className="w-[100px] mr-3">
-                <img
-                  src={listing.images && listing.images.length > 0 ? listing.images[0] : '/activelistingimg1.svg'}
-                  alt="active listing"
-                  className="h-[100px] w-full rounded-xl object-cover"
-                  onError={handleImageError}
-                />
+          <div id="nunito-text" className="bg-white w-full md:block hidden rounded-xl mt-7">
+            <h1 className="font-bold text-[18px] mb-5 px-4 pt-4">Active Listings</h1>
+            {loading ? (
+              <p className="text-gray-500 px-4">Loading active listings...</p>
+            ) : error ? (
+              <div className="text-red-500 px-4">
+                <p>{error}</p>
+                <button
+                  onClick={() => fetchOwnerMarkets(1, 10)}
+                  className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Retry
+                </button>
               </div>
-              <div className="flex flex-col gap-2 flex-1 min-w-0">
-                <h2 className="text-[15px] truncate">{listing.marketName}</h2>
-                <div className="w-fit">
-                  <h2 className="text-[15px] bg-red-200 rounded-full py-1 px-4 whitespace-nowrap">
-                    {listing.type}
-                  </h2>
-                </div>
-                <div className="flex justify-between items-center">
-                  <h1 className="text-[#FF8126] text-[17px] font-bold">${listing.price || 'N/A'}</h1>
+            ) : activeListings.length === 0 ? (
+              <p className="text-gray-500 px-4 pb-4">No active listings available.</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 px-4 pb-4">
+                {activeListings.map((listing) => (
                   <div
-                    onClick={() => handleViewListing(listing.id)}
-                    className="cursor-pointer flex flex-col items-end"
+                    key={listing.id}
+                    className="bg-gray-50 rounded-lg shadow-sm p-3 sm:p-4 flex flex-col gap-3 hover:shadow-md transition-shadow duration-300 border border-gray-200"
                   >
-                    <p className="text-[#FF8126] lg:text-[14px]">view</p>
-                    <div className="h-[1px] w-8 bg-[#FF8126]" />
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-[70px] h-[70px] sm:w-[90px] sm:h-[90px] md:w-[100px] md:h-[100px] flex-shrink-0">
+                        <img
+                          src={listing.images && listing.images.length > 0 ? listing.images[0] : '/activelistingimg1.svg'}
+                          alt={listing.marketName}
+                          className="w-full h-full object-cover rounded-md"
+                          onError={handleImageError}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">{listing.marketName}</h2>
+                        <div className="mt-1 sm:mt-2 flex items-center justify-between flex-wrap gap-2">
+                          <span className="text-base sm:text-lg font-bold text-orange-500">${listing.price || 'N/A'}</span>
+                          <div
+                            onClick={() => handleViewListing(listing.id)}
+                            className="text-xs sm:text-sm text-orange-500 font-medium hover:text-orange-600 transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                          >
+                            View
+                            <svg
+                              className="w-3 h-3 sm:w-4 sm:h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-xs sm:text-sm text-gray-500 flex-wrap gap-2">
+                      <span>{listing.size ? `${listing.size} sq. ft.` : 'Size not specified'}</span>
+                      <span className="px-2 py-1 bg-orange-100 text-orange-600 rounded-full">
+                        {listing.type || 'Type not specified'}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            )}
+          </div>
         </div>
 
         {/* Pie Chart Section (Desktop View) */}
@@ -437,7 +472,6 @@ const MarketOwnerDashboard = () => {
                             {`#${request.requestId}`}
                           </div>
                           <div className="flex items-center justify-start gap-3">
-
                             <Link to={`/vendor/listing/${request.vendorId}`}>
                               <span className="text-sm ml-10 text-gray-900">{request.vendorName}</span>
                             </Link>
@@ -448,7 +482,6 @@ const MarketOwnerDashboard = () => {
                           <div className="flex items-center justify-center text-sm text-gray-900">
                             {`${request.spaceSize} sq.ft.`}
                           </div>
-
                           <Link to={`/vendor/listing/${request.marketId}`}>
                             <div className="flex items-center justify-center">
                               <span className="px-3 py-1 inline-flex text-[10px] leading-5 font-medium rounded-full bg-orange-100 text-orange-500">
@@ -461,7 +494,6 @@ const MarketOwnerDashboard = () => {
                               {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                             </span>
                           </div>
-
                           <div className="flex items-center justify-center relative">
                             <button className="text-orange-500 hover:text-orange-700 mr-2">
                               <svg

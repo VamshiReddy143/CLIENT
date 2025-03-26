@@ -18,7 +18,7 @@ exports.createRequest = async (req, res) => {
 // Get all requests
 exports.getAllRequests = async (req, res) => {
   try {
-    const requests = await Request.findAll();
+    const requests = await Request.findAll()
     res.json(requests);
   } catch (err) {
     console.error(err);

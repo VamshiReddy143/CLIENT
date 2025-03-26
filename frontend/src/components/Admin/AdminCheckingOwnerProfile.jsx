@@ -4,6 +4,7 @@ import SearchPage from '../SearchPage';
 import axios from 'axios';
 import useMarketStore from '@/store/marketStore';
 import useAuthStore from '@/store/authSlice';
+const PROPERTY_PLACEHOLDER = "/pph.png"
 
 function AdminOwnerDetails() {
   const { ownerId } = useParams();
@@ -140,24 +141,6 @@ function AdminOwnerDetails() {
                 readOnly
               />
             </div>
-            <div>
-              <label className="block text-gray-600 mb-2">Email</label>
-              <input
-                type="email"
-                value={owner.email || 'N/A'}
-                className="w-full bg-gray-100 rounded-md p-2.5"
-                readOnly
-              />
-            </div>
-            <div>
-              <label className="block text-gray-600 mb-2">Phone Number</label>
-              <input
-                type="tel"
-                value={owner.phone || 'N/A'}
-                className="w-full bg-gray-100 rounded-md p-2.5"
-                readOnly
-              />
-            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 md:w-[67%] gap-4 mt-4">
             <div>
@@ -216,7 +199,7 @@ function AdminOwnerDetails() {
                 <div className="flex items-center gap-2">
                   {market.images && market.images.length > 1 && market.images[1] ? (
                     <img
-                      src={market.images[1]}
+                      src={market.images[1] || PROPERTY_PLACEHOLDER}
                       alt={market.marketName || 'Market Image'}
                       className="h-8 w-8 rounded-md object-cover"
                       onError={(e) => (e.target.src = '/images/fallback.jpg')}

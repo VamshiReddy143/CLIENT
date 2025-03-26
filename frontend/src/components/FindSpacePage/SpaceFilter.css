@@ -1,0 +1,61 @@
+/* SpaceFilter.css */
+
+/* Container for the slider */
+.rc-slider {
+    margin: 10px 0;
+  }
+  
+  /* Rail (background track) */
+  .rc-slider-rail {
+    height: 10px; /* Thicker rail to match the static image */
+    background-color: #D1D5DB !important; /* Gray color */
+    border-radius: 5px;
+  }
+  
+  /* Track (selected range between handles) */
+  .rc-slider-track {
+    height: 10px; /* Thicker track */
+    background-color: #FF8126 !important; /* Orange color */
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Smooth transition for color changes */
+  }
+  
+  /* Handles (draggable dots) */
+  .rc-slider-handle {
+    width: 24px; /* Larger handles to match the static image */
+    height: 24px;
+    background-color: #FF8126 !important; /* Orange color */
+    border: none !important; /* Remove default border */
+    margin-top: -7px; /* Center the handle on the track */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .rc-slider-handle:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+  }
+  
+  .rc-slider-handle-dragging {
+    transform: scale(1.2) !important; /* Enlarge while dragging */
+    box-shadow: 0 0 0 5px rgba(255, 129, 38, 0.3) !important; /* Glow effect while dragging */
+  }
+  
+  /* Tooltip (price display above handles) */
+  .rc-slider-tooltip {
+    background-color: #FF8126 !important; /* Orange background */
+    color: #fff !important; /* White text */
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+  }
+  
+  .rc-slider-tooltip-arrow {
+    border-top-color: #FF8126 !important; /* Match tooltip background */
+  }
+  
+  /* Disable default dot styles (if any) */
+  .rc-slider-dot {
+    display: none;
+  }

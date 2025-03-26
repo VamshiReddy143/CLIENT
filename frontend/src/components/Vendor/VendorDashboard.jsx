@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { Bell, ChevronDown, Search } from 'lucide-react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link } from 'react-router-dom';
 import SearchPage from '../SearchPage';
 import useMarketStore from '@/store/marketStore';
 import useAuthStore from '@/store/authSlice';
+
+const PROPERTY_PLACEHOLDER = "/pph.png"
 
 const VendorDashboard = () => {
   const { requests, fetchRequests, loading, error } = useMarketStore();
@@ -31,8 +33,7 @@ const VendorDashboard = () => {
   // Filter active (approved) requests for "Active Listing"
   const activeRequests = requests?.filter((r) => r.status === 'approved');
 
-  // Default image
-  const defaultImage = 'https://images.unsplash.com/photo-1466112928291-0903b80a9466?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
+
 
   return (
     <div className="bg-white lg:bg-gray-100 p-4 lg:px-10 mb-10 lg:mb-0 md:mb-0">
@@ -90,49 +91,59 @@ const VendorDashboard = () => {
 
       <div id="nunito-text" className="lg:w-[691px] bg-white rounded-xl lg:p-4 mt-10">
         <h1 className="font-bold lg:text-[18px] mb-5">Active Listing</h1>
-        <div className="lg:flex grid lg:gap-15 gap-5">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-6">
           {activeRequests?.length > 0 ? (
             activeRequests.slice(0, 2).map((request, index) => (
-              <div key={index} className="flex gap-5 mb-4 lg:mb-0">
-                <div className="lg:w-[150px] lg:h-[120px] h-[100px] w-[200px] object-cover">
-                  <img
-                    src={request.images?.[0] || defaultImage}
-                    alt={request.marketName}
-                    className="lg:w-full lg:h-full w-[150px] h-[120px] object-cover rounded-xl"
-                    onError={(e) => (e.target.src = defaultImage)}
-                  />
-                </div>
-                <div className="flex flex-col gap-2 lg:w-full w-[50%]">
-                  {/* Wrap marketName in a Link to navigate to the market details page */}
-                  <Link
-                    to={`/market/${request.marketId}`} // Adjust the route as per your app's structure
-                    className="w-full text-[15px] text-gray-900 hover:text-orange-500 transition-colors"
-                  >
-                    {request.marketName}
-                  </Link>
-                  <svg width="80" height="14" viewBox="0 0 80 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.7899 8.27345C11.6054 8.44914 11.5206 8.70322 11.5627 8.9524L12.196 12.3962C12.2494 12.6881 12.1241 12.9834 11.8754 13.1521C11.6318 13.3271 11.3076 13.3481 11.0419 13.2081L7.88666 11.5912C7.77695 11.5338 7.65513 11.503 7.53046 11.4995H7.33739C7.27043 11.5093 7.20489 11.5303 7.14504 11.5625L3.98908 13.1871C3.83306 13.2641 3.65639 13.2914 3.48327 13.2641C3.06153 13.1857 2.78013 12.7909 2.84923 12.3745L3.48327 8.9307C3.5253 8.67942 3.44053 8.42394 3.25601 8.24545L0.683512 5.79561C0.468365 5.59053 0.393563 5.28255 0.491875 5.00467C0.587337 4.72748 0.83098 4.5252 1.1252 4.4797L4.66587 3.97503C4.93516 3.94774 5.17168 3.78675 5.29279 3.54876L6.85296 0.405973C6.89 0.335978 6.93773 0.271582 6.99544 0.216986L7.05955 0.167989C7.09304 0.131591 7.13151 0.101493 7.17425 0.0769949L7.2519 0.0489967L7.37301 0H7.67294C7.9408 0.0272982 8.17661 0.184788 8.29986 0.419972L9.88069 3.54876C9.99467 3.77765 10.2162 3.93654 10.472 3.97503L14.0126 4.4797C14.3119 4.5217 14.5619 4.72468 14.6609 5.00467C14.7543 5.28535 14.6738 5.59333 14.4543 5.79561L11.7899 8.27345Z" fill="#FFD66B" />
-                    <path d="M27.9384 8.27345C27.7539 8.44914 27.6691 8.70322 27.7111 8.9524L28.3444 12.3962C28.3979 12.6881 28.2725 12.9834 28.0239 13.1521C27.7802 13.3271 27.4561 13.3481 27.1903 13.2081L24.0351 11.5912C23.9254 11.5338 23.8036 11.503 23.6789 11.4995H23.4858C23.4189 11.5093 23.3533 11.5303 23.2935 11.5625L20.1375 13.1871C19.9815 13.2641 19.8048 13.2914 19.6317 13.2641C19.21 13.1857 18.9286 12.7909 18.9977 12.3745L19.6317 8.9307C19.6737 8.67942 19.589 8.42394 19.4045 8.24545L16.8319 5.79561C16.6168 5.59053 16.542 5.28255 16.6403 5.00467C16.7358 4.72748 16.9794 4.5252 17.2736 4.4797L20.8143 3.97503C21.0836 3.94774 21.3201 3.78675 21.4412 3.54876L23.0014 0.405973C23.0384 0.335978 23.0862 0.271582 23.1439 0.216986L23.208 0.167989C23.2415 0.131591 23.2799 0.101493 23.3227 0.0769949L23.4003 0.0489967L23.5215 0H23.8214C24.0892 0.0272982 24.325 0.184788 24.4483 0.419972L26.0291 3.54876C26.1431 3.77765 26.3647 3.93654 26.6204 3.97503L30.1611 4.4797C30.4603 4.5217 30.7104 4.72468 30.8094 5.00467C30.9027 5.28535 30.8222 5.59333 30.6028 5.79561L27.9384 8.27345Z" fill="#FFD66B" />
-                    <path d="M44.0907 8.27345C43.9062 8.44914 43.8214 8.70322 43.8635 8.9524L44.4968 12.3962C44.5502 12.6881 44.4248 12.9834 44.1762 13.1521C43.9326 13.3271 43.6084 13.3481 43.3427 13.2081L40.1874 11.5912C40.0777 11.5338 39.9559 11.503 39.8312 11.4995H39.6382C39.5712 11.5093 39.5057 11.5303 39.4458 11.5625L36.2899 13.1871C36.1338 13.2641 35.9572 13.2914 35.7841 13.2641C35.3623 13.1857 35.0809 12.7909 35.15 12.3745L35.7841 8.9307C35.8261 8.67942 35.7413 8.42394 35.5568 8.24545L32.9843 5.79561C32.7691 5.59053 32.6943 5.28255 32.7927 5.00467C32.8881 4.72748 33.1318 4.5252 33.426 4.4797L36.9666 3.97503C37.2359 3.94774 37.4725 3.78675 37.5936 3.54876L39.1537 0.405973C39.1908 0.335978 39.2385 0.271582 39.2962 0.216986L39.3603 0.167989C39.3938 0.131591 39.4323 0.101493 39.475 0.0769949L39.5527 0.0489967L39.6738 0H39.9737C40.2416 0.0272982 40.4774 0.184788 40.6006 0.419972L42.1815 3.54876C42.2955 3.77765 42.517 3.93654 42.7728 3.97503L46.3134 4.4797C46.6126 4.5217 46.8627 4.72468 46.9617 5.00467C47.055 5.28535 46.9745 5.59333 46.7551 5.79561L44.0907 8.27345Z" fill="#FFD66B" />
-                    <path d="M60.2392 8.27345C60.0546 8.44913 59.9699 8.70322 60.0119 8.9524L60.6452 12.3962C60.6987 12.6881 60.5733 12.9834 60.3246 13.1521C60.081 13.3271 59.7569 13.3481 59.4911 13.2081L56.3359 11.5912C56.2262 11.5338 56.1043 11.503 55.9797 11.4995H55.7866C55.7196 11.5093 55.6541 11.5303 55.5943 11.5625L52.4383 13.1871C52.2823 13.2641 52.1056 13.2914 51.9325 13.2641C51.5107 13.1857 51.2293 12.7909 51.2984 12.3745L51.9325 8.9307C51.9745 8.67942 51.8897 8.42394 51.7052 8.24545L49.1327 5.79561C48.9176 5.59053 48.8428 5.28255 48.9411 5.00467C49.0366 4.72748 49.2802 4.5252 49.5744 4.4797L53.1151 3.97503C53.3844 3.94774 53.6209 3.78675 53.742 3.54876L55.3022 0.405973C55.3392 0.335978 55.387 0.271582 55.4447 0.216985L55.5088 0.167989C55.5423 0.131591 55.5807 0.101493 55.6235 0.0769949L55.7011 0.0489967L55.8222 0H56.1222C56.39 0.0272982 56.6258 0.184788 56.7491 0.419972L58.3299 3.54876C58.4439 3.77765 58.6654 3.93654 58.9212 3.97503L62.4619 4.4797C62.7611 4.5217 63.0111 4.72468 63.1102 5.00467C63.2035 5.28535 63.123 5.59333 62.9036 5.79561L60.2392 8.27345Z" fill="#FFD66B" />
-                    <path opacity="0.4" d="M76.3915 8.27345C76.207 8.44914 76.1222 8.70322 76.1642 8.9524L76.7976 12.3962C76.851 12.6881 76.7256 12.9834 76.477 13.1521C76.2333 13.3271 75.9092 13.3481 75.6435 13.2081L72.4882 11.5912C72.3785 11.5338 72.2567 11.503 72.132 11.4995H71.939C71.872 11.5093 71.8064 11.5303 71.7466 11.5625L68.5906 13.1871C68.4346 13.2641 68.2579 13.2914 68.0848 13.2641C67.6631 13.1857 67.3817 12.7909 67.4508 12.3745L68.0848 8.9307C68.1269 8.67942 68.0421 8.42394 67.8576 8.24545L65.2851 5.79561C65.0699 5.59053 64.9951 5.28255 65.0934 5.00467C65.1889 4.72748 65.4325 4.5252 65.7268 4.4797L69.2674 3.97503C69.5367 3.94774 69.7732 3.78675 69.8943 3.54876L71.4545 0.405973C71.4916 0.335978 71.5393 0.271582 71.597 0.216986L71.6611 0.167989C71.6946 0.131591 71.7331 0.101493 71.7758 0.0769949L71.8535 0.0489967L71.9746 0H72.2745C72.5424 0.0272982 72.7782 0.184788 72.9014 0.419972L74.4822 3.54876C74.5962 3.77765 74.8178 3.93654 75.0735 3.97503L78.6142 4.4797C78.9134 4.5217 79.1635 4.72468 79.2625 5.00467C79.3558 5.28535 79.2753 5.59333 79.0559 5.79561L76.3915 8.27345Z" fill="#FFD66B" />
-                  </svg>
-                  <div className="flex justify-between mr-10">
-                    <h1 className="text-[#FF8126] text-[17px] font-bold">${request.rentalPrice}</h1>
+              <div
+                key={index}
+                className="bg-gray-50 rounded-lg shadow-sm p-4 flex flex-col gap-4 hover:shadow-md transition-shadow duration-300 border border-gray-200"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-[100px] h-[100px] flex-shrink-0">
+                    <img
+                      src={request.images?.[0] || PROPERTY_PLACEHOLDER}
+                      alt={request.marketName}
+                      className="w-full h-full object-cover rounded-md"
+                      onError={(e) => (e.target.src = PROPERTY_PLACEHOLDER)}
+                    />
+                  </div>
+                  <div className="flex-1">
                     <Link
-                      to={`/market/${request.marketId}`}             
+                      to={`/market/${request.marketId}`}
+                      className="text-lg font-semibold text-gray-800 hover:text-orange-500 transition-colors"
                     >
-                      <div>
-                        <p className="text-[#FF8126] lg:text-[14px]">view</p>
-                        <div className="h-[1px] bg-[#FF8126]" />
-                      </div>
+                      {request.marketName}
                     </Link>
+                    <p className="text-sm text-gray-600 mt-1">{request.location || 'Location not specified'}</p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="text-lg font-bold text-orange-500">${request.rentalPrice}</span>
+                      <Link
+                        to={`/market/${request.marketId}`}
+                        className="text-sm text-orange-500 font-medium hover:text-orange-600 transition-colors flex items-center gap-1"
+                      >
+                        View
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="text-center py-4 text-gray-500">No active listings found.</div>
+            <div className="text-center py-4 text-gray-500 col-span-2">No active listings found.</div>
           )}
         </div>
       </div>

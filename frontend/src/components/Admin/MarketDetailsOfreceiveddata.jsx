@@ -3,6 +3,9 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const PROFILE_PLACEHOLDER = "/ph.png";
+const PROPERTY_PLACEHOLDER = "/pph.png";
+
 const MarketDetails = () => {
   const { marketId } = useParams();
   const navigate = useNavigate();
@@ -159,14 +162,14 @@ const MarketDetails = () => {
               {owner?.id ? (
                 <Link to={`/admin/market-owner/profile/${owner.id}`}>
                   <img
-                    src={owner.avatar || 'https://via.placeholder.com/150?text=Owner'}
+                    src={owner.avatar || PROFILE_PLACEHOLDER}
                     alt={market.ownerName}
                     className="h-36 w-36 rounded-full object-cover shadow-lg border-4 border-orange-100"
                   />
                 </Link>
               ) : (
                 <img
-                  src='https://via.placeholder.com/150?text=Owner'
+                  src={PROFILE_PLACEHOLDER}
                   alt={market.ownerName}
                   className="h-36 w-36 rounded-full object-cover shadow-lg border-4 border-orange-100"
                 />
@@ -186,14 +189,6 @@ const MarketDetails = () => {
               </div>
               <p className="text-sm text-gray-500 mb-4">Owner ID: #{owner?.id || 'N/A'}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-600 font-medium">Email:</span>
-                  <span className="text-gray-800">{market.email || 'No email'}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-600 font-medium">Phone:</span>
-                  <span className="text-gray-800">{market.phone || 'No phone number'}</span>
-                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-600 font-medium">Address:</span>
                   <span className="text-gray-800">{market.location ? `${market.location}, ${market.city}` : 'No address'}</span>

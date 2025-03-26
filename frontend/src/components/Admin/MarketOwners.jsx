@@ -3,6 +3,7 @@ import SearchPage from '../SearchPage';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import useAuthStore from '@/store/authSlice';
+const PROFILE_PLACEHOLDER = "/ph.png"
 
 function OwnersTable() {
   const [owners, setOwners] = useState([]);
@@ -83,7 +84,7 @@ function OwnersTable() {
                   <Link to={`/admin/owner/${owner.id}`} className="flex items-center gap-3">
                     <div className="h-8 w-8 overflow-hidden rounded-full">
                       <img
-                        src={owner.avatar || 'https://media.istockphoto.com/id/512830984/photo/icon-man-on-a-white-background-3d-render.jpg?s=1024x1024&w=is&k=20&c=gywzOSiM5XZ-MrggZpDY2slglWuQuMIqQQ8ruz144vI='}
+                        src={owner.avatar || PROFILE_PLACEHOLDER}
                         alt={owner.name}
                         className="h-full w-full object-cover"
                       />

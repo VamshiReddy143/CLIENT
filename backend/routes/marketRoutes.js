@@ -12,7 +12,8 @@ router.get('/market/:id',authenticateJWT, marketController.getMarketById);
 router.get('/markets/:id',authenticateJWT, marketController.getMarketById);
 
 // Get all markets
-router.get('/markets', authenticateJWT, marketController.getAllMarkets);
+router.get('/markets',authenticateJWT, marketController.getAllMarkets);
+router.get('/featuredmarkets', marketController.getAllMarkets);
 
 router.get('/marketee', authenticateJWT, marketController.getMarketsByOwner);
 

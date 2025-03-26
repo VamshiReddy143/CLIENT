@@ -98,7 +98,7 @@ const VendorTable = () => {
 
       <div className="overflow-x-auto custom-scrollbar lg:overflow-x-visible mt-10">
         <div className="min-w-[800px]">
-          <div className="grid grid-cols-5 md:bg-gray-100 px-6 py-3 md:text-[12px] text-[8px] text-gray-500 uppercase tracking-wider rounded-t-lg sticky top-0 z-10">
+          <div className="grid grid-cols-5 md:grid-cols-5 md:bg-gray-100 px-6 py-3 md:text-[12px] text-[8px] text-gray-500 uppercase tracking-wider rounded-t-lg sticky top-0 z-10">
             {['Vendor Id', 'Vendor Name', 'Total Listings', 'Status', 'View Details'].map((header, idx) => (
               <div key={idx} className="font-medium flex gap-2 items-center justify-center">
                 <p>{header}</p>
@@ -117,21 +117,25 @@ const VendorTable = () => {
               filteredVendors.map((vendor, index) => (
                 <div
                   key={vendor.vendorId}
-                  className="grid grid-cols-5 rounded-lg bg-white px-6 py-4 shadow-sm hover:bg-gray-50"
+                  className="grid grid-cols-5 md:grid-cols-5 rounded-lg bg-white px-6 py-4 shadow-sm hover:bg-gray-50"
                 >
                   <div className="flex items-center justify-center text-sm text-gray-900">
                     #{vendor.vendorId}
                   </div>
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="h-10 w-10 overflow-hidden rounded-full">
-                      <img
-                        src={vendor.avatar || 'https://via.placeholder.com/150'}
-                        alt={vendor.vendorName}
-                        className="h-full w-full object-cover"
-                        onError={(e) => (e.target.src = 'https://via.placeholder.com/150')}
-                      />
+                  <div className="flex items-center ml-10 justify-center">
+                    <div className="flex items-center gap-3  max-w-[180px] w-full">
+                      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
+                        <img
+                          src={vendor.avatar || 'https://via.placeholder.com/150'}
+                          alt={vendor.vendorName}
+                          className="h-full w-full object-cover"
+                          onError={(e) => (e.target.src = 'https://via.placeholder.com/150')}
+                        />
+                      </div>
+                      <span className="lg:text-sm text-[13px]  text-gray-900 truncate" title={vendor.vendorName}>
+                        {vendor.vendorName}
+                      </span>
                     </div>
-                    <span className="text-sm text-gray-900">{vendor.vendorName}</span>
                   </div>
                   <div className="flex items-center justify-center text-sm text-gray-900">
                     {vendor.totalListing}
